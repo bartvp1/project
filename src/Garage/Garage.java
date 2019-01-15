@@ -3,6 +3,7 @@ package Garage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Garage extends JPanel implements Runnable {
@@ -43,6 +44,9 @@ public class Garage extends JPanel implements Runnable {
     int numberOfCars = 0;
     int numberOfPassCars = 0;
     int numberOfNormalCars = 0;
+
+
+    private ArrayList<Reservation> reservations = new ArrayList();
 
     JLabel countLabel = new JLabel();
 
@@ -160,6 +164,7 @@ public class Garage extends JPanel implements Runnable {
 
     private void tick() {
         advanceTime();
+        reserveLocation();
         handleExit();
         updateViews();
         handleEntrance();
@@ -180,6 +185,20 @@ public class Garage extends JPanel implements Runnable {
             day -= 7;
         }
 
+    }
+
+    private void reserveLocation(){
+        int size = reservations.size();
+        if(size > 0){
+            for(Reservation reservation : reservations) {
+                // reserveer op zn minst 15 min van tevoren
+            }
+        }
+    }
+
+    public void addReservation(int day, int hour, int minute){
+        Reservation reservation = new Reservation(day, hour, minute);
+        reservations.add(reservation);
     }
 
     private void handleEntrance() {
