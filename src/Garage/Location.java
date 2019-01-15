@@ -15,6 +15,7 @@ public class Location {
         this.place = place;
     }
 
+
     /**
      * Implement content equality.
      */
