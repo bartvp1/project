@@ -27,6 +27,7 @@ public class Garage extends JPanel implements Runnable {
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
+    //private int reservedPassSpots = 60;
 
 
     private int tickPause = 100;
