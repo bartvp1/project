@@ -178,7 +178,7 @@ public class Garage extends JPanel implements Runnable {
 
     private void tick() {
         advanceTime();
-        reserveLocation();
+        //reserveLocation();
         handleExit();
         updateViews();
         handleEntrance();
@@ -205,14 +205,6 @@ public class Garage extends JPanel implements Runnable {
         reserved_ParkingPass = 120;
         if(day == 5 || day == 6){
             reserved_ParkingPass = 10;
-        }
-    }
-    private void reserveLocation(){
-        int size = reservations.size();
-        if(size > 0){
-            for(Reservation reservation : reservations) {
-                // reserveer op zn minst 15 min van tevoren
-            }
         }
     }
 
