@@ -109,10 +109,10 @@ public class GraphMainPanel extends JPanel {
                     label.setForeground(Color.GREEN);
                     break;
                 case "Pass Cars":
-                    label.setForeground(Color.RED);
+                    label.setForeground(Color.BLUE);
                     break;
                 case "Normal Cars":
-                    label.setForeground(Color.BLUE);
+                    label.setForeground(Color.RED);
                     break;
             }
             add(label);

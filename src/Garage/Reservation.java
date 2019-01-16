@@ -1,27 +1,17 @@
 package Garage;
 
-import java.util.ArrayList;
-
 public class Reservation{
     private int day;
     private int hour;
     private int minute;
 
     public Reservation(int day, int hour, int minute) {
-        this.day = day;
+        this.day = day;//day 0 is monday
         this.hour = hour;
         this.minute = minute;
     }
 
-    public int getDay() {
-        return this.day;
-    }
-
-    public int getHour() {
-        return this.hour;
-    }
-
-    public int getMinute() {
-        return this.minute;
+    public int getMinutesFromStart() {
+        return (day*60*24)+(hour*60)+minute;
     }
 }
