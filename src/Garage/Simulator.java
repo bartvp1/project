@@ -165,12 +165,12 @@ public class Simulator {
 //        switch (type) {
 //            case AD_HOC:
 //                for (int i = 0; i < numberOfCars; i++) {
-//                    entranceCarQueue.addCar(new AdHocCar());
+//                    entranceCarQueue.addCar(new CarNormal());
 //                }
 //                break;
 //            case PASS:
 //                for (int i = 0; i < numberOfCars; i++) {
-//                    entrancePassQueue.addCar(new ParkingPassCar());
+//                    entrancePassQueue.addCar(new CarPass());
 //                }
 //                break;
 //        }

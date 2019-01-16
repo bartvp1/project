@@ -3,14 +3,14 @@ package Garage;
 import java.awt.*;
 import java.util.Random;
 
-public class AdHocCar extends Car {
-	private static final Color COLOR=Color.red;
+public class CarPass extends Car {
+	private static final Color COLOR=Color.blue;
 	
-    public AdHocCar() {
+    public CarPass() {
     	Random random = new Random();
     	int stayMinutes = (int) (15 + random.nextFloat() * 3 * 60);
         this.setMinutesLeft(stayMinutes);
-        this.setHasToPay(true);
+        this.setHasToPay(false);
     }
     
     public Color getColor(){

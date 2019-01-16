@@ -187,7 +187,7 @@ public class Garage extends JPanel implements Runnable {
     private void advanceTime() {
         // Advance the time by one minute.
         minute++;
-        parkingPass_reserved();
+        reservedForPass();
         while (minute > 59) {
             minute -= 60;
             hour++;
@@ -201,7 +201,7 @@ public class Garage extends JPanel implements Runnable {
         }
 
     }
-    private void parkingPass_reserved(){
+    private void reservedForPass(){
         reserved_ParkingPass = 120;
         if(day == 5 || day == 6){
             reserved_ParkingPass = 10;
@@ -250,7 +250,7 @@ public class Garage extends JPanel implements Runnable {
 
     public Location getFirstFreeLocation(Car car) {
         int start_at = reserved_ParkingPass;
-        if(car instanceof ParkingPassCar){
+        if(car instanceof CarPass){
             start_at = 0;
         }
         int size = locations.size();
@@ -393,12 +393,12 @@ public class Garage extends JPanel implements Runnable {
         switch (type) {
             case AD_HOC:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entranceCarQueue.addCar(new AdHocCar());
+                    entranceCarQueue.addCar(new CarNormal());
                 }
                 break;
             case PASS:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entrancePassQueue.addCar(new ParkingPassCar());
+                    entrancePassQueue.addCar(new CarPass());
                 }
                 break;
         }
