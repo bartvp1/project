@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Iterator;
 
 public class Garage extends JPanel implements Runnable {
     Thread thread = new Thread(this);
@@ -44,6 +45,7 @@ public class Garage extends JPanel implements Runnable {
     int numberOfPassCars = 0;
     int numberOfNormalCars = 0;
     int numberOfReservedCars = 0;
+    int nowTime; //time in seconds
 
 
     private ArrayList<Reservation> reservations = new ArrayList<Reservation>();
@@ -71,16 +73,16 @@ public class Garage extends JPanel implements Runnable {
         stats.setBounds(10, 120, 200, 50);
         stats.setForeground(Color.white);
         add(stats);
-        addReservation(0,3,0);
-        addReservation(0,3,1);
-        addReservation(0,3,2);
-        addReservation(0,3,3);
-        addReservation(0,3,4);
-        addReservation(0,3,5);
-        addReservation(0,3,6);
-        addReservation(0,3,7);
-        addReservation(0,3,8);
-        addReservation(0,3,9);
+        addReservation(0,5,0);
+        addReservation(0,5,1);
+        addReservation(0,5,2);
+        addReservation(0,5,3);
+        addReservation(0,5,4);
+        addReservation(0,5,5);
+        addReservation(0,5,6);
+        addReservation(0,5,7);
+        addReservation(0,5,8);
+        addReservation(0,5,9);
     }
 
     public void init() {
@@ -110,7 +112,6 @@ public class Garage extends JPanel implements Runnable {
                 }
             }
         }
-        System.out.println(locations.size());
     }
 
     public void run() {
@@ -208,7 +209,7 @@ public class Garage extends JPanel implements Runnable {
     }
 
     private void advanceTime() {
-        // Advance the time by one minute.
+        // Advance the time by one minute
         minute++;
         reservedForPass();
         while (minute > 59) {
@@ -248,6 +249,7 @@ public class Garage extends JPanel implements Runnable {
             default:
                 day_string = "undefined";
         }
+        nowTime = (day*60*24)+(hour*60)+minute;
         timeLabel.setText(day_string + " " + hour + ":" + minute);
         stats.setText("PASS: "+ numberOfPassCars + " ---- " + "NORMAL: " + numberOfNormalCars + " ---- " + "RESERVED: " + numberOfReservedCars);
 
@@ -259,16 +261,19 @@ public class Garage extends JPanel implements Runnable {
     }
 
     private void reserveLocations(){
-
-        for(Reservation res : reservations){
-            int deltaTime = ((day*60*24)+(hour*60)+minute) - res.getTime();
-            if(deltaTime < 15){
-                Location loc = getFirstFreeLocation("RESERVE");
-                reservedLocations.add(loc);
-                System.out.println(day);
+        if(reservations.size() > 0){
+            Iterator it = reservations.iterator();
+            while(it.hasNext()){
+                Reservation res = (Reservation) it.next();
+                System.out.println(res.getTime() - nowTime);
+                if (res.getTime()-nowTime < 15) {
+                    System.out.println(true);
+                    //Location loc = getFirstFreeLocation("RESERVE");
+                    //reservedLocations.add(loc);
+                    //reservations.remove(res);
+                }
             }
         }
-        reservations.clear();
     }
 
     private void reservedForPass(){
@@ -349,9 +354,7 @@ public class Garage extends JPanel implements Runnable {
         int i = 0;
         // Remove car from the front of the queue and assign to a parking space.
 
-        while (queue.carsInQueue() > 0 &&
-                numberOfOpenSpots > 0 &&
-                i < enterSpeed) {
+        while (queue.carsInQueue() > 0 && numberOfOpenSpots > 0 && i < enterSpeed) {
             Car car = queue.removeCar();
             String type;
             if(car instanceof CarPass){
