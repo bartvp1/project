@@ -154,8 +154,9 @@ public class Garage extends JPanel implements Runnable {
                     } else {
                         color = new Color(255, 180, 180);
                     }
-                    for (Location loc : reservedLocations) {
-                        if (indexLoc.equals(loc)) {
+                    int sizeR = reservedLocations.size();
+                    for (int x=0;x<sizeR;x++) {
+                        if (indexLoc.equals(getReservedLocation())) {
                             color = new Color(0xB8B8B8);
                         }
                     }
@@ -206,7 +207,7 @@ public class Garage extends JPanel implements Runnable {
         updateViews();
         handleEntrance();
     }
-
+    boolean bool = true;
     private void advanceTime() {
         // Advance the time by one minute
         minute++;
@@ -247,6 +248,12 @@ public class Garage extends JPanel implements Runnable {
                 break;
             default:
                 day_string = "undefined";
+        }
+
+        if(hour==2 && bool) {
+            addReservation(0, 4, 0);
+            System.out.println(reservations.size());
+            bool = false;
         }
         nowTime = (day*60*24)+(hour*60)+minute;
         timeLabel.setText(day_string + " " + hour + ":" + minute);
