@@ -150,15 +150,15 @@ public class Garage extends JPanel implements Runnable {
                 Color color = car != null ? car.getColor() : Color.white;
                 if(car == null) {
                     if (i < reservedLocationsPass) {
-                        color = new Color(100, 180, 250);
+                      color = new Color(100, 180, 250);
                     } else {
-                        color = new Color(255, 180, 180);
+                      color = new Color(255, 180, 180);
                     }
-                    int sizeR = reservedLocations.size();
-                    for (int x=0;x<sizeR;x++) {
-                        if (indexLoc.equals(getReservedLocation())) {
-                            color = new Color(0xB8B8B8);
-                        }
+                }
+                int sizeR = reservedLocations.size();
+                for (int x=0;x<sizeR;x++) {
+                    if (indexLoc.equals(getReservedLocation())) {
+                        color = Color.LIGHT_GRAY;
                     }
                 }
 
@@ -207,7 +207,7 @@ public class Garage extends JPanel implements Runnable {
         updateViews();
         handleEntrance();
     }
-    boolean bool = true;
+
     private void advanceTime() {
         // Advance the time by one minute
         minute++;
@@ -250,11 +250,6 @@ public class Garage extends JPanel implements Runnable {
                 day_string = "undefined";
         }
 
-        if(hour==2 && bool) {
-            addReservation(0, 4, 0);
-            System.out.println(reservations.size());
-            bool = false;
-        }
         nowTime = (day*60*24)+(hour*60)+minute;
         timeLabel.setText(day_string + " " + hour + ":" + minute);
         stats.setText("PASS: "+ numberOfPassCars + " ---- " + "NORMAL: " + numberOfNormalCars + " ---- " + "RESERVED: " + numberOfReservedCars);
@@ -405,14 +400,15 @@ public class Garage extends JPanel implements Runnable {
         }
     }
 
-    public Location getReservedLocation(){
+    private Location getReservedLocation(){
         Iterator itR = reservedLocations.iterator();
         Iterator itL = locations.iterator();
         while(itR.hasNext()){
             Location locR = (Location) itR.next();
             while(itL.hasNext()){
                 Location locL = (Location) itL.next();
-                if(locR.equals(locL) && getCarAt(locL)==null){
+                //if(locR.equals(locL) && getCarAt(locL)==null){
+                if((locR.hashCode()==locL.hashCode()) && getCarAt(locL)==null){
                     return locL;
                 }
             }
