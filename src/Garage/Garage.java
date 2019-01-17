@@ -28,7 +28,7 @@ public class Garage extends JPanel implements Runnable {
     private int minute = 0;
 
 
-    private int tickPause = 100;
+    private int tickPause = 1;
 
     int weekDayArrivals = 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
@@ -64,15 +64,11 @@ public class Garage extends JPanel implements Runnable {
 
     public void init() {
         setBackground(Color.DARK_GRAY);
+
         size = new Dimension(1500, 750);
         setPreferredSize(size);
 
         carParkImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
-//        repaint();
-//        System.out.println(this.carParkImage.getGraphics());
-
-//        System.out.println(i);
-//        updateView();
         thread.start();
         repaint();
     }
@@ -103,10 +99,12 @@ public class Garage extends JPanel implements Runnable {
         int floor = location.getFloor();
         int row = location.getRow();
         int place = location.getPlace();
-        if (floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces) {
-            return false;
-        }
-        return true;
+
+        return floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces;
+    }
+
+    public void setTickPause(int value) {
+        this.tickPause = value;
     }
 
     public void updateView() {
@@ -163,6 +161,18 @@ public class Garage extends JPanel implements Runnable {
         handleExit();
         updateViews();
         handleEntrance();
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public int getDay() {
+        return day;
     }
 
     private void advanceTime() {

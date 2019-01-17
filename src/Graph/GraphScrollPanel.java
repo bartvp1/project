@@ -13,6 +13,7 @@ public class GraphScrollPanel extends JScrollPane {
     //De breedte van de grafiek ten opzichte van de breedte van je scherm, in procenten.
     private int widthPercent = 90; // 90%
     GraphScrollContentPanel content;
+
     public GraphScrollPanel(Garage garage) {
         this.garage = garage;
 
@@ -33,7 +34,7 @@ public class GraphScrollPanel extends JScrollPane {
         // Set size & location
         setPreferredSize(size);
         setSize(size);
-        setLocation(widthOnePercent.intValue() * (100 - widthPercent), 0);
+        setLocation(widthOnePercent.intValue() * (100 - widthPercent), 5);
 
         getHorizontalScrollBar().setPreferredSize(new Dimension(0, 0));
 
@@ -46,11 +47,21 @@ public class GraphScrollPanel extends JScrollPane {
         repaint();
     }
 
-    public GraphScrollContentPanel getContent(){
+    public GraphScrollContentPanel getContent() {
         return this.content;
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
     }
+
+    public void setTickPause(int value) {
+        content.setTicks(value);
+    }
+
+    public void toggleFillMode() {
+        content.toggleFillMode();
+    }
+
 }
