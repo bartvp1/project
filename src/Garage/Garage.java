@@ -90,18 +90,12 @@ public class Garage extends JPanel implements Runnable {
 
         carParkImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
 
-        initLocations();
-
-//        repaint();
-//        System.out.println(this.carParkImage.getGraphics());
-
-//        System.out.println(i);
-//        updateView();
+        addLocations();
         thread.start();
         repaint();
     }
 
-    private void initLocations(){
+    private void addLocations(){
         for (int floor = 0; floor < numberOfFloors; floor++) {
             for (int row = 0; row < numberOfRows; row++) {
                 for (int place = 0; place < numberOfPlaces; place++) {
@@ -151,16 +145,19 @@ public class Garage extends JPanel implements Runnable {
             Graphics graphics = carParkImage.getGraphics();
             int size = locations.size();
             for (int i = 0; i < size; i++) {
-                Car car = getCarAt(locations.get(i));
-                Color color = car == null ? Color.white : car.getColor();
-                if(i<reservedLocationsPass){
-                    color = car == null ? new Color(100,180,250) : car.getColor();
-                } else{
-                    color = car == null ? new Color(255,180,180) : car.getColor();
-                }
-                for(Location loc : reservedLocations){
-                    if(locations.get(i).equals(loc)){
-                        color = car == null ? new Color(0xB8B8B8) : car.getColor();
+                Location indexLoc = locations.get(i);
+                Car car = getCarAt(indexLoc);
+                Color color = car != null ? car.getColor() : Color.white;
+                if(car == null) {
+                    if (i < reservedLocationsPass) {
+                        color = new Color(100, 180, 250);
+                    } else {
+                        color = new Color(255, 180, 180);
+                    }
+                    for (Location loc : reservedLocations) {
+                        if (indexLoc.equals(loc)) {
+                            color = new Color(0xB8B8B8);
+                        }
                     }
                 }
 
@@ -321,13 +318,16 @@ public class Garage extends JPanel implements Runnable {
         Iterator it = reservations.iterator();
         while(it.hasNext()){
             Reservation res = (Reservation) it.next();
-            Boolean hasReservedSpot = (Boolean) res.getQueued();
-             if(res.getTime()-nowTime <= 0 && hasReservedSpot && !res.getQueued()) {
+            Boolean hasReservedSpot = (Boolean) res.isReserved();
+            System.out.println("NOW: "+ (res.getTime()-nowTime) == 0) +" -- hasSpot: "+hasReservedSpot +" -- isQueued: "+ !res.getQueued());
+             if((res.getTime()-nowTime) == 0 && hasReservedSpot && !res.getQueued()) {    //add to queue - on time, has a spot, is not already queued
                  Iterator itr = reservedLocations.iterator();
                  while (itr.hasNext()) {
-                     itr.next();
-                     addArrivingCars(1, "RESERVED");
-                     res.setQueued(true);
+                     Location loc = (Location)itr.next();
+                     if(getCarAt(loc) == null) {
+                         addArrivingCars(1, "RESERVED");
+                         res.setQueued(true);
+                     }
                  }
              }
         }
