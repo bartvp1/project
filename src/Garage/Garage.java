@@ -106,6 +106,15 @@ public class Garage extends JPanel implements Runnable {
         }
     }
 
+    public int getDay(){
+        return day;
+    }
+    public int getHour(){
+        return hour;
+    }
+    public int getMinute(){
+        return minute;
+    }
     public void run() {
         while (thread != null) {
             tick();
