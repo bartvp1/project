@@ -1,231 +1,187 @@
-package Graph;
+package Control;
 
 import Garage.Garage;
+import Graph.GraphMainPanel;
+import Graph.GraphScrollContentPanel;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Objects;
 
-// Dit is de onderste panel waar de grafiek in staat.
-// De grafiek staat in een ScrollPanel(GraphScrollPanel) zodat als de lijnen rechts buiten beeld komen deze gescrolled kan worden.
-public class GraphMainPanel extends JPanel {
-    // De scrollpanel waar de grafiek in staat.
-    private GraphScrollPanel sp;
+/**
+ * Control Panel beheert de controls
+ * Bestaat uit twee delen:
+ * 1. Een deel waar je de categorie kunt kiezen.
+ * Categorieen: "Chart", "Simulator", "Control Panel", "About";
+ * <p>
+ * 2. Een deel wat bestaat uit de panel met de settings die bij de categorie hoort.
+ * De card layout zorgt ervoor dat er wordt geswitched als een categorie wordt geklikt.
+ * De verschillende settings (Panels) worden beheert in aparte classes onderaan de pagina.
+ * <p>
+ * Als het blijkt dat we weinig settings hebben kunnen we alles op 1 panel doen.
+ */
+public class ControlPanel extends JPanel {
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    JLabel titleLabel = new JLabel("Control Panel", JLabel.CENTER);
+    String[] categories = {"Chart", "Simulator", "Control Panel", "About"};
+    Garage garage;
+    GraphMainPanel graph;
+    GraphScrollContentPanel graphContent;
+    JPanel settingsPanel;
 
-    boolean moving = false;
-    boolean up = true;
-    boolean down = false;
-    int startingY;
-
-    public GraphMainPanel(Garage garage) {
-        // Deze panel heeft null als layout zodat ik zelf de x en y locatie zelf kan bepalen
+    public ControlPanel(Garage garage, GraphMainPanel graph) {
         super(null);
-
-        // Creer instantie van de scrollpanel en geef garage mee
-        sp = new GraphScrollPanel(garage);
+        this.garage = garage;
+        this.graph = graph;
+        this.graphContent = graph.getContent();
     }
+
+    /**
+     * Grafiek Settings
+     * <p>
+     * Speed
+     * Show different Cars
+     * Change Grafiek style?
+     * Toggle scroll / repeat
+     * Start
+     * Stop
+     * Pause
+     * Reset
+     */
+
 
     public void init() {
-        // Achtergrond kleur van deze panel.
+        //  grootte van dit scherm, breedte: 1/3 van  je beeldscherm & hoogte: 3/4 van je beeldscherm.
+        setSize((screenSize.width / 3), ((screenSize.height / 4) * 3));
+
+        // Wordt nog aangepast als we 't wat mooier maken
         setBackground(Color.DARK_GRAY);
         setBorder(new LineBorder(Color.BLACK, 3, true));
-        // Gooi de scrollpanel op het beeldscherm
-        add(sp);
 
-        //Initialeer dingen in de scrollpanel
-        sp.init();
+        // Panel waar je de category kan kiezen.
+        JPanel categoryPanel = new JPanel(new GridLayout(0, 1, 10, 50));
+        categoryPanel.setBounds(10, 10, 130, getHeight() - 25);
+        categoryPanel.setBackground(Color.DARK_GRAY);
+        add(categoryPanel);
 
-        // Maak start stop en reset button
-//        makeButtons();
+        //  Panel waar de settings staan
+        settingsPanel = new JPanel(new CardLayout());
+        settingsPanel.setBounds(150, 10, getWidth() - 160, getHeight() - 20);
+        settingsPanel.setBackground(Color.DARK_GRAY);
+        settingsPanel.setBorder(new LineBorder(Color.BLACK, 3, true));
+        add(settingsPanel);
 
-        // Maak label waar de kleuren op staan van de lijnen in de grafiek
-        makeLabels();
+        createCategoryButtons(categoryPanel, settingsPanel);
 
-        /**
-         *
+        // De verschillende menu's toevoegen aan de settingspanel
+        settingsPanel.add(new ChartSettings(), "Chart");
+        settingsPanel.add(new SimulatorSettings(), "Simulator");
+        settingsPanel.add(new ControlSettings(), "Control Panel");
+        settingsPanel.add(new AboutSettings(), "About");
 
-        // De combobox om aantal ticks te kiezen
-        JLabel ticksLabel = new JLabel("ticks", JLabel.CENTER);
-        ticksLabel.setBounds(2, 5, 100, 20);
-        ticksLabel.setFont(new Font("Dubai Light", Font.PLAIN, 15));
-        ticksLabel.setForeground(Color.WHITE);
-        add(ticksLabel);
+        // De eerste panel die je ziet is de chart settings
+        CardLayout cl = (CardLayout) settingsPanel.getLayout();
+        cl.show(settingsPanel, "Chart");
 
-        String[] tickValues = {"1", "5", "10", "25", "50", "100", "250", "500", "1000", "2500"};
-        JComboBox<String> ticksBox = new JComboBox<>(tickValues);
-        ticksBox.setBounds(2, 25, 100, 20);
-        ticksBox.setSelectedIndex(3);
-        ticksBox.addActionListener(e -> {
-            int ticks = Integer.parseInt((String) Objects.requireNonNull(ticksBox.getSelectedItem()));
-            sp.getContent().setTicks(ticks);
-        });
-        add(ticksBox);
-
-        sp.getContent().setTicks(Integer.parseInt(tickValues[3]));
-         */
-        startingY = getY();
-        repaint();
-
-
+        // leegje knopjes erin gooien zodat exitbutton onderaan kan staan
+        for (int i = 0; i < 3; i++) {
+            JPanel p = new JPanel();
+            p.setVisible(false);
+            categoryPanel.add(p);
+        }
+        // exit button sluit alles af
+        JButton exitButton = new JButton("Exit");
+        categoryPanel.add(exitButton);
+        exitButton.setBackground(new Color(225, 0, 0, 100));
+        exitButton.setFont(new Font("Arial", Font.PLAIN, 20));
+        exitButton.setForeground(new Color(0, 0, 0, 255));
+        exitButton.addActionListener(e -> System.exit(0));
     }
 
-    public void toggleFillMode() {
-        sp.toggleFillMode();
-    }
 
-    public GraphScrollContentPanel getContent() {
-        return sp.getContent();
-    }
+    /**
+     * @param categoryPanel de categorypanel waar de categories staan
+     * @param settingsPanel de settignspanel waar de settings staan.
+     *                      <p>
+     *                      Hij gaat alle categories bij langs en maakt voor elke een button, deze stopt ie in de categorypanel
+     *                      Als er op wordt geklikt, switched de panel naar de juist categorie
+     */
+    public void createCategoryButtons(JPanel categoryPanel, JPanel settingsPanel) {
 
-    private void makeButtons() {
-        Color backgroundColor = new Color(100, 100, 100);
-        Color textColor = new Color(255, 255, 255);
-        Font textFont = new Font("Dubai Light", Font.BOLD, 15);
-        Insets noMargins = new Insets(0, 0, 0, 0);
-        String[] buttonTexts = {"Stop", "Start", "Reset"};
-        int x = 2;
-        int y = 50;
-        int width = 100;
-        int height = 20;
-
-
-        for (String s : buttonTexts) {
+        for (String s : categories) {
             JButton button = new JButton(s);
-            button.setBackground(backgroundColor);
-            button.setForeground(textColor);
-            button.setFont(textFont);
-            button.setMargin(noMargins);
-            button.setBounds(x, y, width, height);
+            categoryPanel.add(button);
             button.addActionListener(e -> {
-                try {
-                    Method method = sp.getContent().getClass().getMethod(s.toLowerCase());
+                CardLayout cl = (CardLayout) settingsPanel.getLayout();
+                cl.show(settingsPanel, s);
+            });
+        }
+    }
 
-                    method.invoke(sp.getContent());
-                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-                    ex.printStackTrace();
-                    System.out.println(ex.getCause());
+    class ChartSettings extends JPanel {
+        //todo: snelheid van de grafiek, welke auto's je wilt zien en misschien een layout verandering?
+        JButton fillMode = new JButton("Fill");
+        JSlider speedSlider = new JSlider();
+        JPanel panel = new JPanel(new BorderLayout());
+        JPanel gridPanel = new JPanel(new GridLayout(0, 1));
+
+        public ChartSettings() {
+            setBackground(Color.DARK_GRAY);
+            add(gridPanel);
+            gridPanel.add(panel);
+
+            panel.setBorder(new LineBorder(Color.BLACK, 1, true));
+            add(panel);
+            panel.add(new JLabel("Snelheid", JLabel.CENTER), BorderLayout.NORTH);
+            panel.add(new JLabel("Langzaam"), BorderLayout.WEST);
+            panel.add(speedSlider, BorderLayout.CENTER);
+            panel.add(new JLabel("Snel"), BorderLayout.EAST);
+
+
+            gridPanel.add(fillMode);
+            fillMode.addActionListener(e -> graph.toggleFillMode());
+
+            speedSlider.addChangeListener(e -> {
+                int sliderValue = speedSlider.getValue();
+
+                sliderValue = 100 - sliderValue;
+                if (sliderValue <= 0) {
+                    sliderValue = 1;
                 }
+                graphContent.setTicks(sliderValue);
             });
 
-            add(button);
-            y += 25;
-        }
-
-
-    }
-
-
-    public void setTickPause(int value) {
-        sp.setTickPause(value);
-    }
-
-
-    private void makeLabels() {
-        String[] texts = {"Total Cars", "Pass Cars", "Normal Cars"};
-        int x = 2;
-        int y = 130;
-        int width = 100;
-        int height = 20;
-        for (String s : texts) {
-            JLabel label = new JLabel(s, JLabel.CENTER);
-            label.setBounds(x, y, width, height);
-            switch (s) {
-                case "Total Cars":
-                    label.setForeground(Color.GREEN);
-                    break;
-                case "Pass Cars":
-                    label.setForeground(Color.RED);
-                    break;
-                case "Normal Cars":
-                    label.setForeground(Color.BLUE);
-                    break;
-            }
-            add(label);
-            y += 30;
-        }
-
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(Color.WHITE);
-        if (sp != null) {
-            for (int i = 0; i <= 10; i++) {
-                g.drawString(Integer.toString((10 - i) * 60), sp.getX() - 20, (i * 25) - 10);
-            }
-        }
-    }
-
-    public boolean isUp() {
-        return this.up;
-    }
-
-    public boolean isDown() {
-        return this.down;
-    }
-
-    public void doHide() {
-        if (!moving) {
-            Thread thread = new Thread(() -> {
-                while (true) {
-                    moving = true;
-                    int y = getLocation().y;
-                    if (y > startingY + getHeight()) {
-                        up = false;
-                        down = true;
-                        moving = false;
-                        getParent().repaint();
-                        break;
-                    }
-
-                    y++;
-                    setLocation(getLocation().x, y);
-                    System.out.println("Hiding");
-                    repaint();
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            JButton hideButton = new JButton("Hide/Show");
+            gridPanel.add(hideButton);
+            hideButton.addActionListener(e -> {
+                if (graph.isUp()) {
+                    graph.doHide();
+                } else if (graph.isDown()) {
+                    graph.doShow();
                 }
-            });
-            thread.start();
-        }
 
+            });
+        }
     }
 
-    public void doShow() {
-        if (!moving) {
-            Thread thread = new Thread(() -> {
-                while (true) {
-                    moving = true;
-                    int y = getLocation().y;
-                    if (y <= startingY) {
-                        y = startingY;
-                        setLocation(getLocation().x, y);
-                        up = true;
-                        down = false;
-                        moving = false;
-                        break;
-                    }
-
-                    y--;
-                    setLocation(getLocation().x, y);
-                    System.out.println("Showing");
-                    repaint();
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            thread.start();
+    class SimulatorSettings extends JPanel {
+        //todo: snelheid van de de simulatie, aanpassingen aan het aantal ingangen, uitgangen etc.
+        public SimulatorSettings() {
+            setBackground(Color.RED);
         }
+    }
 
+    class ControlSettings extends JPanel {
+        //todo: Controls van de control panel, als er niks in hoeft kan deze weg.
+        public ControlSettings() {
+            setBackground(Color.BLUE);
+        }
+    }
+
+    class AboutSettings extends JPanel {
+        //todo: Informatie over ons, dat we zo cool zijn enzo.
+        public AboutSettings() {
+            setBackground(Color.YELLOW);
+        }
     }
 }
