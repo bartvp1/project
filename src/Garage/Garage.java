@@ -397,6 +397,5 @@ public class Garage extends JPanel implements Runnable {
     private void carLeavesSpot(Car car) {
         removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
-//        System.out.println("Garage.Car left");
     }
 }
