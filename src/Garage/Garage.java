@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Iterator;
+import java.util.HashMap;
 
 public class Garage extends JPanel implements Runnable {
     Thread thread = new Thread(this);
@@ -202,8 +203,8 @@ public class Garage extends JPanel implements Runnable {
     }
 
     private void tick() {
-        advanceTime();
         reserveLocations();
+        advanceTime();
         handleExit();
         updateViews();
         handleEntrance();
@@ -262,17 +263,17 @@ public class Garage extends JPanel implements Runnable {
     }
 
     private void reserveLocations(){
-        ArrayList res_copy = new ArrayList(reservations);
-        Iterator it = res_copy.iterator();
+        Iterator it = reservations.iterator();
         while(it.hasNext()){
             Reservation res = (Reservation) it.next();
-            if (res.getTime()-nowTime < 60) {
+            Boolean done = (Boolean) res.isReserved();
+            if (res.getTime()-nowTime < 45 && !done) {  //reserve a spot 60 min in advance
                 Location loc = getFirstFreeLocation("RESERVED");
                 reservedLocations.add(loc);
-                it.remove();
+                res.setIsReserved(true);
             }
         }
-        System.out.println(reservations.size() +" ---- "+ reservedLocations.size());
+        System.out.println(reservations.size() +" ---- "+ reservedLocations.size() +" ---- "+ numberOfReservedCars);
     }
 
     private void reservedForPass(){
@@ -316,20 +317,18 @@ public class Garage extends JPanel implements Runnable {
         numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
         addArrivingCars(numberOfCars, "PASS");
 
-        ArrayList res_copy = new ArrayList(reservations);
-        Iterator it = res_copy.iterator();
+
+        Iterator it = reservations.iterator();
         while(it.hasNext()){
-             Reservation res = (Reservation) it.next();
-             if(res.getTime()-nowTime <= 0) {
-                 ArrayList spots = new ArrayList(reservedLocations);
-                 Iterator itr = spots.iterator();
-                 //System.out.println(spots.size());
+            Reservation res = (Reservation) it.next();
+            Boolean hasReservedSpot = (Boolean) res.getQueued();
+             if(res.getTime()-nowTime <= 0 && hasReservedSpot && !res.getQueued()) {
+                 Iterator itr = reservedLocations.iterator();
                  while (itr.hasNext()) {
-                     addArrivingCars(1, "RESERVED");
                      itr.next();
-                     itr.remove();
+                     addArrivingCars(1, "RESERVED");
+                     res.setQueued(true);
                  }
-                 it.remove();
              }
         }
     }
@@ -347,8 +346,7 @@ public class Garage extends JPanel implements Runnable {
                     Iterator it = reservedLocations.iterator();
                     while(it.hasNext()){
                         Location loc = (Location) it.next();
-                        if(!locations.get(i).equals(loc)){
-                            System.out.println("XXXXXXXXXXXXXXXXX");
+                        if(!locations.get(i).equals(loc)){ //return a not reserved spot
                             return locations.get(i);
                         }
                     }
@@ -387,15 +385,17 @@ public class Garage extends JPanel implements Runnable {
             } else{
                 freeLocation = getFirstFreeLocation("NORMAL");
             }
-            /*if(car instanceof CarReserved){
-                System.out.println(reservedLocations.size());
-                for(Location loc :reservedLocations){
-                    if(loc != null) {
+            if(car instanceof CarReserved){
+                Iterator it = reservedLocations.iterator();
+                while(it.hasNext()){
+                    Location loc = (Location)it.next();
+                    if(loc != null && getCarAt(loc) == null) {
                         freeLocation = loc;
+                        it.remove();
+                        break;
                     }
-                    reservedLocations.remove(loc);
                 }
-            }*/
+            }
 
             numberOfCars++;
             if (car instanceof CarPass) {
