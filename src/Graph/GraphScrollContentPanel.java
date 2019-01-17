@@ -334,7 +334,6 @@ public class GraphScrollContentPanel extends JPanel implements Runnable {
 
 
     public void setTicks(int ticks) {
-
         this.ticks = ticks;
     }
 
@@ -342,45 +341,39 @@ public class GraphScrollContentPanel extends JPanel implements Runnable {
     public void run() {
 
         while (thread != null) {
-            currentTick++;
+            double scale = (double) getCurrentCarAmount();
+            double scalePass = (double) getCurrentPassCarAmount();
+            double scaleNormal = (double) getCurrentNormalCarAmount();
 
-            if (currentTick >= ticks) {
+            if (nextWeek) {
+                prevX = beginX;
+                prevNormalX = beginX;
+                prevPassX = beginX;
 
-                while (thread != null && this.working) {
-                    double scale = (double) getCurrentCarAmount();
-                    double scalePass = (double) getCurrentPassCarAmount();
-                    double scaleNormal = (double) getCurrentNormalCarAmount();
+                lines.clear();
+                linesNormal.clear();
+                linesPass.clear();
 
+                pLines.clear();
+                pLinesNormal.clear();
+                pLinesPass.clear();
 
-                    if (nextWeek) {
-                        prevX = beginX;
-                        prevNormalX = beginX;
-                        prevPassX = beginX;
-
-                        lines.clear();
-                        linesNormal.clear();
-                        linesPass.clear();
-
-                        pLines.clear();
-                        pLinesNormal.clear();
-                        pLinesPass.clear();
-
-                        nextWeek = false;
-                    }
-
-                    currentTick = 0;
-                }
-                repaint();
-
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    System.out.println("interrupted");
-                }
+                nextWeek = false;
+            }
+            setNextValue(scale, scalePass, scaleNormal);
+            repaint();
+            try {
+                Thread.sleep(this.ticks);
+            } catch (InterruptedException e) {
+                System.out.println("interrupted");
             }
         }
 
+
+
+
     }
+
 
     private void stop() {
         thread = null;

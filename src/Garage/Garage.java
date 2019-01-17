@@ -28,7 +28,7 @@ public class Garage extends JPanel implements Runnable {
     private int minute = 0;
 
 
-    private int tickPause = 1;
+    private int tickPause = 5;
 
     int weekDayArrivals = 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
@@ -77,7 +77,7 @@ public class Garage extends JPanel implements Runnable {
         while (thread != null) {
             tick();
             try {
-                Thread.sleep(tickPause);
+                thread.sleep(tickPause);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -99,8 +99,10 @@ public class Garage extends JPanel implements Runnable {
         int floor = location.getFloor();
         int row = location.getRow();
         int place = location.getPlace();
-
-        return floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces;
+        if (floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces) {
+            return false;
+        }
+        return true;
     }
 
     public void setTickPause(int value) {
@@ -268,6 +270,7 @@ public class Garage extends JPanel implements Runnable {
                 i < enterSpeed) {
             Car car = queue.removeCar();
             Location freeLocation = getFirstFreeLocation();
+//            System.out.println();
             setCarAt(freeLocation, car);
             i++;
             numberOfCars++;
