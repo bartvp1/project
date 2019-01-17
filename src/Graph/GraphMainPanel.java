@@ -15,10 +15,10 @@ public class GraphMainPanel extends JPanel {
     // De scrollpanel waar de grafiek in staat.
     private GraphScrollPanel sp;
 
-    boolean moving = false;
-    boolean up = true;
-    boolean down = false;
-    int startingY;
+    private boolean moving = false;
+    private boolean up = true;
+    private boolean down = false;
+    private int startingY;
 
     public GraphMainPanel(Garage garage) {
         // Deze panel heeft null als layout zodat ik zelf de x en y locatie zelf kan bepalen
@@ -44,28 +44,6 @@ public class GraphMainPanel extends JPanel {
         // Maak label waar de kleuren op staan van de lijnen in de grafiek
         makeLabels();
 
-        /**
-         *
-
-        // De combobox om aantal ticks te kiezen
-        JLabel ticksLabel = new JLabel("ticks", JLabel.CENTER);
-        ticksLabel.setBounds(2, 5, 100, 20);
-        ticksLabel.setFont(new Font("Dubai Light", Font.PLAIN, 15));
-        ticksLabel.setForeground(Color.WHITE);
-        add(ticksLabel);
-
-        String[] tickValues = {"1", "5", "10", "25", "50", "100", "250", "500", "1000", "2500"};
-        JComboBox<String> ticksBox = new JComboBox<>(tickValues);
-        ticksBox.setBounds(2, 25, 100, 20);
-        ticksBox.setSelectedIndex(3);
-        ticksBox.addActionListener(e -> {
-            int ticks = Integer.parseInt((String) Objects.requireNonNull(ticksBox.getSelectedItem()));
-            sp.getContent().setTicks(ticks);
-        });
-        add(ticksBox);
-
-        sp.getContent().setTicks(Integer.parseInt(tickValues[3]));
-         */
         startingY = getY();
         repaint();
 
@@ -106,7 +84,6 @@ public class GraphMainPanel extends JPanel {
                     method.invoke(sp.getContent());
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
                     ex.printStackTrace();
-                    System.out.println(ex.getCause());
                 }
             });
 
@@ -184,7 +161,6 @@ public class GraphMainPanel extends JPanel {
 
                     y++;
                     setLocation(getLocation().x, y);
-                    System.out.println("Hiding");
                     repaint();
                     try {
                         Thread.sleep(1);
@@ -215,7 +191,6 @@ public class GraphMainPanel extends JPanel {
 
                     y--;
                     setLocation(getLocation().x, y);
-                    System.out.println("Showing");
                     repaint();
                     try {
                         Thread.sleep(1);
