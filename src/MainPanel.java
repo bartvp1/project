@@ -1,6 +1,7 @@
 import Control.ControlPanel;
 import Garage.Garage;
 import Graph.GraphMainPanel;
+import Graph.GraphView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +12,10 @@ class MainPanel extends JPanel {
     JButton exitButton = new JButton("Exit");
     GraphMainPanel gp;
 
-
     void init() {
         setLayout(null);
+        setBackground(Color.DARK_GRAY);
+
 
         exitButton.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width - 100, 10, 90, 50);
         add(exitButton);
@@ -36,7 +38,7 @@ class MainPanel extends JPanel {
         gp.init();
 
 
-        ControlPanel controlPanel = new ControlPanel();
+        ControlPanel controlPanel = new ControlPanel(garage, gp);
         controlPanel.init();
         add(controlPanel);
         controlPanel.setLocation(0, 0);
