@@ -2,8 +2,6 @@ package Control;
 
 import Garage.Garage;
 import Graph.GraphController;
-import Graph.GraphMainPanel;
-import Graph.GraphScrollContentPanel;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -27,7 +25,6 @@ public class ControlPanel extends JPanel {
     String[] categories = {"Chart", "Simulator", "Control Panel", "About"};
     Garage garage;
     GraphController graphController;
-    GraphScrollContentPanel graphContent;
     JPanel settingsPanel;
 
     public ControlPanel(Garage garage, GraphController graph) {
