@@ -41,7 +41,7 @@ class MainPanel extends JPanel {
         gp.init();
 
 
-        ControlPanel controlPanel = new ControlPanel();
+        ControlPanel controlPanel = new ControlPanel(garage, gp);
         controlPanel.init();
         add(controlPanel);
         controlPanel.setLocation(0, 0);
