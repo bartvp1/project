@@ -32,16 +32,13 @@ class MainPanel extends JPanel {
         garage.init();
 
 
-//        GraphView graphView = new GraphView();
-//        add(graphView);
-
         gp = new GraphMainPanel(garage);
         gp.setBounds(0, ((screenSize.height / 4) * 3), screenSize.width, (screenSize.height / 4));
         add(gp);
         gp.init();
 
 
-        ControlPanel controlPanel = new ControlPanel();
+        ControlPanel controlPanel = new ControlPanel(garage, gp);
         controlPanel.init();
         add(controlPanel);
         controlPanel.setLocation(0, 0);
