@@ -3,6 +3,7 @@ package Graph;
 import Garage.Garage;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -13,6 +14,11 @@ import java.util.Objects;
 public class GraphMainPanel extends JPanel {
     // De scrollpanel waar de grafiek in staat.
     private GraphScrollPanel sp;
+
+    boolean moving = false;
+    boolean up = true;
+    boolean down = false;
+    int startingY;
 
     public GraphMainPanel(Garage garage) {
         // Deze panel heeft null als layout zodat ik zelf de x en y locatie zelf kan bepalen
@@ -25,7 +31,7 @@ public class GraphMainPanel extends JPanel {
     public void init() {
         // Achtergrond kleur van deze panel.
         setBackground(Color.DARK_GRAY);
-
+        setBorder(new LineBorder(Color.BLACK, 3, true));
         // Gooi de scrollpanel op het beeldscherm
         add(sp);
 
@@ -33,10 +39,13 @@ public class GraphMainPanel extends JPanel {
         sp.init();
 
         // Maak start stop en reset button
-        makeButtons();
+//        makeButtons();
 
         // Maak label waar de kleuren op staan van de lijnen in de grafiek
         makeLabels();
+
+        /**
+         *
 
         // De combobox om aantal ticks te kiezen
         JLabel ticksLabel = new JLabel("ticks", JLabel.CENTER);
@@ -45,7 +54,7 @@ public class GraphMainPanel extends JPanel {
         ticksLabel.setForeground(Color.WHITE);
         add(ticksLabel);
 
-        String[] tickValues = {"25", "50", "100", "250", "500", "1000", "2500"};
+        String[] tickValues = {"1", "5", "10", "25", "50", "100", "250", "500", "1000", "2500"};
         JComboBox<String> ticksBox = new JComboBox<>(tickValues);
         ticksBox.setBounds(2, 25, 100, 20);
         ticksBox.setSelectedIndex(3);
@@ -56,10 +65,20 @@ public class GraphMainPanel extends JPanel {
         add(ticksBox);
 
         sp.getContent().setTicks(Integer.parseInt(tickValues[3]));
-
+         */
+        startingY = getY();
         repaint();
+
+
     }
 
+    public void toggleFillMode() {
+        sp.toggleFillMode();
+    }
+
+    public GraphScrollContentPanel getContent() {
+        return sp.getContent();
+    }
 
     private void makeButtons() {
         Color backgroundColor = new Color(100, 100, 100);
@@ -72,6 +91,7 @@ public class GraphMainPanel extends JPanel {
         int width = 100;
         int height = 20;
 
+
         for (String s : buttonTexts) {
             JButton button = new JButton(s);
             button.setBackground(backgroundColor);
@@ -82,9 +102,11 @@ public class GraphMainPanel extends JPanel {
             button.addActionListener(e -> {
                 try {
                     Method method = sp.getContent().getClass().getMethod(s.toLowerCase());
+
                     method.invoke(sp.getContent());
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
                     ex.printStackTrace();
+                    System.out.println(ex.getCause());
                 }
             });
 
@@ -94,9 +116,13 @@ public class GraphMainPanel extends JPanel {
 
 
     }
-    public void setTickPause(int value){
+
+
+    public void setTickPause(int value) {
         sp.setTickPause(value);
     }
+
+
     private void makeLabels() {
         String[] texts = {"Total Cars", "Pass Cars", "Normal Cars"};
         int x = 2;
@@ -132,5 +158,74 @@ public class GraphMainPanel extends JPanel {
                 g.drawString(Integer.toString((10 - i) * 60), sp.getX() - 20, (i * 25) - 10);
             }
         }
+    }
+
+    public boolean isUp() {
+        return this.up;
+    }
+
+    public boolean isDown() {
+        return this.down;
+    }
+
+    public void doHide() {
+        if (!moving) {
+            Thread thread = new Thread(() -> {
+                while (true) {
+                    moving = true;
+                    int y = getLocation().y;
+                    if (y > startingY + getHeight()) {
+                        up = false;
+                        down = true;
+                        moving = false;
+                        getParent().repaint();
+                        break;
+                    }
+
+                    y++;
+                    setLocation(getLocation().x, y);
+                    System.out.println("Hiding");
+                    repaint();
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.start();
+        }
+
+    }
+
+    public void doShow() {
+        if (!moving) {
+            Thread thread = new Thread(() -> {
+                while (true) {
+                    moving = true;
+                    int y = getLocation().y;
+                    if (y <= startingY) {
+                        y = startingY;
+                        setLocation(getLocation().x, y);
+                        up = true;
+                        down = false;
+                        moving = false;
+                        break;
+                    }
+
+                    y--;
+                    setLocation(getLocation().x, y);
+                    System.out.println("Showing");
+                    repaint();
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.start();
+        }
+
     }
 }
