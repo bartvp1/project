@@ -1,6 +1,7 @@
 package Control;
 
 import Garage.Garage;
+import Graph.GraphController;
 import Graph.GraphMainPanel;
 import Graph.GraphScrollContentPanel;
 
@@ -25,15 +26,15 @@ public class ControlPanel extends JPanel {
     JLabel titleLabel = new JLabel("Control Panel", JLabel.CENTER);
     String[] categories = {"Chart", "Simulator", "Control Panel", "About"};
     Garage garage;
-    GraphMainPanel graph;
+    GraphController graphController;
     GraphScrollContentPanel graphContent;
     JPanel settingsPanel;
 
-    public ControlPanel(Garage garage, GraphMainPanel graph) {
+    public ControlPanel(Garage garage, GraphController graph) {
         super(null);
         this.garage = garage;
-        this.graph = graph;
-        this.graphContent = graph.getContent();
+        this.graphController = graph;
+//        this.graphContent = graph.getContent();
     }
 
     /**
@@ -139,28 +140,28 @@ public class ControlPanel extends JPanel {
 
 
             gridPanel.add(fillMode);
-            fillMode.addActionListener(e -> graph.toggleFillMode());
-
-            speedSlider.addChangeListener(e -> {
-                int sliderValue = speedSlider.getValue();
-
-                sliderValue = 100 - sliderValue;
-                if (sliderValue <= 0) {
-                    sliderValue = 1;
-                }
-                graphContent.setTicks(sliderValue);
-            });
-
-            JButton hideButton = new JButton("Hide/Show");
-            gridPanel.add(hideButton);
-            hideButton.addActionListener(e -> {
-                if (graph.isUp()) {
-                    graph.doHide();
-                } else if (graph.isDown()) {
-                    graph.doShow();
-                }
-
-            });
+//            fillMode.addActionListener(e -> graph.toggleFillMode());
+//
+//            speedSlider.addChangeListener(e -> {
+//                int sliderValue = speedSlider.getValue();
+//
+//                sliderValue = 100 - sliderValue;
+//                if (sliderValue <= 0) {
+//                    sliderValue = 1;
+//                }
+//                graphContent.setTicks(sliderValue);
+//            });
+//
+//            JButton hideButton = new JButton("Hide/Show");
+//            gridPanel.add(hideButton);
+//            hideButton.addActionListener(e -> {
+//                if (graph.isUp()) {
+//                    graph.doHide();
+//                } else if (graph.isDown()) {
+//                    graph.doShow();
+//                }
+//
+//            });
         }
     }
 
