@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class GraphModel {
     private final static int STARTING_X = 10;
     int currentX;
+    int a;
     HashMap<String, ArrayList<Line2D>> linesMap;
 
 
