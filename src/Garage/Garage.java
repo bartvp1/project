@@ -137,7 +137,9 @@ public class Garage extends JPanel implements Runnable {
         int floor = location.getFloor();
         int row = location.getRow();
         int place = location.getPlace();
-        return !(floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces);
+        int id = location.getId();
+        return !(0>id || id>locations.size());
+        //return !(floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces);
     }
 
     public void updateView() {
