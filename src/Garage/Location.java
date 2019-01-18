@@ -5,14 +5,16 @@ public class Location {
     private int floor;
     private int row;
     private int place;
+    private int id;
 
     /**
      * Constructor for objects of class Garage.Location
      */
-    public Location(int floor, int row, int place) {
+    public Location(int id, int floor, int row, int place) {
         this.floor = floor;
         this.row = row;
         this.place = place;
+        this.id = id;
     }
 
 
@@ -66,6 +68,10 @@ public class Location {
      */
     public int getPlace() {
         return place;
+    }
+
+    public int getId(){
+        return id;
     }
 
 }
