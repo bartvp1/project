@@ -9,17 +9,15 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 public class GraphView extends JPanel {
-    GraphModel model;
+    private GraphModel model;
 
     private String[] dagen = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"};
 
     public GraphView() {
         super(null);
-        this.model = model;
-
     }
 
-    public void setModel(GraphModel model) {
+    void setModel(GraphModel model) {
         this.model = model;
     }
 
@@ -29,7 +27,7 @@ public class GraphView extends JPanel {
         setSize(model.getScreenWidth(), model.getScreenHeight() / 4);
     }
 
-    void drawValueNumbers(Graphics2D g) {
+    private void drawValueNumbers(Graphics2D g) {
 
         for (int i = 0; i <= 10; i++) {
             g.setColor(Color.WHITE);
@@ -38,11 +36,11 @@ public class GraphView extends JPanel {
 
     }
 
-    void drawGrid(Graphics2D g) {
+    private void drawGrid(Graphics2D g) {
         //Vertical Lines
         int i = 0;
         int beginX = model.getStartingX();
-        double dayWidth = getWidth() / 7;
+        double dayWidth = (double) (getWidth() / 7);
         int gridSize = 25;
         int beginY = 10;
         int rows = 10;
@@ -76,7 +74,7 @@ public class GraphView extends JPanel {
         }
     }
 
-    void drawLines(Graphics2D g) {
+    private void drawLines(Graphics2D g) {
         g.setStroke(new BasicStroke(2));
         boolean fillMode = model.getFillMode();
         // All Cars
@@ -135,6 +133,7 @@ public class GraphView extends JPanel {
             g.setColor(new Color(0, 0, 255, 100));
             ArrayList<Path2D> _temp = new ArrayList<>(model.getFills("Pass"));
             Iterator<Path2D> _it = _temp.iterator();
+
             try {
                 _it.forEachRemaining(g::fill);
             } catch (ConcurrentModificationException e) {
@@ -155,9 +154,10 @@ public class GraphView extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        drawGrid(g2);
+
         drawValueNumbers(g2);
         drawLines(g2);
+        drawGrid(g2);
     }
 
 

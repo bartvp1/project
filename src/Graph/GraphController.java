@@ -3,24 +3,34 @@ package Graph;
 import Garage.Garage;
 
 public class GraphController implements Runnable {
-    public int ticks = 5;
-    Thread thread = new Thread(this);
-    boolean running = true;
+    private int ticks = 25;
+    private Thread thread = new Thread(this);
+    private boolean running = true;
 
-    GraphModel graphModel;
-    Garage garage;
+    private GraphModel graphModel;
+    private Garage garage;
 
     public GraphController(GraphModel graphModel, Garage garage) {
         this.graphModel = graphModel;
         this.garage = garage;
     }
+    public void toggleFillMode(){
+        graphModel.toggleFillMode();
+    }
+    public void setTicks(int ticks){
+        this.ticks = ticks;
 
+    }
+    public int getTicks(){
+        return ticks;
+    }
     public void init() {
         thread.start();
     }
 
     @Override
     public void run() {
+
         while (running) {
             graphModel.nextValue("Total", garage.getTotalCars());
             graphModel.nextValue("Pass", garage.getNumberOfPassCars());
@@ -29,7 +39,7 @@ public class GraphController implements Runnable {
             graphModel.update();
 
             try {
-                Thread.sleep(ticks);
+                Thread.sleep(this.ticks);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

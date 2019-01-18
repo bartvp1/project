@@ -9,16 +9,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GraphModel {
-    boolean fillMode = true;
+    private boolean fillMode = false;
     private int STARTING_X = 40;
-    boolean nextWeek = false;
+    private boolean nextWeek = false;
 
-    int prevDay = 0;
-    HashMap<String, ArrayList<Line2D>> linesMap;
-    HashMap<String, ArrayList<Path2D>> fillMap;
+    private int prevDay = 0;
+    private HashMap<String, ArrayList<Line2D>> linesMap;
+    private HashMap<String, ArrayList<Path2D>> fillMap;
 
-    GraphView graphView;
-    Garage garage;
+    private GraphView graphView;
+    private Garage garage;
 
     public GraphModel(GraphView graphView, Garage garage) {
         this.graphView = graphView;
@@ -33,47 +33,70 @@ public class GraphModel {
 
         fillMap.put("Total", new ArrayList<>());
         fillMap.put("Pass", new ArrayList<>());
-
         fillMap.put("Normal", new ArrayList<>());
 
         this.garage = garage;
     }
 
-    public int getScreenWidth() {
+    private void reset() {
+        linesMap.clear();
+        fillMap.clear();
+
+        linesMap.put("Total", new ArrayList<>());
+        linesMap.put("Pass", new ArrayList<>());
+        linesMap.put("Normal", new ArrayList<>());
+
+        fillMap.put("Total", new ArrayList<>());
+        fillMap.put("Pass", new ArrayList<>());
+        fillMap.put("Normal", new ArrayList<>());
+
+        nextWeek = false;
+        update();
+    }
+
+    int getScreenWidth() {
         return Toolkit.getDefaultToolkit().getScreenSize().width;
     }
 
 
-    public int getScreenHeight() {
+    int getScreenHeight() {
         return Toolkit.getDefaultToolkit().getScreenSize().height;
     }
 
-    public void nextValue(String str, int value) {
-        double bottomY = graphView.getHeight() - 25 - 10;
+    void nextValue(String str, int value) {
+        double nextX = getX();
         double prevX;
         double prevY;
 
-        if (linesMap.get(str).isEmpty()) {
-            prevX = 40;
-            prevY = bottomY;
-        } else {
+        if (!linesMap.get(str).isEmpty()) {
             prevX = linesMap.get(str).get(linesMap.get(str).size() - 1).getX2();
             prevY = linesMap.get(str).get(linesMap.get(str).size() - 1).getY2();
+        } else {
+
+            prevX = STARTING_X;
+            prevY = getY(value);
         }
 
-        double _temp = 60.0 / 25.0;
+        if (nextX < prevX) {
+            reset();
+            return;
+        }
+
+
         double currentX = getX();
-        double currentY = (bottomY - (value / _temp));
+        double currentY = getY(value);
 
         addLine(str, prevX, prevY, currentX, currentY);
     }
 
-    public double getX() {
+    private double getY(int value) {
+        double _temp = 60.0 / 25.0;
+        double bottomY = graphView.getHeight() - 25 - 10;
+        return (bottomY - (value / _temp));
+    }
 
+    private double getX() {
 
-        if (prevDay > garage.getDay()) {
-            nextWeek = true;
-        }
         prevDay = garage.getDay();
         double sum = 40;
         double dayWidth = graphView.getSize().getWidth() / 7;
@@ -86,7 +109,7 @@ public class GraphModel {
         return sum;
     }
 
-    public void addLine(String str, double pX, double pY, double x, double y) {
+    private void addLine(String str, double pX, double pY, double x, double y) {
         Line2D line = new Line2D.Double(pX, pY, x, y);
         ArrayList<Line2D> lines = linesMap.get(str);
         lines.add(line);
@@ -94,7 +117,11 @@ public class GraphModel {
         addFill(str, pX, pY, x, y);
     }
 
-    public void addFill(String str, double pX, double pY, double x, double y) {
+    void toggleFillMode() {
+        fillMode = !fillMode;
+    }
+
+    private void addFill(String str, double pX, double pY, double x, double y) {
         double bottomY = graphView.getHeight() - 25 - 10;
         Path2D path = new Path2D.Double();
         path.moveTo(pX, pY);
@@ -108,24 +135,24 @@ public class GraphModel {
         fills.add(path);
     }
 
-    public ArrayList<Line2D> getLines(String str) {
+    ArrayList<Line2D> getLines(String str) {
         return linesMap.get(str);
     }
 
-    public ArrayList<Path2D> getFills(String str) {
+    ArrayList<Path2D> getFills(String str) {
         return fillMap.get(str);
     }
 
 
-    public int getStartingX() {
+    int getStartingX() {
         return STARTING_X;
     }
 
-    public boolean getFillMode() {
+    boolean getFillMode() {
         return fillMode;
     }
 
-    public void update() {
+    void update() {
         graphView.repaint();
     }
 

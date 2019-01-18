@@ -20,18 +20,16 @@ import java.awt.*;
  * Als het blijkt dat we weinig settings hebben kunnen we alles op 1 panel doen.
  */
 public class ControlPanel extends JPanel {
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    JLabel titleLabel = new JLabel("Control Panel", JLabel.CENTER);
-    String[] categories = {"Chart", "Simulator", "Control Panel", "About"};
-    Garage garage;
-    GraphController graphController;
-    JPanel settingsPanel;
+    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private String[] categories = {"Chart", "Simulator", "Control Panel", "About"};
+    private Garage garage;
+    private GraphController graphController;
+    private JPanel settingsPanel;
 
     public ControlPanel(Garage garage, GraphController graph) {
         super(null);
         this.garage = garage;
         this.graphController = graph;
-//        this.graphContent = graph.getContent();
     }
 
     /**
@@ -73,10 +71,11 @@ public class ControlPanel extends JPanel {
 
         // De verschillende menu's toevoegen aan de settingspanel
         settingsPanel.add(new ChartSettings(), "Chart");
-        settingsPanel.add(new SimulatorSettings(), "Simulator");
+        SimulatorSettings simSet = new SimulatorSettings();
+        settingsPanel.add(simSet, "Simulator");
         settingsPanel.add(new ControlSettings(), "Control Panel");
         settingsPanel.add(new AboutSettings(), "About");
-
+        simSet.init();
         // De eerste panel die je ziet is de chart settings
         CardLayout cl = (CardLayout) settingsPanel.getLayout();
         cl.show(settingsPanel, "Chart");
@@ -104,7 +103,7 @@ public class ControlPanel extends JPanel {
      *                      Hij gaat alle categories bij langs en maakt voor elke een button, deze stopt ie in de categorypanel
      *                      Als er op wordt geklikt, switched de panel naar de juist categorie
      */
-    public void createCategoryButtons(JPanel categoryPanel, JPanel settingsPanel) {
+    private void createCategoryButtons(JPanel categoryPanel, JPanel settingsPanel) {
 
         for (String s : categories) {
             JButton button = new JButton(s);
@@ -121,12 +120,12 @@ public class ControlPanel extends JPanel {
         JButton fillMode = new JButton("Fill");
         JSlider speedSlider = new JSlider();
         JPanel panel = new JPanel(new BorderLayout());
-        JPanel gridPanel = new JPanel(new GridLayout(0, 1));
 
-        public ChartSettings() {
+        ChartSettings() {
+            super(new GridLayout(5, 1));
             setBackground(Color.DARK_GRAY);
-            add(gridPanel);
-            gridPanel.add(panel);
+
+            add(panel);
 
             panel.setBorder(new LineBorder(Color.BLACK, 1, true));
             add(panel);
@@ -136,18 +135,19 @@ public class ControlPanel extends JPanel {
             panel.add(new JLabel("Snel"), BorderLayout.EAST);
 
 
-            gridPanel.add(fillMode);
-//            fillMode.addActionListener(e -> graph.toggleFillMode());
-//
-//            speedSlider.addChangeListener(e -> {
-//                int sliderValue = speedSlider.getValue();
-//
-//                sliderValue = 100 - sliderValue;
-//                if (sliderValue <= 0) {
-//                    sliderValue = 1;
-//                }
-//                graphContent.setTicks(sliderValue);
-//            });
+            add(fillMode);
+            fillMode.addActionListener(e -> graphController.toggleFillMode());
+            System.out.println(graphController.getTicks());
+            speedSlider.setValue(speedSlider.getMaximum() - graphController.getTicks());
+            speedSlider.addChangeListener(e -> {
+                int sliderValue = speedSlider.getValue();
+
+                sliderValue = 100 - sliderValue;
+                if (sliderValue <= 0) {
+                    sliderValue = 1;
+                }
+                graphController.setTicks(sliderValue);
+            });
 //
 //            JButton hideButton = new JButton("Hide/Show");
 //            gridPanel.add(hideButton);
@@ -164,21 +164,45 @@ public class ControlPanel extends JPanel {
 
     class SimulatorSettings extends JPanel {
         //todo: snelheid van de de simulatie, aanpassingen aan het aantal ingangen, uitgangen etc.
-        public SimulatorSettings() {
-            setBackground(Color.RED);
+        Garage gar;
+
+        SimulatorSettings() {
+            super(new GridLayout(5, 1));
+            setBackground(Color.DARK_GRAY);
+            JSlider speedSlider = new JSlider();
+            speedSlider.setValue(speedSlider.getMaximum() - garage.getTickPause());
+
+            JPanel panel = new JPanel(new BorderLayout());
+            panel.add(new JLabel("Snelheid", JLabel.CENTER), BorderLayout.NORTH);
+            panel.add(new JLabel("Langzaam"), BorderLayout.WEST);
+            panel.add(speedSlider, BorderLayout.CENTER);
+            panel.add(new JLabel("Snel"), BorderLayout.EAST);
+
+            add(panel);
+
+            speedSlider.addChangeListener(e -> {
+                int speed = speedSlider.getMaximum() - speedSlider.getValue();
+                speed = speed == 0 ? 1 : speed;
+                garage.setTickPause(speed);
+            });
+
+        }
+
+        void init() {
+            System.out.println(garage.getTickPause());
         }
     }
 
     class ControlSettings extends JPanel {
         //todo: Controls van de control panel, als er niks in hoeft kan deze weg.
-        public ControlSettings() {
+        ControlSettings() {
             setBackground(Color.BLUE);
         }
     }
 
     class AboutSettings extends JPanel {
         //todo: Informatie over ons, dat we zo cool zijn enzo.
-        public AboutSettings() {
+        AboutSettings() {
             setBackground(Color.YELLOW);
         }
     }

@@ -13,7 +13,7 @@ class MainPanel extends JPanel {
     void init() {
         setLayout(null);
         setBackground(Color.DARK_GRAY);
-        
+
         Garage garage = new Garage(3, 6, 30);
         garage.setBounds((screenSize.width / 3), 0, (screenSize.width / 3) * 2, ((screenSize.height / 4) * 3));
         add(garage);
