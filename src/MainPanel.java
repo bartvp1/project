@@ -3,6 +3,9 @@ import Garage.Garage;
 import Graph.GraphController;
 import Graph.GraphModel;
 import Graph.GraphView;
+import Summary.SummaryController;
+import Summary.SummaryModel;
+import Summary.SummaryView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +18,7 @@ class MainPanel extends JPanel {
         setBackground(Color.DARK_GRAY);
 
         Garage garage = new Garage(3, 6, 30);
-        garage.setBounds((screenSize.width / 3), 0, (screenSize.width / 3) * 2, ((screenSize.height / 4) * 3));
+        garage.setBounds((screenSize.width / 3), 0, (screenSize.width / 3) * 2, ((screenSize.height / 4) * 2));
         add(garage);
         garage.init();
 
@@ -31,6 +34,15 @@ class MainPanel extends JPanel {
         controlPanel.init();
         add(controlPanel);
         controlPanel.setLocation(0, 0);
+
+        SummaryView summaryView = new SummaryView();
+        SummaryModel summaryModel = new SummaryModel(summaryView);
+        SummaryController summaryController = new SummaryController(summaryModel, garage);
+        summaryView.setSize(screenSize.width - controlPanel.getWidth(), screenSize.height - garage.getHeight() - graphView.getHeight());
+        summaryView.setLocation(controlPanel.getWidth(), garage.getHeight());
+        add(summaryView);
+        summaryView.init();
+        summaryController.init();
 
 
     }
