@@ -3,7 +3,7 @@ package Graph;
 import Garage.Garage;
 
 public class GraphController implements Runnable {
-    private int ticks = 25;
+    private int ticks = 100;
     private Thread thread = new Thread(this);
     private boolean running = true;
 
