@@ -1,8 +1,7 @@
-
 *.xml
 *.iml
 .idea/
 *.class
 *.kotlin_module
-*.bluej
 *.ctxt
+*.bluej
