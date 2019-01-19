@@ -21,7 +21,7 @@ import java.awt.*;
  */
 public class ControlPanel extends JPanel {
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private String[] categories = {"Chart", "Simulator", "Control Panel", "About"};
+    private String[] categories = {"Simulator", "Chart", "Control Panel", "About"};
     private Garage garage;
     private GraphController graphController;
     private JPanel settingsPanel;
@@ -78,7 +78,7 @@ public class ControlPanel extends JPanel {
         simSet.init();
         // De eerste panel die je ziet is de chart settings
         CardLayout cl = (CardLayout) settingsPanel.getLayout();
-        cl.show(settingsPanel, "Chart");
+        cl.show(settingsPanel, "Simulator");
 
         // leegje knopjes erin gooien zodat exitbutton onderaan kan staan
         for (int i = 0; i < 3; i++) {
@@ -167,7 +167,7 @@ public class ControlPanel extends JPanel {
         Garage gar;
 
         SimulatorSettings() {
-            super(new GridLayout(5, 1));
+            super(new GridLayout(10, 1));
             setBackground(Color.DARK_GRAY);
             JSlider speedSlider = new JSlider();
             speedSlider.setValue(speedSlider.getMaximum() - garage.getTickPause());
