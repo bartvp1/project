@@ -40,6 +40,7 @@ public class SummaryView extends JPanel {
 
     }
 
+
     void update(SummaryModel model) {
         totalCarsLabel.setText(totalCarsText + model.getTotalCars());
         passCarLabel.setText(passCarsText + model.getPassCars());

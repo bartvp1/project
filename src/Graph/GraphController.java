@@ -14,6 +14,7 @@ public class GraphController implements Runnable {
         this.graphModel = graphModel;
         this.garage = garage;
     }
+
     public void toggleFillMode(){
         graphModel.toggleFillMode();
     }

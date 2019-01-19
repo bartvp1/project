@@ -9,22 +9,23 @@ import Summary.SummaryView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 class MainPanel extends JPanel {
-    private Dimension screenSize;
+    private Dimension screenSize = getToolkit().getScreenSize();
     ControlPanel controlPanel;
+
+    ArrayList<JPanel> panels = new ArrayList<>();
 
     void init() {
         setLayout(null);
         setBackground(Color.DARK_GRAY);
 
-        screenSize = SwingUtilities.getWindowAncestor(this).getSize();
-//        System.out.println(dim);
-
         Garage garage = new Garage(3, 6, 30);
         garage.setBounds((screenSize.width / 3), 0, (screenSize.width / 3) * 2, ((screenSize.height / 4) * 2));
         add(garage);
         garage.init();
+
 
         GraphView graphView = new GraphView();
         GraphModel graphModel = new GraphModel(graphView, garage);
@@ -36,9 +37,10 @@ class MainPanel extends JPanel {
 
         controlPanel = new ControlPanel(garage, graphController);
         controlPanel.setLocation(0, 0);
-        controlPanel.setSize((screenSize.width / 3), ((screenSize.height / 4) * 3));
+        controlPanel.setSize(screenSize);
         controlPanel.init();
         add(controlPanel);
+        panels.add(controlPanel);
 
 
         SummaryView summaryView = new SummaryView();
@@ -49,14 +51,9 @@ class MainPanel extends JPanel {
         add(summaryView);
         summaryView.init();
         summaryController.init();
+        panels.add(summaryView);
     }
 
-    @Override
-    public void setBounds(int x, int y, int width, int height) {
-        super.setBounds(x, y, width, height);
-        screenSize = SwingUtilities.getWindowAncestor(this).getSize();
-        controlPanel.setSize((screenSize.width / 3), ((screenSize.height / 4) * 3));
-    }
 
     @Override
     public void validate() {

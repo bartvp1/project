@@ -25,11 +25,13 @@ public class ControlPanel extends JPanel {
     private Garage garage;
     private GraphController graphController;
     private JPanel settingsPanel;
+    JPanel categoryPanel = new JPanel(new GridLayout(0, 1, 10, 50));
 
     public ControlPanel(Garage garage, GraphController graph) {
         super(null);
         this.garage = garage;
         this.graphController = graph;
+
     }
 
     /**
@@ -48,21 +50,22 @@ public class ControlPanel extends JPanel {
 
     public void init() {
         //  grootte van dit scherm, breedte: 1/3 van  je beeldscherm & hoogte: 3/4 van je beeldscherm.
-//        setSize((screenSize.width / 3), ((screenSize.height / 4) * 3));
+        setSize((screenSize.width / 3), ((screenSize.height / 4) * 3));
 
         // Wordt nog aangepast als we 't wat mooier maken
         setBackground(Color.DARK_GRAY);
         setBorder(new LineBorder(Color.BLACK, 3, true));
 
         // Panel waar je de category kan kiezen.
-        JPanel categoryPanel = new JPanel(new GridLayout(0, 1, 10, 50));
+
         categoryPanel.setBounds(10, 10, 130, getHeight() - 25);
         categoryPanel.setBackground(Color.DARK_GRAY);
         add(categoryPanel);
 
         //  Panel waar de settings staan
         settingsPanel = new JPanel(new CardLayout());
-        settingsPanel.setBounds(150, 10, getWidth() - 160, getHeight() - 20);
+        int settingsX = categoryPanel.getWidth() + categoryPanel.getX() + 10;
+        settingsPanel.setBounds(settingsX, 10, getWidth() - settingsX - 10, getHeight() - 20);
         settingsPanel.setBackground(Color.DARK_GRAY);
         settingsPanel.setBorder(new LineBorder(Color.BLACK, 3, true));
         add(settingsPanel);
@@ -89,7 +92,7 @@ public class ControlPanel extends JPanel {
         // exit button sluit alles af
         JButton exitButton = new JButton("Exit");
         categoryPanel.add(exitButton);
-        exitButton.setBackground(new Color(225, 0, 0, 100));
+        exitButton.setBackground(new Color(225, 0, 0));
         exitButton.setFont(new Font("Arial", Font.PLAIN, 20));
         exitButton.setForeground(new Color(0, 0, 0, 255));
         exitButton.addActionListener(e -> System.exit(0));
@@ -148,17 +151,6 @@ public class ControlPanel extends JPanel {
                 }
                 graphController.setTicks(sliderValue);
             });
-//
-//            JButton hideButton = new JButton("Hide/Show");
-//            gridPanel.add(hideButton);
-//            hideButton.addActionListener(e -> {
-//                if (graph.isUp()) {
-//                    graph.doHide();
-//                } else if (graph.isDown()) {
-//                    graph.doShow();
-//                }
-//
-//            });
         }
     }
 
