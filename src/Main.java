@@ -13,6 +13,7 @@ public class Main {
         frame.setContentPane(panel);
         panel.init();
         frame.setUndecorated(true);
+        frame.setResizable(false);
         frame.setVisible(true);
     }
 }

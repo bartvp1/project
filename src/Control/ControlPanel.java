@@ -48,7 +48,7 @@ public class ControlPanel extends JPanel {
 
     public void init() {
         //  grootte van dit scherm, breedte: 1/3 van  je beeldscherm & hoogte: 3/4 van je beeldscherm.
-        setSize((screenSize.width / 3), ((screenSize.height / 4) * 3));
+//        setSize((screenSize.width / 3), ((screenSize.height / 4) * 3));
 
         // Wordt nog aangepast als we 't wat mooier maken
         setBackground(Color.DARK_GRAY);

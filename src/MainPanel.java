@@ -11,11 +11,15 @@ import javax.swing.*;
 import java.awt.*;
 
 class MainPanel extends JPanel {
-    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private Dimension screenSize;
+    ControlPanel controlPanel;
 
     void init() {
         setLayout(null);
         setBackground(Color.DARK_GRAY);
+
+        screenSize = SwingUtilities.getWindowAncestor(this).getSize();
+//        System.out.println(dim);
 
         Garage garage = new Garage(3, 6, 30);
         garage.setBounds((screenSize.width / 3), 0, (screenSize.width / 3) * 2, ((screenSize.height / 4) * 2));
@@ -30,10 +34,12 @@ class MainPanel extends JPanel {
         add(graphView);
 
 
-        ControlPanel controlPanel = new ControlPanel(garage, graphController);
+        controlPanel = new ControlPanel(garage, graphController);
+        controlPanel.setLocation(0, 0);
+        controlPanel.setSize((screenSize.width / 3), ((screenSize.height / 4) * 3));
         controlPanel.init();
         add(controlPanel);
-        controlPanel.setLocation(0, 0);
+
 
         SummaryView summaryView = new SummaryView();
         SummaryModel summaryModel = new SummaryModel(summaryView);
@@ -43,8 +49,20 @@ class MainPanel extends JPanel {
         add(summaryView);
         summaryView.init();
         summaryController.init();
-
-
     }
 
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+        super.setBounds(x, y, width, height);
+        screenSize = SwingUtilities.getWindowAncestor(this).getSize();
+        controlPanel.setSize((screenSize.width / 3), ((screenSize.height / 4) * 3));
+    }
+
+    @Override
+    public void validate() {
+
+        screenSize = SwingUtilities.getWindowAncestor(this).getSize();
+        System.out.println(screenSize);
+        super.validate();
+    }
 }
