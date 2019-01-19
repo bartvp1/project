@@ -5,6 +5,17 @@ public class SummaryModel {
     private int totalCars;
     private int passCars;
     private int normalCars;
+    private int reservedCars;
+
+    public int getReservedCars() {
+        return reservedCars;
+    }
+
+    public void setReservedCars(int reservedCars) {
+        this.reservedCars = reservedCars;
+    }
+
+
     private String dayName;
     private int hours;
     private int minutes;
@@ -55,15 +66,15 @@ public class SummaryModel {
         this.normalCars = normalCars;
     }
 
-    int getTotalCars() {
+    public int getTotalCars() {
         return totalCars;
     }
 
-    int getPassCars() {
+    public int getPassCars() {
         return passCars;
     }
 
-    int getNormalCars() {
+    public int getNormalCars() {
         return normalCars;
     }
 }

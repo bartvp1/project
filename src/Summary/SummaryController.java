@@ -23,6 +23,7 @@ public class SummaryController implements Runnable {
             model.setNormalCars(garage.getNumberOfNormalCars());
             model.setPassCars(garage.getNumberOfPassCars());
             model.setTotalCars(garage.getTotalCars());
+            model.setReservedCars(garage.getNumberOfReservedCars());
             model.setDayName(garage.getDayName());
             model.setHours(garage.getHour());
             model.setMinutes(garage.getMinute());
