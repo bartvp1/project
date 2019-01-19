@@ -73,5 +73,4 @@ public class Location {
     public int getId(){
         return id;
     }
-
 }
