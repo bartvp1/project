@@ -1,5 +1,8 @@
 import Control.ControlPanel;
 import Garage.Garage;
+import Garage.GarageController;
+import Garage.GarageModel;
+import Garage.GarageView;
 import Graph.GraphController;
 import Graph.GraphModel;
 import Graph.GraphView;
@@ -19,25 +22,39 @@ class MainPanel extends JPanel {
 
     void init() {
         setLayout(null);
-        setBackground(Color.DARK_GRAY);
+        setBackground(new Color(55, 57, 63));
 
         Garage garage = new Garage(3, 6, 30);
         garage.setBounds((screenSize.width / 3), 0, (screenSize.width / 3) * 2, ((screenSize.height / 4) * 2));
         add(garage);
+        garage.setVisible(false);
         garage.init();
 
 
+        GarageView garageView = new GarageView();
+        garageView.setBounds(500, 25, 900, 425);
+        GarageModel garageModel = new GarageModel(garageView);
+
+        GarageController garageController = new GarageController(garageModel);
+        garageModel.setController(garageController);
+        garageController.init();
+        garageModel.init();
+        add(garageView);
+        garageView.setVisible(true);
+
+
         GraphView graphView = new GraphView();
-        GraphModel graphModel = new GraphModel(graphView, garage);
-        GraphController graphController = new GraphController(graphModel, garage);
+        GraphModel graphModel = new GraphModel(graphView, garageModel);
+        GraphController graphController = new GraphController(graphModel, garageModel);
         graphController.init();
         graphView.init();
         add(graphView);
 
 
-        controlPanel = new ControlPanel(garage, graphController);
-        controlPanel.setLocation(0, 0);
-        controlPanel.setSize(screenSize);
+        controlPanel = new ControlPanel(garageModel, graphController);
+
+        controlPanel.setLocation(25, 25);
+        controlPanel.setSize(450, 700);
         controlPanel.init();
         add(controlPanel);
         panels.add(controlPanel);
@@ -45,21 +62,20 @@ class MainPanel extends JPanel {
 
         SummaryView summaryView = new SummaryView();
         SummaryModel summaryModel = new SummaryModel(summaryView);
-        SummaryController summaryController = new SummaryController(summaryModel, garage);
-        summaryView.setSize(screenSize.width - controlPanel.getWidth(), screenSize.height - garage.getHeight() - graphView.getHeight());
-        summaryView.setLocation(controlPanel.getWidth(), garage.getHeight());
+        SummaryController summaryController = new SummaryController(summaryModel, garageModel);
+
+
+        int height = controlPanel.getHeight() - garageView.getHeight() - garageView.getY();
+
+
+        summaryView.setSize(garageView.getWidth(), height);
+        summaryView.setLocation(controlPanel.getWidth() + 50, garageView.getHeight() + 50);
         add(summaryView);
         summaryView.init();
         summaryController.init();
         panels.add(summaryView);
+
+
     }
 
-
-    @Override
-    public void validate() {
-
-        screenSize = SwingUtilities.getWindowAncestor(this).getSize();
-        System.out.println(screenSize);
-        super.validate();
-    }
 }

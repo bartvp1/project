@@ -1,30 +1,33 @@
 package Graph;
 
-import Garage.Garage;
+import Garage.GarageModel;
 
 public class GraphController implements Runnable {
-    private int ticks = 100;
+    private int ticks = 10;
     private Thread thread = new Thread(this);
     private boolean running = true;
 
     private GraphModel graphModel;
-    private Garage garage;
+    private GarageModel garage;
 
-    public GraphController(GraphModel graphModel, Garage garage) {
+    public GraphController(GraphModel graphModel, GarageModel garage) {
         this.graphModel = graphModel;
         this.garage = garage;
     }
 
-    public void toggleFillMode(){
+    public void toggleFillMode() {
         graphModel.toggleFillMode();
     }
-    public void setTicks(int ticks){
+
+    public void setTicks(int ticks) {
         this.ticks = ticks;
 
     }
-    public int getTicks(){
+
+    public int getTicks() {
         return ticks;
     }
+
     public void init() {
         thread.start();
     }

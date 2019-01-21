@@ -3,7 +3,6 @@ package Graph;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
-import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -22,7 +21,8 @@ public class GraphView extends JPanel {
     }
 
     public void init() {
-        setBackground(Color.DARK_GRAY);
+//        setBackground(new Color(55, 57, 63));
+        setBackground(new Color(47, 49, 54));
         setLocation(0, (model.getScreenHeight() / 4) * 3);
         setSize(model.getScreenWidth(), model.getScreenHeight() / 4);
     }
@@ -79,7 +79,6 @@ public class GraphView extends JPanel {
         boolean fillMode = model.getFillMode();
         // All Cars
         g.setColor(new Color(0, 50, 0, 100));
-
         ArrayList<Line2D> temp = new ArrayList<>(model.getLines("Total"));
         Iterator<Line2D> it = temp.iterator();
         try {
@@ -90,13 +89,7 @@ public class GraphView extends JPanel {
 
         if (fillMode) {
             g.setColor(new Color(0, 255, 0, 100));
-            ArrayList<Path2D> _temp = new ArrayList<>(model.getFills("Total"));
-            Iterator<Path2D> _it = _temp.iterator();
-            try {
-                _it.forEachRemaining(g::fill);
-            } catch (ConcurrentModificationException e) {
-                e.printStackTrace();
-            }
+            g.fill(model.getTotalPath());
         }
 
         g.setColor(new Color(100, 0, 0, 255));
@@ -111,13 +104,7 @@ public class GraphView extends JPanel {
 
         if (fillMode) {
             g.setColor(new Color(255, 0, 0, 100));
-            ArrayList<Path2D> _temp = new ArrayList<>(model.getFills("Normal"));
-            Iterator<Path2D> _it = _temp.iterator();
-            try {
-                _it.forEachRemaining(g::fill);
-            } catch (ConcurrentModificationException e) {
-                e.printStackTrace();
-            }
+            g.fill(model.getPathFill());
         }
         g.setColor(new Color(0, 0, 100, 255));
         temp = new ArrayList<>(model.getLines("Pass"));
@@ -131,14 +118,7 @@ public class GraphView extends JPanel {
 
         if (fillMode) {
             g.setColor(new Color(0, 0, 255, 100));
-            ArrayList<Path2D> _temp = new ArrayList<>(model.getFills("Pass"));
-            Iterator<Path2D> _it = _temp.iterator();
-
-            try {
-                _it.forEachRemaining(g::fill);
-            } catch (ConcurrentModificationException e) {
-                e.printStackTrace();
-            }
+            g.fill(model.getPassPath());
         }
 
         g.setColor(Color.BLACK);
@@ -158,6 +138,11 @@ public class GraphView extends JPanel {
         drawValueNumbers(g2);
         drawLines(g2);
         drawGrid(g2);
+
+        g2.setColor(new Color(0, 0, 0, 255));
+        g2.setStroke(new BasicStroke(5));
+        g2.drawLine(0, 0, getWidth() - 1, 0);
+
     }
 
 

@@ -1,12 +1,13 @@
 package Garage;
 
+import MyComponents.MyLabel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Iterator;
-import java.util.HashMap;
+import java.util.Random;
 
 public class Garage extends JPanel implements Runnable {
     Thread thread = new Thread(this);
@@ -55,7 +56,10 @@ public class Garage extends JPanel implements Runnable {
     private JLabel timeLabel = new JLabel();
     private JLabel stats = new JLabel();
 
+
     public Garage(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+
+
         this.numberOfFloors = numberOfFloors;
         this.numberOfPlaces = numberOfPlaces;
         this.numberOfRows = numberOfRows;
@@ -88,12 +92,12 @@ public class Garage extends JPanel implements Runnable {
         repaint();
     }
 
-    private void addLocations(){
+    private void addLocations() {
         int id = 0;
         for (int floor = 0; floor < numberOfFloors; floor++) {
             for (int row = 0; row < numberOfRows; row++) {
                 for (int place = 0; place < numberOfPlaces; place++) {
-                    Location location = new Location(id,floor, row, place);
+                    Location location = new Location(id, floor, row, place);
                     locations.add(location);
                     id++;
                 }
@@ -101,20 +105,23 @@ public class Garage extends JPanel implements Runnable {
         }
     }
 
-    public int getDay(){
+    public int getDay() {
         return day;
     }
-    public int getHour(){
+
+    public int getHour() {
         return hour;
     }
-    public int getMinute(){
+
+    public int getMinute() {
         return minute;
     }
+
     public void run() {
         while (thread != null) {
             tick();
             try {
-                Thread.sleep(tickPause);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -133,12 +140,14 @@ public class Garage extends JPanel implements Runnable {
     }
 
     private boolean locationIsValid(Location location) {
-        if(location == null){ return false;}
+        if (location == null) {
+            return false;
+        }
         int floor = location.getFloor();
         int row = location.getRow();
         int place = location.getPlace();
         int id = location.getId();
-        return !(0>id || id>locations.size());
+        return !(0 > id || id > locations.size());
         //return !(floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces);
     }
 
@@ -152,8 +161,8 @@ public class Garage extends JPanel implements Runnable {
                 Location loc = locations.get(i);
                 Car car = getCarAt(loc);
                 Color color = car != null ? car.getColor() : i < reservedLocationsPass ? new Color(100, 180, 250) : new Color(255, 180, 180);
-                if(reservedLocations.contains(loc)) {
-                    color = new Color(170,255,170);
+                if (reservedLocations.contains(loc)) {
+                    color = new Color(170, 255, 170);
                 }
 
                 drawPlace(graphics, locations.get(i), color);
@@ -207,7 +216,7 @@ public class Garage extends JPanel implements Runnable {
             day -= 7;
         }
         String day_string;
-        switch(day){
+        switch (day) {
             case 0:
                 day_string = "Monday";
                 break;
@@ -233,23 +242,23 @@ public class Garage extends JPanel implements Runnable {
                 day_string = "undefined";
         }
 
-        nowTime = (day*60*24)+(hour*60)+minute;
+        nowTime = (day * 60 * 24) + (hour * 60) + minute;
         timeLabel.setText(day_string + " " + hour + ":" + minute);
         stats.setText(numberOfPassCars + " - " + numberOfNormalCars + " - " + "R_SPOTS: " + reservedLocations.size() + " - " + "R_CARS: " + numberOfReservedCars);
 
     }
 
-    public void addReservation(int day, int hour, int minute){
+    public void addReservation(int day, int hour, int minute) {
         Reservation reservation = new Reservation(day, hour, minute);
         reservations.add(reservation);
     }
 
-    private void reserveLocations(){
+    private void reserveLocations() {
         Iterator it = reservations.iterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             Reservation res = (Reservation) it.next();
             Boolean done = res.isReserved();
-            if (res.getTime()-nowTime < 60 && !done) {  //reserve a spot 60 min in advance
+            if (res.getTime() - nowTime < 60 && !done) {  //reserve a spot 60 min in advance
                 Location loc = getFirstFreeLocation("NORMAL");
                 reservedLocations.add(loc);
                 //System.out.println("Reserved a spot: "+reservedLocations.add(loc));
@@ -259,9 +268,9 @@ public class Garage extends JPanel implements Runnable {
         //System.out.println(reservations.size() +" ---- "+ reservedLocations.size() +" ---- "+ numberOfReservedCars);
     }
 
-    private void reservedForPass(){
+    private void reservedForPass() {
         reservedLocationsPass = 120;
-        if(day == 5 || day == 6){
+        if (day == 5 || day == 6) {
             reservedLocationsPass = 10;
         }
     }
@@ -297,15 +306,16 @@ public class Garage extends JPanel implements Runnable {
     private void carsArriving() {
         int numberOfCars = getNumberOfCars(weekDayArrivals, weekendArrivals);
         addArrivingCars(numberOfCars, "NORMAL");
+
         numberOfCars = getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
         addArrivingCars(numberOfCars, "PASS");
 
 
         Iterator it = reservations.iterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             Reservation res = (Reservation) it.next();
             Boolean hasReservedSpot = res.isReserved();
-            if((res.getTime()-nowTime) == 0 && hasReservedSpot && !res.getQueued()) {
+            if ((res.getTime() - nowTime) == 0 && hasReservedSpot && !res.getQueued()) {
                 addArrivingCars(1, "RESERVED");
                 res.setQueued(true);
             }
@@ -314,18 +324,18 @@ public class Garage extends JPanel implements Runnable {
 
     public Location getFirstFreeLocation(String type) {
         int start_at = reservedLocationsPass;
-        if(type == "PASS"){
+        if (type == "PASS") {
             start_at = 0;
         }
         int size = locations.size();
-        for(int i=start_at;i<size;i++){
+        for (int i = start_at; i < size; i++) {
             Location loc = locations.get(i);
             if (getCarAt(loc) == null) {
-                if(reservedLocations.contains(loc)) {
-                    if (type=="RESERVED") {
+                if (reservedLocations.contains(loc)) {
+                    if (type == "RESERVED") {
                         return loc;
                     }
-                } else if(type!="RESERVED") {
+                } else if (type != "RESERVED") {
                     return loc;
                 }
             }
@@ -339,7 +349,7 @@ public class Garage extends JPanel implements Runnable {
             cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
             car.setLocation(location);
             numberOfOpenSpots--;
-            if(reservedLocations.contains(location)){
+            if (reservedLocations.contains(location)) {
                 reservedLocations.remove(location);
             }
             return true;
@@ -354,7 +364,8 @@ public class Garage extends JPanel implements Runnable {
         while (queue.carsInQueue() > 0 && numberOfOpenSpots > 0 && i < enterSpeed) {
             Car car = queue.removeCar();
             Location freeLocation;
-            if(car instanceof CarPass){
+
+            if (car instanceof CarPass) {
                 freeLocation = getFirstFreeLocation("PASS");
                 numberOfPassCars++;
             } else if (car instanceof CarReserved) {
@@ -371,15 +382,15 @@ public class Garage extends JPanel implements Runnable {
         }
     }
 
-    private Location getReservedLocation(){
+    private Location getReservedLocation() {
         Iterator itR = reservedLocations.iterator();
         Iterator itL = locations.iterator();
-        while(itR.hasNext()){
+        while (itR.hasNext()) {
             Location locR = (Location) itR.next();
-            while(itL.hasNext()){
+            while (itL.hasNext()) {
                 Location locL = (Location) itL.next();
-                if(getCarAt(locL)==null){
-                    if(locR.equals(locL)){
+                if (getCarAt(locL) == null) {
+                    if (locR.equals(locL)) {
                         return locL;
                     }
                 } else {
@@ -393,6 +404,7 @@ public class Garage extends JPanel implements Runnable {
     public int getNumberOfNormalCars() {
         return numberOfNormalCars;
     }
+
     public int getNumberOfReservedCars() {
         return numberOfReservedCars;
     }
@@ -438,7 +450,7 @@ public class Garage extends JPanel implements Runnable {
         car.setLocation(null);
         numberOfOpenSpots++;
         ////if spot was reserved, remove from reservedLocations
-        if(reservedLocations.contains(location)){
+        if (reservedLocations.contains(location)) {
             reservedLocations.remove(location);
         }
 
@@ -453,10 +465,10 @@ public class Garage extends JPanel implements Runnable {
             // TODO Handle payment.
             carLeavesSpot(car);
             i++;
-            if(car instanceof CarNormal) {
+            if (car instanceof CarNormal) {
                 numberOfNormalCars--;
             }
-            if(car instanceof CarReserved){
+            if (car instanceof CarReserved) {
                 numberOfReservedCars--;
             }
         }

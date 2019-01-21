@@ -1,10 +1,11 @@
 package Control;
 
 import Garage.Garage;
+import Garage.GarageModel;
 import Graph.GraphController;
+import MyComponents.MyLabel;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
 /**
@@ -22,12 +23,14 @@ import java.awt.*;
 public class ControlPanel extends JPanel {
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private String[] categories = {"Simulator", "Chart", "Control Panel", "About"};
-    private Garage garage;
+
     private GraphController graphController;
     private JPanel settingsPanel;
     JPanel categoryPanel = new JPanel(new GridLayout(0, 1, 10, 50));
+    private GarageModel garage;
+    JLabel titleLabel = new JLabel("Configuratie", JLabel.CENTER);
 
-    public ControlPanel(Garage garage, GraphController graph) {
+    public ControlPanel(GarageModel garage, GraphController graph) {
         super(null);
         this.garage = garage;
         this.graphController = graph;
@@ -49,25 +52,25 @@ public class ControlPanel extends JPanel {
 
 
     public void init() {
-        //  grootte van dit scherm, breedte: 1/3 van  je beeldscherm & hoogte: 3/4 van je beeldscherm.
-        setSize((screenSize.width / 3), ((screenSize.height / 4) * 3));
+        setBackground(new Color(47, 49, 54));
 
-        // Wordt nog aangepast als we 't wat mooier maken
-        setBackground(Color.DARK_GRAY);
-        setBorder(new LineBorder(Color.BLACK, 3, true));
+        titleLabel.setBounds(0, 0, getWidth(), 50);
+        titleLabel.setFont(new Font("Dubai Light", Font.PLAIN, 25));
+        titleLabel.setForeground(Color.WHITE);
+        add(titleLabel);
 
-        // Panel waar je de category kan kiezen.
-
-        categoryPanel.setBounds(10, 10, 130, getHeight() - 25);
+        categoryPanel.setBounds(10, titleLabel.getHeight() + 10, 130, getHeight() - titleLabel.getHeight() - 30);
         categoryPanel.setBackground(Color.DARK_GRAY);
+        categoryPanel.setOpaque(false);
         add(categoryPanel);
 
         //  Panel waar de settings staan
         settingsPanel = new JPanel(new CardLayout());
+
         int settingsX = categoryPanel.getWidth() + categoryPanel.getX() + 10;
-        settingsPanel.setBounds(settingsX, 10, getWidth() - settingsX - 10, getHeight() - 20);
-        settingsPanel.setBackground(Color.DARK_GRAY);
-        settingsPanel.setBorder(new LineBorder(Color.BLACK, 3, true));
+        settingsPanel.setBounds(settingsX, titleLabel.getHeight() + 10, getWidth() - settingsX - 10, getHeight() - titleLabel.getHeight() - 30);
+
+        settingsPanel.setOpaque(false);
         add(settingsPanel);
 
         createCategoryButtons(categoryPanel, settingsPanel);
@@ -78,7 +81,7 @@ public class ControlPanel extends JPanel {
         settingsPanel.add(simSet, "Simulator");
         settingsPanel.add(new ControlSettings(), "Control Panel");
         settingsPanel.add(new AboutSettings(), "About");
-        simSet.init();
+
         // De eerste panel die je ziet is de chart settings
         CardLayout cl = (CardLayout) settingsPanel.getLayout();
         cl.show(settingsPanel, "Simulator");
@@ -118,6 +121,22 @@ public class ControlPanel extends JPanel {
         }
     }
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(new Color(0, 0, 0, 150));
+        g2.setStroke(new BasicStroke(2));
+        g2.drawLine(getWidth() - 2, 0, getWidth() - 2, getHeight() - 4);
+        g2.drawLine(0, getHeight() - 2, getWidth(), getHeight() - 2);
+
+//        g2.setStroke(new BasicStroke(.4f));
+//        g.drawLine(0, 0, getWidth() - 1, 0);
+//        g.drawLine(0, 0, 0, getHeight());
+    }
+
     class ChartSettings extends JPanel {
         //todo: snelheid van de grafiek, welke auto's je wilt zien en misschien een layout verandering?
         JButton fillMode = new JButton("Fill");
@@ -126,12 +145,11 @@ public class ControlPanel extends JPanel {
 
         ChartSettings() {
             super(new GridLayout(5, 1));
-            setBackground(Color.DARK_GRAY);
+            setOpaque(false);
 
             add(panel);
+            panel.setOpaque(false);
 
-            panel.setBorder(new LineBorder(Color.BLACK, 1, true));
-            add(panel);
             panel.add(new JLabel("Snelheid", JLabel.CENTER), BorderLayout.NORTH);
             panel.add(new JLabel("Langzaam"), BorderLayout.WEST);
             panel.add(speedSlider, BorderLayout.CENTER);
@@ -140,7 +158,6 @@ public class ControlPanel extends JPanel {
 
             add(fillMode);
             fillMode.addActionListener(e -> graphController.toggleFillMode());
-            System.out.println(graphController.getTicks());
             speedSlider.setValue(speedSlider.getMaximum() - graphController.getTicks());
             speedSlider.addChangeListener(e -> {
                 int sliderValue = speedSlider.getValue();
@@ -152,6 +169,11 @@ public class ControlPanel extends JPanel {
                 graphController.setTicks(sliderValue);
             });
         }
+
+
+        void createSpeedSlider() {
+
+        }
     }
 
     class SimulatorSettings extends JPanel {
@@ -160,15 +182,27 @@ public class ControlPanel extends JPanel {
 
         SimulatorSettings() {
             super(new GridLayout(10, 1));
-            setBackground(Color.DARK_GRAY);
+            setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+
+            setBackground(new Color(43, 48, 52));
             JSlider speedSlider = new JSlider();
             speedSlider.setValue(speedSlider.getMaximum() - garage.getTickPause());
 
-            JPanel panel = new JPanel(new BorderLayout());
-            panel.add(new JLabel("Snelheid", JLabel.CENTER), BorderLayout.NORTH);
-            panel.add(new JLabel("Langzaam"), BorderLayout.WEST);
+            speedSlider.setOpaque(false);
+
+            JPanel panel = new JPanel(new BorderLayout(10, 0));
+
+
+            panel.setOpaque(false);
+
+
+            panel.add(new MyLabel("Tijd", JLabel.CENTER, "title_small"), BorderLayout.NORTH);
+            panel.add(new MyLabel("Langzaam", JLabel.CENTER, "description"), BorderLayout.WEST);
+            panel.add(new MyLabel("Snel", JLabel.CENTER, "description"), BorderLayout.EAST);
+
             panel.add(speedSlider, BorderLayout.CENTER);
-            panel.add(new JLabel("Snel"), BorderLayout.EAST);
+
 
             add(panel);
 
@@ -180,8 +214,20 @@ public class ControlPanel extends JPanel {
 
         }
 
-        void init() {
-            System.out.println(garage.getTickPause());
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+//            g.setColor(new Color(80, 85, 93));
+            g.setColor(new Color(0, 0, 0, 150));
+
+            g.drawLine(getWidth() - 1, 0, getWidth() - 1, getHeight());
+            g.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
+
+            g2.setStroke(new BasicStroke(.1f));
+            g.drawLine(0, 0, getWidth() - 1, 0);
+            g.drawLine(0, 0, 0, getHeight());
+
         }
     }
 

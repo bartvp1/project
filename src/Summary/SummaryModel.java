@@ -6,6 +6,7 @@ public class SummaryModel {
     private int passCars;
     private int normalCars;
     private int reservedCars;
+    private String currentDay;
 
     public int getReservedCars() {
         return reservedCars;
@@ -30,6 +31,14 @@ public class SummaryModel {
 
     int getMinutes() {
         return minutes;
+    }
+
+    public String getCurrentDay() {
+        return currentDay;
+    }
+
+    public void setCurrentDay(String currentDay) {
+        this.currentDay = currentDay;
     }
 
     void setMinutes(int minutes) {

@@ -1,16 +1,18 @@
 package Summary;
 
 import Garage.Garage;
+import Garage.GarageModel;
 
 public class SummaryController implements Runnable {
     private Thread thread = new Thread(this);
     private boolean running = true;
     private SummaryModel model;
     private Garage garage;
+    GarageModel garageModel;
 
-    public SummaryController(SummaryModel model, Garage garage) {
+    public SummaryController(SummaryModel model, GarageModel garage) {
         this.model = model;
-        this.garage = garage;
+        this.garageModel = garage;
     }
 
     public void init() {
@@ -20,13 +22,15 @@ public class SummaryController implements Runnable {
     @Override
     public void run() {
         while (running) {
-            model.setNormalCars(garage.getNumberOfNormalCars());
-            model.setPassCars(garage.getNumberOfPassCars());
-            model.setTotalCars(garage.getTotalCars());
-            model.setReservedCars(garage.getNumberOfReservedCars());
-            model.setDayName(garage.getDayName());
-            model.setHours(garage.getHour());
-            model.setMinutes(garage.getMinute());
+
+            model.setNormalCars(garageModel.getNumberOfNormalCars());
+            model.setPassCars(garageModel.getNumberOfPassCars());
+            model.setTotalCars(garageModel.getTotalCars());
+            model.setReservedCars(garageModel.getNumberOfReservedCars());
+            model.setDayName(garageModel.getDayName());
+            model.setHours(garageModel.getHour());
+            model.setMinutes(garageModel.getMinute());
+
 
             model.update();
             try {
