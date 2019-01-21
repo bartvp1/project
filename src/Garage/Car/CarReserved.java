@@ -1,12 +1,10 @@
 package Garage.Car;
 
-import Garage.Car.Car;
-
 import java.awt.*;
 import java.util.Random;
 
 public class CarReserved extends Car {
-    private static final Color COLOR = new Color(0,170,0);
+    private static final Color COLOR = new Color(0, 170, 0);
 
     public CarReserved() {
         Random random = new Random();
@@ -15,7 +13,7 @@ public class CarReserved extends Car {
         this.setHasToPay(true);
     }
 
-    public Color getColor(){
+    public Color getColor() {
         return COLOR;
     }
 }
