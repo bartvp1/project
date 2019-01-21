@@ -1,5 +1,7 @@
 package Garage;
 
+import Garage.Car.*;
+
 import java.util.ArrayList;
 import java.util.Random;
 

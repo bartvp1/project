@@ -1,5 +1,7 @@
 package Garage;
 
+import Garage.Car.*;
+
 import java.util.Iterator;
 
 public class GarageController implements Runnable {

@@ -1,6 +1,5 @@
 package Control;
 
-import Garage.Garage;
 import Garage.GarageModel;
 import Graph.GraphController;
 import MyComponents.MyLabel;
@@ -178,7 +177,7 @@ public class ControlPanel extends JPanel {
 
     class SimulatorSettings extends JPanel {
         //todo: snelheid van de de simulatie, aanpassingen aan het aantal ingangen, uitgangen etc.
-        Garage gar;
+
 
         SimulatorSettings() {
             super(new GridLayout(10, 1));

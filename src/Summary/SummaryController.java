@@ -1,13 +1,11 @@
 package Summary;
 
-import Garage.Garage;
 import Garage.GarageModel;
 
 public class SummaryController implements Runnable {
     private Thread thread = new Thread(this);
     private boolean running = true;
     private SummaryModel model;
-    private Garage garage;
     GarageModel garageModel;
 
     public SummaryController(SummaryModel model, GarageModel garage) {

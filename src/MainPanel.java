@@ -1,5 +1,4 @@
 import Control.ControlPanel;
-import Garage.Garage;
 import Garage.GarageController;
 import Garage.GarageModel;
 import Garage.GarageView;
@@ -15,7 +14,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 class MainPanel extends JPanel {
-    private Dimension screenSize = getToolkit().getScreenSize();
     ControlPanel controlPanel;
 
     ArrayList<JPanel> panels = new ArrayList<>();
@@ -23,12 +21,6 @@ class MainPanel extends JPanel {
     void init() {
         setLayout(null);
         setBackground(new Color(55, 57, 63));
-
-        Garage garage = new Garage(3, 6, 30);
-        garage.setBounds((screenSize.width / 3), 0, (screenSize.width / 3) * 2, ((screenSize.height / 4) * 2));
-        add(garage);
-        garage.setVisible(false);
-        garage.init();
 
 
         GarageView garageView = new GarageView();

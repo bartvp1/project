@@ -1,4 +1,6 @@
-package Garage;
+package Garage.Car;
+
+import Garage.Location;
 
 import java.awt.*;
 
@@ -9,9 +11,7 @@ public abstract class Car {
     private boolean isPaying;
     private boolean hasToPay;
 
-    /**
-     * Constructor for objects of class Garage.Car
-     */
+
     public Car() {
 
     }
@@ -31,7 +31,7 @@ public abstract class Car {
     public void setMinutesLeft(int minutesLeft) {
         this.minutesLeft = minutesLeft;
     }
-    
+
     public boolean getIsPaying() {
         return isPaying;
     }
@@ -51,6 +51,6 @@ public abstract class Car {
     public void tick() {
         minutesLeft--;
     }
-    
+
     public abstract Color getColor();
 }

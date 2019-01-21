@@ -8,7 +8,7 @@ public class Location {
     private int id;
 
     /**
-     * Constructor for objects of class Garage.Location
+     * Constructor for objects of class  Location
      */
     public Location(int id, int floor, int row, int place) {
         this.floor = floor;

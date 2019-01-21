@@ -1,5 +1,6 @@
 package Garage;
 
+import Garage.Car.Car;
 import MyComponents.MyLabel;
 
 import javax.swing.*;

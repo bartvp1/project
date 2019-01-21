@@ -1,4 +1,6 @@
-package Garage;
+package Garage.Car;
+
+import Garage.Car.Car;
 
 import java.util.LinkedList;
 import java.util.Queue;
