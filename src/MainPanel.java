@@ -18,10 +18,10 @@ class MainPanel extends JPanel {
 
     ArrayList<JPanel> panels = new ArrayList<>();
 
+
     void init() {
         setLayout(null);
         setBackground(new Color(55, 57, 63));
-
 
         GarageView garageView = new GarageView();
         garageView.setBounds(500, 25, 900, 425);

@@ -6,6 +6,7 @@ public class SummaryModel {
     private int passCars;
     private int normalCars;
     private int reservedCars;
+    private int reservedLocations;
     private String currentDay;
 
     public int getReservedCars() {
@@ -85,5 +86,13 @@ public class SummaryModel {
 
     public int getNormalCars() {
         return normalCars;
+    }
+
+    public void setReservedLocation(int numberOfReservedLocations) {
+        this.reservedLocations = numberOfReservedLocations;
+    }
+
+    public int getReservedLocations() {
+        return reservedLocations;
     }
 }

@@ -7,7 +7,7 @@ import java.util.Iterator;
 public class GarageController implements Runnable {
     Thread thread = new Thread(this);
     private boolean running = true;
-    private int ticks = 50;
+    private int ticks = 10;
     private GarageModel garageModel;
 
     public GarageController(GarageModel garageModel) {
@@ -24,6 +24,7 @@ public class GarageController implements Runnable {
         while (it.hasNext()) {
             Reservation res = (Reservation) it.next();
             Boolean done = res.isReserved();
+
             if (res.getTime() - garageModel.getNowTime() < 60 && !done) {
                 Location loc = garageModel.getFirstFreeLocation("NORMAL");
                 garageModel.addReservedLocation(loc);
@@ -156,7 +157,7 @@ public class GarageController implements Runnable {
     }
 
     @Override
-        public void run() {
+    public void run() {
         while (running) {
             reserveLocations();
             garageModel.advanceTime();

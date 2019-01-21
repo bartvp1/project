@@ -98,6 +98,8 @@ public class ControlPanel extends JPanel {
         exitButton.setFont(new Font("Arial", Font.PLAIN, 20));
         exitButton.setForeground(new Color(0, 0, 0, 255));
         exitButton.addActionListener(e -> System.exit(0));
+
+        garage.addReservation(1, 2, 10);
     }
 
 
@@ -186,6 +188,8 @@ public class ControlPanel extends JPanel {
 
             setBackground(new Color(43, 48, 52));
             JSlider speedSlider = new JSlider();
+            speedSlider.setMaximum(25);
+            speedSlider.setMinimum(1);
             speedSlider.setValue(speedSlider.getMaximum() - garage.getTickPause());
 
             speedSlider.setOpaque(false);
@@ -206,9 +210,11 @@ public class ControlPanel extends JPanel {
             add(panel);
 
             speedSlider.addChangeListener(e -> {
-                int speed = speedSlider.getMaximum() - speedSlider.getValue();
-                speed = speed == 0 ? 1 : speed;
+                int speed = (speedSlider.getMaximum() + 1) - speedSlider.getValue();
+
+                System.out.println(speed);
                 garage.setTickPause(speed);
+                graphController.setTicks(speed);
             });
 
         }

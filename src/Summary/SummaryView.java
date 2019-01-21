@@ -50,7 +50,7 @@ public class SummaryView extends JPanel {
             dayLabels.put(days[i], label);
             add(label);
         }
-        System.out.println(totalCarsLabel.getHorizontalAlignment());
+
         JPanel panel = new JPanel(new GridLayout(0, 3, 25, 5));
         panel.setBounds(25, 100, 750, 125);
         panel.setOpaque(false);
@@ -113,6 +113,9 @@ public class SummaryView extends JPanel {
         totalCarBar.setValue(model.getTotalCars());
         passCarBar.setValue(model.getPassCars());
         normalCarBar.setValue(model.getNormalCars());
+
+
+        reservedCarBar.setMaximum(model.getReservedLocations());
         reservedCarBar.setValue(model.getReservedCars());
 
 

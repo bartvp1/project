@@ -62,6 +62,10 @@ public class GarageModel {
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
     }
 
+    public int getNumberOfReservedLocations() {
+        return reservedLocations.size();
+    }
+
     public void setController(GarageController controller) {
         this.controller = controller;
     }
@@ -312,6 +316,11 @@ public class GarageModel {
 //    public CarQueue getReservedCarQueue() {
 //        return paymentCarQueue;
 //    }
+
+    public void addReservation(int day, int hour, int minute) {
+        Reservation reservation = new Reservation(day, hour, minute);
+        reservations.add(reservation);
+    }
 
 
     public int getExitSpeed() {
