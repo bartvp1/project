@@ -133,15 +133,14 @@ public class ControlPanel extends JPanel {
         g2.drawLine(getWidth() - 2, 0, getWidth() - 2, getHeight() - 4);
         g2.drawLine(0, getHeight() - 2, getWidth(), getHeight() - 2);
 
-//        g2.setStroke(new BasicStroke(.4f));
-//        g.drawLine(0, 0, getWidth() - 1, 0);
-//        g.drawLine(0, 0, 0, getHeight());
+        g2.setStroke(new BasicStroke(.4f));
+        g.drawLine(0, 0, getWidth() - 1, 0);
+        g.drawLine(0, 0, 0, getHeight());
     }
 
     class ChartSettings extends JPanel {
         //todo: snelheid van de grafiek, welke auto's je wilt zien en misschien een layout verandering?
         JButton fillMode = new JButton("Fill");
-        JSlider speedSlider = new JSlider();
         JPanel panel = new JPanel(new BorderLayout());
 
         ChartSettings() {
@@ -151,24 +150,9 @@ public class ControlPanel extends JPanel {
             add(panel);
             panel.setOpaque(false);
 
-            panel.add(new JLabel("Snelheid", JLabel.CENTER), BorderLayout.NORTH);
-            panel.add(new JLabel("Langzaam"), BorderLayout.WEST);
-            panel.add(speedSlider, BorderLayout.CENTER);
-            panel.add(new JLabel("Snel"), BorderLayout.EAST);
-
-
-            add(fillMode);
+            panel.add(fillMode);
             fillMode.addActionListener(e -> graphController.toggleFillMode());
-            speedSlider.setValue(speedSlider.getMaximum() - graphController.getTicks());
-            speedSlider.addChangeListener(e -> {
-                int sliderValue = speedSlider.getValue();
 
-                sliderValue = 100 - sliderValue;
-                if (sliderValue <= 0) {
-                    sliderValue = 1;
-                }
-                graphController.setTicks(sliderValue);
-            });
         }
 
 
@@ -206,13 +190,11 @@ public class ControlPanel extends JPanel {
 
             panel.add(speedSlider, BorderLayout.CENTER);
 
-
             add(panel);
 
             speedSlider.addChangeListener(e -> {
                 int speed = (speedSlider.getMaximum() + 1) - speedSlider.getValue();
 
-                System.out.println(speed);
                 garage.setTickPause(speed);
                 graphController.setTicks(speed);
             });
