@@ -2,6 +2,7 @@ package Control;
 
 import Garage.GarageModel;
 import Graph.GraphController;
+import MyComponents.CheckBox;
 import MyComponents.MyLabel;
 
 import javax.swing.*;
@@ -33,7 +34,6 @@ public class ControlPanel extends JPanel {
         super(null);
         this.garage = garage;
         this.graphController = graph;
-
     }
 
     /**
@@ -65,10 +65,8 @@ public class ControlPanel extends JPanel {
 
         //  Panel waar de settings staan
         settingsPanel = new JPanel(new CardLayout());
-
         int settingsX = categoryPanel.getWidth() + categoryPanel.getX() + 10;
         settingsPanel.setBounds(settingsX, titleLabel.getHeight() + 10, getWidth() - settingsX - 10, getHeight() - titleLabel.getHeight() - 30);
-
         settingsPanel.setOpaque(false);
         add(settingsPanel);
 
@@ -140,25 +138,41 @@ public class ControlPanel extends JPanel {
 
     class ChartSettings extends JPanel {
         //todo: snelheid van de grafiek, welke auto's je wilt zien en misschien een layout verandering?
-        JButton fillMode = new JButton("Fill");
-        JPanel panel = new JPanel(new BorderLayout());
+
+        JPanel panel = new JPanel(new GridLayout(1, 0));
+        JCheckBox fillMode = new JCheckBox("1", true);
 
         ChartSettings() {
-            super(new GridLayout(5, 1));
-            setOpaque(false);
+            super(null);
 
-            add(panel);
+            setOpaque(false);
+            panel.setPreferredSize(new Dimension(50, 50));
+            panel.setSize(100, 10);
             panel.setOpaque(false);
 
-            panel.add(fillMode);
-            fillMode.addActionListener(e -> graphController.toggleFillMode());
+
+            fillMode.setFont(new Font("Dubai Light", Font.PLAIN, 50));
+            fillMode.setForeground(Color.WHITE);
+            fillMode.setOpaque(false);
+//            fillMode.setBounds(100, 100, 100, 100);
+
+            panel.setOpaque(false);
+
+//            add(fillMode);
+
+            fillMode.addActionListener(e -> {
+                graphController.toggleFillMode();
+                fillMode.repaint();
+            });
+
+            CheckBox myCheckBox = new CheckBox(true);
+            myCheckBox.setSize(15.0);
+            myCheckBox.setBounds(100, 100, 100, 100);
+            add(myCheckBox);
+
 
         }
 
-
-        void createSpeedSlider() {
-
-        }
     }
 
     class SimulatorSettings extends JPanel {

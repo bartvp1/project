@@ -123,9 +123,11 @@ public class GraphView extends JPanel {
 
         g.setColor(Color.BLACK);
         double bottomY = (getHeight() - 25 - 10);
-        double x = model.getLines("Normal").get(model.getLines("Normal").size() - 1).getX2();
+        temp = new ArrayList<>(model.getLines("Normal"));
+        double x = temp.get(temp.size() - 1).getX2();
         Line2D frontLine = new Line2D.Double(x, 10, x, bottomY);
         g.draw(frontLine);
+        model.getLines("Normal");
     }
 
     @Override
