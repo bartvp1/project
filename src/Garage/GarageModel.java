@@ -459,4 +459,9 @@ public class GarageModel {
     public void setEnterSpeed(int speed) {
         enterSpeed = speed;
     }
+
+    public void setExitSpeed(int speed) {
+        exitSpeed = speed;
+    }
+
 }
