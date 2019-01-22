@@ -455,4 +455,8 @@ public class GarageModel {
     public void setTickPause(int ticks) {
         controller.setTickPause(ticks);
     }
+
+    public void setEnterSpeed(int speed) {
+        enterSpeed = speed;
+    }
 }

@@ -233,9 +233,40 @@ public class ControlPanel extends JPanel {
     }
 
     class ControlSettings extends JPanel {
-        //todo: Controls van de control panel, als er niks in hoeft kan deze weg.
         ControlSettings() {
-            setBackground(Color.BLUE);
+                super(new GridLayout(10, 1));
+                setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+                setBackground(new Color(43, 48, 52));
+                JSlider enterSpeedSlider = new JSlider();
+                enterSpeedSlider.setMaximum(20);
+                enterSpeedSlider.setMinimum(0);
+                enterSpeedSlider.setValue(garage.getEnterSpeed());
+
+                enterSpeedSlider.setOpaque(false);
+
+                //Panel
+                JPanel panelEnterspeed = new JPanel(new BorderLayout(10, 0));
+                panelEnterspeed.setOpaque(false);
+
+            panelEnterspeed.add(new MyLabel("Entrance: " + enterSpeedSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH,0);
+                panelEnterspeed.add(new MyLabel("0", JLabel.CENTER, "description"), BorderLayout.WEST);
+                panelEnterspeed.add(new MyLabel("20", JLabel.CENTER, "description"), BorderLayout.EAST);
+
+                panelEnterspeed.add(enterSpeedSlider, BorderLayout.CENTER);
+
+                add(panelEnterspeed);
+            for (int i = 0; i < panelEnterspeed.getComponentCount(); i++) {
+                System.out.println(panelEnterspeed.getComponent(i).getName());
+            }
+                enterSpeedSlider.addChangeListener(e -> {
+                    int speed = enterSpeedSlider.getValue();
+                    garage.setEnterSpeed(speed);
+
+                    panelEnterspeed.remove(0);
+                    panelEnterspeed.add(new MyLabel("Entrance: " + enterSpeedSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH,0);
+
+                });
         }
     }
 
