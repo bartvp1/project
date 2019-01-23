@@ -222,7 +222,6 @@ public class GarageModel {
             day -= 7;
             week++;
         }
-
         String day_string;
         switch (day) {
             case 0:
@@ -479,5 +478,10 @@ public class GarageModel {
         this.maxEntranceQueue = maxEntranceQueue;
     }
 
+
+
+    public void setExitSpeed(int speed) {
+        exitSpeed = speed;
+    }
 
 }
