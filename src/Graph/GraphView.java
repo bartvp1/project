@@ -21,31 +21,35 @@ public class GraphView extends JPanel {
     }
 
     public void init() {
-//        setBackground(new Color(55, 57, 63));
         setBackground(new Color(47, 49, 54));
         setLocation(0, (model.getScreenHeight() / 4) * 3);
         setSize(model.getScreenWidth(), model.getScreenHeight() / 4);
     }
 
+    /**
+     * @param g graphics waarop wordt getekent
+     *          Tekent de nummers links verticaal van boven naar beneden (540 - 0)
+     */
     private void drawValueNumbers(Graphics2D g) {
-
         for (int i = 0; i <= 10; i++) {
             g.setColor(Color.WHITE);
             g.drawString(Integer.toString((10 - i) * 60), 5, (i * 25) - 10);
         }
-
     }
 
+    /**
+     * @param g graphics waarop wordt getekent
+     *          Tekent de verticale en horizontale lijnen van de grafiek.
+     */
     private void drawGrid(Graphics2D g) {
         //Vertical Lines
         int i = 0;
         int beginX = model.getStartingX();
-        double dayWidth = (double) (getWidth() / 7);
+        double dayWidth = (double) ((getWidth() - beginX) / 7);
         int gridSize = 25;
         int beginY = 10;
         int rows = 10;
-        for (int x = beginX; x < getWidth(); x += dayWidth) {
-            int count = (x - beginX) / gridSize;
+        for (int x = beginX; x < (getWidth() - beginX); x += dayWidth) {
             if (x == beginX) {
                 g.setStroke(new BasicStroke(3));
                 g.setColor(new Color(0, 0, 0, 255));
@@ -74,60 +78,56 @@ public class GraphView extends JPanel {
         }
     }
 
+    /**
+     * @param g graphics waarop wordt getekent
+     *          Als fillMode aan staat wordt eerst de vulling getekent
+     *          Daarna de lijnen en daarna de zwarte lijn vooraan
+     */
     private void drawLines(Graphics2D g) {
-        g.setStroke(new BasicStroke(2));
         boolean fillMode = model.getFillMode();
+
         // All Cars
-        g.setColor(new Color(0, 50, 0, 100));
-        ArrayList<Line2D> temp = new ArrayList<>(model.getLines("Total"));
-        Iterator<Line2D> it = temp.iterator();
+        if (fillMode) {
+            g.setColor(model.getColor("Total", true));
+            g.fill(model.getPath("Total"));
+
+            g.setColor(model.getColor("Normal", true));
+            g.fill(model.getPath("Normal"));
+
+            g.setColor(model.getColor("Pass", true));
+            g.fill(model.getPath("Pass"));
+        }
+
+        ArrayList<Line2D> totalLines = new ArrayList<>(model.getLines("Total"));
+        ArrayList<Line2D> normalLines = new ArrayList<>(model.getLines("Normal"));
+        ArrayList<Line2D> passLines = new ArrayList<>(model.getLines("Pass"));
+
+        Iterator<Line2D> totalIterator = totalLines.iterator();
+        Iterator<Line2D> normalIterator = normalLines.iterator();
+        Iterator<Line2D> passIterator = passLines.iterator();
+
+        g.setStroke(new BasicStroke(2));
         try {
-            it.forEachRemaining(g::draw);
+            g.setColor(model.getColor("Total", false));
+            totalIterator.forEachRemaining(g::draw);
+
+            g.setColor(model.getColor("Normal", false));
+            normalIterator.forEachRemaining(g::draw);
+
+            g.setColor(model.getColor("Pass", false));
+            passIterator.forEachRemaining(g::draw);
         } catch (ConcurrentModificationException e) {
             e.printStackTrace();
         }
 
-        if (fillMode) {
-            g.setColor(new Color(0, 255, 0, 100));
-            g.fill(model.getTotalPath());
-        }
-
-        g.setColor(new Color(100, 0, 0, 255));
-        temp = new ArrayList<>(model.getLines("Normal"));
-        it = temp.iterator();
-        try {
-            it.forEachRemaining(g::draw);
-
-        } catch (ConcurrentModificationException e) {
-            e.printStackTrace();
-        }
-
-        if (fillMode) {
-            g.setColor(new Color(255, 0, 0, 100));
-            g.fill(model.getPathFill());
-        }
-        g.setColor(new Color(0, 0, 100, 255));
-        temp = new ArrayList<>(model.getLines("Pass"));
-        it = temp.iterator();
-        try {
-            it.forEachRemaining(g::draw);
-
-        } catch (ConcurrentModificationException e) {
-            e.printStackTrace();
-        }
-
-        if (fillMode) {
-            g.setColor(new Color(0, 0, 255, 100));
-            g.fill(model.getPassPath());
-        }
 
         g.setColor(Color.BLACK);
         double bottomY = (getHeight() - 25 - 10);
-        temp = new ArrayList<>(model.getLines("Normal"));
-        double x = temp.get(temp.size() - 1).getX2();
-        Line2D frontLine = new Line2D.Double(x, 10, x, bottomY);
-        g.draw(frontLine);
-        model.getLines("Normal");
+        if (normalLines.size() > 0) {
+            double x = normalLines.get(normalLines.size() - 1).getX2();
+            Line2D frontLine = new Line2D.Double(x, 10, x, bottomY);
+            g.draw(frontLine);
+        }
     }
 
     @Override
@@ -142,9 +142,8 @@ public class GraphView extends JPanel {
         drawGrid(g2);
 
         g2.setColor(new Color(0, 0, 0, 255));
-        g2.setStroke(new BasicStroke(5));
+        g2.setStroke(new BasicStroke(1));
         g2.drawLine(0, 0, getWidth() - 1, 0);
-
     }
 
 

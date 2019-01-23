@@ -118,10 +118,6 @@ public class SummaryView extends JPanel {
         reservedCarBar.setMaximum(model.getReservedLocations());
         reservedCarBar.setValue(model.getReservedCars());
 
-
-//        dayNameLabel.setText(dayNameText + model.getDayName());
-
-
         timeLabel.setText(model.getHours() + ":" + model.getMinutes());
 
         for (String day : days) {
@@ -131,7 +127,6 @@ public class SummaryView extends JPanel {
             label.setForeground(color);
         }
 
-//        repaint();
 
         String hours = Integer.toString(model.getHours());
         String minutes = Integer.toString(model.getMinutes());

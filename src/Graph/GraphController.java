@@ -39,7 +39,7 @@ public class GraphController implements Runnable {
             graphModel.nextValue("Total", garage.getTotalCars());
             graphModel.nextValue("Pass", garage.getNumberOfPassCars());
             graphModel.nextValue("Normal", garage.getNumberOfNormalCars());
-
+            graphModel.setCurrentWeek(garage.getWeek());
             graphModel.update();
 
             try {

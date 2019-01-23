@@ -5,6 +5,8 @@ import Garage.GarageView;
 import Graph.GraphController;
 import Graph.GraphModel;
 import Graph.GraphView;
+import QueuesSummary.QueueSummaryModel;
+import QueuesSummary.QueueSummaryView;
 import Summary.SummaryController;
 import Summary.SummaryModel;
 import Summary.SummaryView;
@@ -52,9 +54,20 @@ class MainPanel extends JPanel {
         panels.add(controlPanel);
 
 
+        QueueSummaryView queueSummaryView = new QueueSummaryView();
+        QueueSummaryModel queueSummaryModel = new QueueSummaryModel(queueSummaryView);
+        queueSummaryView.setLocation(controlPanel.getWidth() + garageView.getWidth() + 75, 25);
+        queueSummaryView.setSize(getToolkit().getScreenSize().width - controlPanel.getWidth() - garageView.getWidth() - 100, controlPanel.getHeight());
+
+
+        add(queueSummaryView);
+
+        queueSummaryView.init();
+
+
         SummaryView summaryView = new SummaryView();
         SummaryModel summaryModel = new SummaryModel(summaryView);
-        SummaryController summaryController = new SummaryController(summaryModel, garageModel);
+        SummaryController summaryController = new SummaryController(summaryModel, garageModel, queueSummaryModel);
 
 
         int height = controlPanel.getHeight() - garageView.getHeight() - garageView.getY();

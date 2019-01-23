@@ -249,7 +249,7 @@ public class ControlPanel extends JPanel {
                 JPanel panelEnterspeed = new JPanel(new BorderLayout(10, 0));
                 panelEnterspeed.setOpaque(false);
 
-            panelEnterspeed.add(new MyLabel("Entrance: " + enterSpeedSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH,0);
+                panelEnterspeed.add(new MyLabel("Entrance: " + enterSpeedSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH,0);
                 panelEnterspeed.add(new MyLabel("0", JLabel.CENTER, "description"), BorderLayout.WEST);
                 panelEnterspeed.add(new MyLabel("20", JLabel.CENTER, "description"), BorderLayout.EAST);
 

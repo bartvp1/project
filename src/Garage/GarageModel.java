@@ -9,6 +9,7 @@ public class GarageModel {
     private int numberOfRows;
     private int numberOfFloors;
     private int numberOfPlaces;
+    private int week = 0;
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
@@ -17,6 +18,7 @@ public class GarageModel {
     private int numberOfNormalCars = 0;
     private int numberOfReservedCars = 0;
     private int enterSpeed = 3; // number of cars that can enter per minute
+    private int maxEntranceQueue = 10;
     private int paymentSpeed = 7; // number of cars that can pay per minute
     private int exitSpeed = 5; // number of cars that can leave per minute
 
@@ -152,6 +154,10 @@ public class GarageModel {
         }
     }
 
+    public int getWeek() {
+        return week;
+    }
+
     public Location getFirstFreeLocation(String type) {
         int start_at = reservedLocationsPass;
         if (type == "PASS") {
@@ -214,7 +220,9 @@ public class GarageModel {
         }
         while (day > 6) {
             day -= 7;
+            week++;
         }
+
         String day_string;
         switch (day) {
             case 0:
@@ -397,7 +405,10 @@ public class GarageModel {
         switch (type) {
             case "NORMAL":
                 for (int i = 0; i < numberOfCars; i++) {
-                    entranceCarQueue.addCar(new CarNormal());
+                    if (entranceCarQueue.carsInQueue() < getMaxEntranceQueue()) {
+                        entranceCarQueue.addCar(new CarNormal());
+                    }
+
                 }
                 break;
             case "PASS":
@@ -459,4 +470,14 @@ public class GarageModel {
     public void setEnterSpeed(int speed) {
         enterSpeed = speed;
     }
+
+    public int getMaxEntranceQueue() {
+        return maxEntranceQueue;
+    }
+
+    public void setMaxEntranceQueue(int maxEntranceQueue) {
+        this.maxEntranceQueue = maxEntranceQueue;
+    }
+
+
 }

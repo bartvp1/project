@@ -13,6 +13,7 @@ public class GraphModel {
     private boolean fillMode = true;
     private int STARTING_X = 40;
     private boolean nextWeek = false;
+    private int currentWeek;
 
     private int prevDay = 0;
     private HashMap<String, ArrayList<Line2D>> linesMap;
@@ -23,6 +24,10 @@ public class GraphModel {
 
     private GraphView graphView;
     private GarageModel garage;
+
+    private Color normalColor = new Color(50, 0, 0, 100);
+    private Color totalColor = new Color(0, 50, 0, 100);
+    private Color PassColor = new Color(0, 0, 50, 100);
 
     public GraphModel(GraphView graphView, GarageModel garage) {
         this.graphView = graphView;
@@ -43,6 +48,32 @@ public class GraphModel {
         fillMap.put("Normal", new ArrayList<>());
 
         this.garage = garage;
+    }
+
+    public Color getColor(String type, boolean filling) {
+        int r = 0;
+        int g = 0;
+        int b = 0;
+        int a = 100;
+        switch (type) {
+            case "Normal":
+                r = 50;
+                break;
+            case "Pass":
+                b = 50;
+                break;
+            case "Total":
+                g = 50;
+                break;
+        }
+
+        if (filling) {
+            r *= 5;
+            g *= 5;
+            b *= 5;
+        }
+
+        return new Color(r, g, b, a);
     }
 
     private void reset() {
@@ -96,9 +127,8 @@ public class GraphModel {
             }
         }
 
-        if (nextX < prevX) {
-
-
+        if (nextWeek) {
+            System.out.println("Resetting grap. PrevX: " + prevX + " nextX: " + nextX);
             reset();
             return;
         }
@@ -117,6 +147,7 @@ public class GraphModel {
             totalCarPoints.add(points);
         }
 
+
         addLine(str, prevX, prevY, currentX, currentY);
     }
 
@@ -127,10 +158,9 @@ public class GraphModel {
     }
 
     private double getX() {
-
         prevDay = garage.getDay();
         double sum = 40;
-        double dayWidth = graphView.getSize().getWidth() / 7;
+        double dayWidth = (graphView.getSize().getWidth() - STARTING_X) / 7;
         double hourWidth = (dayWidth / 24);
         double minuteWidth = hourWidth / 60;
         sum += dayWidth * garage.getDay();
@@ -145,7 +175,7 @@ public class GraphModel {
         ArrayList<Line2D> lines = linesMap.get(str);
         lines.add(line);
 
-//        addFill(str, pX, pY, x, y);
+
     }
 
     void toggleFillMode() {
@@ -156,61 +186,58 @@ public class GraphModel {
         return normalCarPoints;
     }
 
-    public Path2D getPathFill() {
-        double bottomY = graphView.getHeight() - 25 - 10;
-        ArrayList<Line2D> _normalLines = new ArrayList<>(linesMap.get("Normal"));
-        Path2D normalPath = new Path2D.Double();
-        if (_normalLines.size() > 0) {
+//    public Path2D getPathFill() {
+//        double bottomY = graphView.getHeight() - 25 - 10;
+//        ArrayList<Line2D> _normalLines = new ArrayList<>(linesMap.get("Normal"));
+//        Path2D normalPath = new Path2D.Double();
+//        if (_normalLines.size() > 0) {
+//
+//            Line2D firstLine = _normalLines.get(0);
+//            double _x = firstLine.getX1();
+//            double _y = firstLine.getY1();
+//            normalPath.moveTo(_x, _y);
+//            for (Line2D line : _normalLines) {
+//                normalPath.lineTo(line.getX2(), line.getY2());
+//            }
+//            Line2D lastLine = _normalLines.get(_normalLines.size() - 1);
+//            normalPath.lineTo(lastLine.getX2(), bottomY);
+//            normalPath.lineTo(getStartingX(), bottomY);
+//            normalPath.closePath();
+//        } else {
+//            System.out.println("No Path");
+//        }
+//
+//
+//        return normalPath;
+//    }
+//
+//    public Path2D getPassPath() {
+//        double bottomY = graphView.getHeight() - 25 - 10;
+//        Path2D passPath = new Path2D.Double();
+//        ArrayList<Line2D> _passLines = new ArrayList<>(linesMap.get("Pass"));
+//        if (_passLines.size() > 0) {
+//            Line2D firstLine = _passLines.get(0);
+//            double _x = firstLine.getX1();
+//            double _y = firstLine.getY1();
+//            passPath.moveTo(_x, _y);
+//            for (Line2D line : _passLines) {
+//                passPath.lineTo(line.getX2(), line.getY2());
+//            }
+//            Line2D lastLine = _passLines.get(_passLines.size() - 1);
+//            passPath.lineTo(lastLine.getX2(), bottomY);
+//            passPath.lineTo(getStartingX(), bottomY);
+//            passPath.closePath();
+//        }
+//
+//
+//        return passPath;
+//    }
 
-            Line2D firstLine = _normalLines.get(0);
-            double _x = firstLine.getX1();
-            double _y = firstLine.getY1();
-            normalPath.moveTo(_x, _y);
-            for (Line2D line : _normalLines) {
-                normalPath.lineTo(line.getX2(), line.getY2());
-            }
-            Line2D lastLine = _normalLines.get(_normalLines.size() - 1);
-            normalPath.lineTo(lastLine.getX2(), bottomY);
-            normalPath.lineTo(getStartingX(), bottomY);
-            normalPath.closePath();
-        } else {
-            System.out.println("No Path");
-        }
-
-
-        return normalPath;
-    }
-
-//    Path2D normalPath;
-//    Path2D passPath;
-//    Path2D totalPath;
-
-    public Path2D getPassPath() {
-        double bottomY = graphView.getHeight() - 25 - 10;
-        Path2D passPath = new Path2D.Double();
-        ArrayList<Line2D> _passLines = new ArrayList<>(linesMap.get("Pass"));
-        if (_passLines.size() > 0) {
-            Line2D firstLine = _passLines.get(0);
-            double _x = firstLine.getX1();
-            double _y = firstLine.getY1();
-            passPath.moveTo(_x, _y);
-            for (Line2D line : _passLines) {
-                passPath.lineTo(line.getX2(), line.getY2());
-            }
-            Line2D lastLine = _passLines.get(_passLines.size() - 1);
-            passPath.lineTo(lastLine.getX2(), bottomY);
-            passPath.lineTo(getStartingX(), bottomY);
-            passPath.closePath();
-        }
-
-
-        return passPath;
-    }
-
-    public Path2D getTotalPath() {
+    public Path2D getPath(String type) {
         double bottomY = graphView.getHeight() - 25 - 10;
         Path2D normalPath = new Path2D.Double();
-        ArrayList<Line2D> _totalLines = new ArrayList<>(linesMap.get("Total"));
+        ArrayList<Line2D> _totalLines = new ArrayList<>(linesMap.get(type));
+
         if (_totalLines.size() > 0) {
             Line2D firstLine = _totalLines.get(0);
 
@@ -225,10 +252,31 @@ public class GraphModel {
             normalPath.lineTo(getStartingX(), bottomY);
             normalPath.closePath();
         }
-
-
         return normalPath;
     }
+//
+//    public Path2D getTotalPath() {
+//        double bottomY = graphView.getHeight() - 25 - 10;
+//        Path2D normalPath = new Path2D.Double();
+//        ArrayList<Line2D> _totalLines = new ArrayList<>(linesMap.get("Total"));
+//        if (_totalLines.size() > 0) {
+//            Line2D firstLine = _totalLines.get(0);
+//
+//            double _x = firstLine.getX1();
+//            double _y = firstLine.getY1();
+//            normalPath.moveTo(_x, _y);
+//            for (Line2D line : _totalLines) {
+//                normalPath.lineTo(line.getX2(), line.getY2());
+//            }
+//            Line2D lastLine = _totalLines.get(_totalLines.size() - 1);
+//            normalPath.lineTo(lastLine.getX2(), bottomY);
+//            normalPath.lineTo(getStartingX(), bottomY);
+//            normalPath.closePath();
+//        }
+//
+//
+//        return normalPath;
+//    }
 
 //    private void addFill(String str, double pX, double pY, double x, double y) {
 //        double bottomY = graphView.getHeight() - 25 - 10;
@@ -303,4 +351,10 @@ public class GraphModel {
         graphView.repaint();
     }
 
+    public void setCurrentWeek(int currentWeek) {
+        if (this.currentWeek != currentWeek) {
+            nextWeek = true;
+        }
+        this.currentWeek = currentWeek;
+    }
 }
