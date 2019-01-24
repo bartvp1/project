@@ -43,7 +43,7 @@ public class GarageModel {
     private GarageController controller;
     private int nowTime;
 
-    private int reservedLocationsPass = 120;
+    private int reservedPassLocations = 120;
 
     public GarageModel(GarageView garageView) {
         this.garageView = garageView;
@@ -98,11 +98,11 @@ public class GarageModel {
     }
 
     public int getReservedLocationsPass() {
-        return reservedLocationsPass;
+        return reservedPassLocations;
     }
 
     public void setReservedLocationsPass(int reservedLocationsPass) {
-        this.reservedLocationsPass = reservedLocationsPass;
+        this.reservedPassLocations = reservedLocationsPass;
     }
 
     public int getTotalCars() {
@@ -159,7 +159,7 @@ public class GarageModel {
     }
 
     public Location getFirstFreeLocation(String type) {
-        int start_at = reservedLocationsPass;
+        int start_at = reservedPassLocations;
         if (type == "PASS") {
             start_at = 0;
         }
@@ -200,9 +200,9 @@ public class GarageModel {
     }
 
     private void reservedForPass() {
-        reservedLocationsPass = 120;
+        reservedPassLocations = 120;
         if (day == 5 || day == 6) {
-            reservedLocationsPass = 10;
+            reservedPassLocations = 10;
         }
     }
 

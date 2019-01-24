@@ -1,6 +1,7 @@
 package Control;
 
 import Garage.GarageModel;
+import Garage.Reservation;
 import Graph.GraphController;
 import MyComponents.CheckBox;
 import MyComponents.MyLabel;
@@ -22,7 +23,7 @@ import java.awt.*;
  */
 public class ControlPanel extends JPanel {
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private String[] categories = {"Simulator", "Chart", "Control Panel", "About"};
+    private String[] categories = {"Simulator", "Reservations", "Chart","Control Panel", "About"};
 
     private GraphController graphController;
     private JPanel settingsPanel;
@@ -76,6 +77,7 @@ public class ControlPanel extends JPanel {
         settingsPanel.add(new ChartSettings(), "Chart");
         SimulatorSettings simSet = new SimulatorSettings();
         settingsPanel.add(simSet, "Simulator");
+        settingsPanel.add(new ReservationPanel(), "Reservations");
         settingsPanel.add(new ControlSettings(), "Control Panel");
         settingsPanel.add(new AboutSettings(), "About");
 
@@ -181,35 +183,46 @@ public class ControlPanel extends JPanel {
         SimulatorSettings() {
             super(new GridLayout(10, 1));
             setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-
-
             setBackground(new Color(43, 48, 52));
-            JSlider speedSlider = new JSlider();
-            speedSlider.setMaximum(25);
-            speedSlider.setMinimum(1);
-            speedSlider.setValue(speedSlider.getMaximum() - garage.getTickPause());
 
+            JSlider speedSlider = new JSlider(0,3,0);
+
+            speedSlider.setMinorTickSpacing(1);
+            speedSlider.setMajorTickSpacing(3);
+            speedSlider.setPaintTicks(true);
+            speedSlider.setSnapToTicks(true);
             speedSlider.setOpaque(false);
-
             JPanel panel = new JPanel(new BorderLayout(10, 0));
 
-
             panel.setOpaque(false);
-
 
             panel.add(new MyLabel("Tijd", JLabel.CENTER, "title_small"), BorderLayout.NORTH);
             panel.add(new MyLabel("Langzaam", JLabel.CENTER, "description"), BorderLayout.WEST);
             panel.add(new MyLabel("Snel", JLabel.CENTER, "description"), BorderLayout.EAST);
 
             panel.add(speedSlider, BorderLayout.CENTER);
-
             add(panel);
 
             speedSlider.addChangeListener(e -> {
-                int speed = (speedSlider.getMaximum() + 1) - speedSlider.getValue();
+                int pause = speedSlider.getValue();
+                int newTickPause = 100;
+                switch(pause){
+                    case 0:
+                        newTickPause = 100;
+                        break;
+                    case 1:
+                        newTickPause = 20;
+                        break;
+                    case 2:
+                        newTickPause = 5;
+                        break;
+                    case 3:
+                        newTickPause = 1;
+                        break;
+                }
 
-                garage.setTickPause(speed);
-                graphController.setTicks(speed);
+                garage.setTickPause(newTickPause);
+                graphController.setTicks(newTickPause);
             });
 
         }
@@ -230,6 +243,35 @@ public class ControlPanel extends JPanel {
 
         }
     }
+    class ReservationPanel extends JPanel {
+        //todo: Reserveringen kunnen toegevoegd worden met dit menu
+        ReservationPanel() {
+            super(new GridLayout(10, 1));
+            setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+            setBackground(new Color(43, 48, 52));
+
+            JPanel panel = new JPanel(new BorderLayout(10, 0));
+            panel.setOpaque(false);
+
+            String[] days = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
+            JComboBox daySelector = new JComboBox(days);
+
+            JFormattedTextField hour = new JFormattedTextField(0);
+            JFormattedTextField minute = new JFormattedTextField(0);
+
+            panel.add(new MyLabel("Reservering toevoegen", JLabel.CENTER, "title_small"), BorderLayout.NORTH);
+            panel.add(new MyLabel("Day: ", JLabel.CENTER, "description"), BorderLayout.WEST);
+
+            //panel.add(new MyLabel("Hour", JLabel.CENTER, "description"), BorderLayout.WEST);
+            //panel.add(new MyLabel("Minute", JLabel.CENTER, "description"), BorderLayout.WEST);
+
+            panel.add(daySelector, BorderLayout.CENTER);
+            panel.add(hour, BorderLayout.SOUTH);
+            //panel.add(minute, BorderLayout.SOUTH);
+            add(panel);
+        }
+
+    }
 
     class ControlSettings extends JPanel {
         ControlSettings() {
@@ -238,53 +280,47 @@ public class ControlPanel extends JPanel {
             setBackground(new Color(43, 48, 52));
 
 
-
-
-
             //Panel
             JPanel panel = new JPanel(new BorderLayout(10, 0));
             panel.setOpaque(false);
 
-            panel.add(new MyLabel("Waiting in Q: " + garage.getEntranceCarQueue().carsInQueue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH,0);
+            panel.add(new MyLabel("Waiting in Q: " + garage.getEntranceCarQueue().carsInQueue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
 
 
             add(panel);
 
 
+            JSlider enterSpeedSlider = new JSlider();
+            enterSpeedSlider.setMaximum(20);
+            enterSpeedSlider.setMinimum(0);
+            enterSpeedSlider.setValue(garage.getEnterSpeed());
+            enterSpeedSlider.setOpaque(false);
 
-                JSlider enterSpeedSlider = new JSlider();
-                enterSpeedSlider.setMaximum(20);
-                enterSpeedSlider.setMinimum(0);
-                enterSpeedSlider.setValue(garage.getEnterSpeed());
-                enterSpeedSlider.setOpaque(false);
+            //Panel
+            JPanel panelEnterspeed = new JPanel(new BorderLayout(10, 0));
+            panelEnterspeed.setOpaque(false);
 
-                //Panel
-                JPanel panelEnterspeed = new JPanel(new BorderLayout(10, 0));
-                panelEnterspeed.setOpaque(false);
+            panelEnterspeed.add(new MyLabel("Entrance: " + enterSpeedSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
+            panelEnterspeed.add(new MyLabel("0", JLabel.CENTER, "description"), BorderLayout.WEST);
+            panelEnterspeed.add(new MyLabel("20", JLabel.CENTER, "description"), BorderLayout.EAST);
+            panelEnterspeed.add(enterSpeedSlider, BorderLayout.CENTER);
 
-                panelEnterspeed.add(new MyLabel("Entrance: " + enterSpeedSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH,0);
-                panelEnterspeed.add(new MyLabel("0", JLabel.CENTER, "description"), BorderLayout.WEST);
-                panelEnterspeed.add(new MyLabel("20", JLabel.CENTER, "description"), BorderLayout.EAST);
-                panelEnterspeed.add(enterSpeedSlider, BorderLayout.CENTER);
-
-                add(panelEnterspeed);
-                enterSpeedSlider.addChangeListener(e -> {
-                    int speed = enterSpeedSlider.getValue();
-                    garage.setEnterSpeed(speed);
-                    panel.updateUI();
-                    panelEnterspeed.remove(0);
-                    panelEnterspeed.add(new MyLabel("Entrance: " + enterSpeedSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH,0);
+            add(panelEnterspeed);
+            enterSpeedSlider.addChangeListener(e -> {
+                int speed = enterSpeedSlider.getValue();
+                garage.setEnterSpeed(speed);
+                panel.updateUI();
+                panelEnterspeed.remove(0);
+                panelEnterspeed.add(new MyLabel("Entrance: " + enterSpeedSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
 
 
-                    panel.removeAll();
-                    panel.add(new MyLabel("Waiting in Q: " + garage.getEntranceCarQueue().carsInQueue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH,0);
+                panel.removeAll();
+                panel.add(new MyLabel("Waiting in Q: " + garage.getEntranceCarQueue().carsInQueue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
 
-                });
+            });
 
-                
-                
 
-                //exits
+            //exits
             JSlider totalExitsSlider = new JSlider();
             totalExitsSlider.setMaximum(20);
             totalExitsSlider.setMinimum(0);
@@ -295,7 +331,7 @@ public class ControlPanel extends JPanel {
             JPanel panelTotalExits = new JPanel(new BorderLayout(10, 0));
             panelTotalExits.setOpaque(false);
 
-            panelTotalExits.add(new MyLabel("Exits: " + totalExitsSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH,0);
+            panelTotalExits.add(new MyLabel("Exits: " + totalExitsSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
             panelTotalExits.add(new MyLabel("0", JLabel.CENTER, "description"), BorderLayout.WEST);
             panelTotalExits.add(new MyLabel("20", JLabel.CENTER, "description"), BorderLayout.EAST);
             panelTotalExits.add(totalExitsSlider, BorderLayout.CENTER);
@@ -306,16 +342,16 @@ public class ControlPanel extends JPanel {
                 garage.setExitSpeed(speed);
 
                 panelTotalExits.remove(0);
-                panelTotalExits.add(new MyLabel("Exits: " + totalExitsSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH,0);
+                panelTotalExits.add(new MyLabel("Exits: " + totalExitsSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
 
 
                 panel.removeAll();
-                panel.add(new MyLabel("Waiting in Q: " + garage.getEntranceCarQueue().carsInQueue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH,0);
+                panel.add(new MyLabel("Waiting in Q: " + garage.getEntranceCarQueue().carsInQueue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
 
             });
 
-                panel.removeAll();
-                panel.add(new MyLabel("Waiting in Q: " + garage.getEntranceCarQueue().carsInQueue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH,0);
+            panel.removeAll();
+            panel.add(new MyLabel("Waiting in Q: " + garage.getEntranceCarQueue().carsInQueue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
         }
     }
 

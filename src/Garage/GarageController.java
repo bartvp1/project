@@ -7,7 +7,7 @@ import java.util.Iterator;
 public class GarageController implements Runnable {
     Thread thread = new Thread(this);
     private boolean running = true;
-    private int ticks = 10;
+    private int ticks = 100;
     private GarageModel garageModel;
 
     public GarageController(GarageModel garageModel) {
