@@ -8,6 +8,8 @@ import MyComponents.MyLabel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Control Panel beheert de controls
@@ -246,29 +248,54 @@ public class ControlPanel extends JPanel {
     class ReservationPanel extends JPanel {
         //todo: Reserveringen kunnen toegevoegd worden met dit menu
         ReservationPanel() {
-            super(new GridLayout(10, 1));
+            super(new GridLayout(15, 5));
             setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-            setBackground(new Color(43, 48, 52));
-
-            JPanel panel = new JPanel(new BorderLayout(10, 0));
-            panel.setOpaque(false);
+            //setBackground(new Color(43, 48, 52));
+            setBackground(new Color(0x454545));
 
             String[] days = {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
-            JComboBox daySelector = new JComboBox(days);
+            Integer[] hours = new Integer[24];
+            Integer[] minutes = new Integer[60];
+            for(int i=0;i<24;i++){hours[i]=i;}
+            for(int i=0;i<60;i++){minutes[i]=i;}
 
-            JFormattedTextField hour = new JFormattedTextField(0);
-            JFormattedTextField minute = new JFormattedTextField(0);
+            JPanel title = new JPanel();
+            JPanel panel = new JPanel();
+            title.setOpaque(false);
+            panel.setOpaque(false);
 
-            panel.add(new MyLabel("Reservering toevoegen", JLabel.CENTER, "title_small"), BorderLayout.NORTH);
-            panel.add(new MyLabel("Day: ", JLabel.CENTER, "description"), BorderLayout.WEST);
+            title.add(new MyLabel("Reservering toevoegen", JLabel.CENTER, "title_small"), BorderLayout.NORTH);
 
-            //panel.add(new MyLabel("Hour", JLabel.CENTER, "description"), BorderLayout.WEST);
-            //panel.add(new MyLabel("Minute", JLabel.CENTER, "description"), BorderLayout.WEST);
+            panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
 
-            panel.add(daySelector, BorderLayout.CENTER);
-            panel.add(hour, BorderLayout.SOUTH);
-            //panel.add(minute, BorderLayout.SOUTH);
+            JComboBox daySelect = new JComboBox(days);
+            JComboBox hourSelect = new JComboBox(hours);
+            JComboBox minuteSelect = new JComboBox(minutes);
+            JButton button = new JButton("add");
+            daySelect.setMaximumSize(new Dimension(80,20));
+            hourSelect.setMaximumSize(new Dimension(40,20));
+            minuteSelect.setMaximumSize(new Dimension(40,20));
+            button.setMaximumSize(new Dimension(40,20));
+
+            panel.add(daySelect);
+            panel.add(new MyLabel(" at ", JLabel.CENTER, "description"));
+            panel.add(hourSelect);
+            panel.add(new MyLabel(" : ", JLabel.CENTER, "description"));
+            panel.add(minuteSelect);
+            panel.add(Box.createRigidArea(new Dimension(5,0)));
+            panel.add(button);
+
+
+            add(title);
             add(panel);
+
+            button.addActionListener(e ->  {
+                    int day = daySelect.getSelectedIndex();
+                    int hour = hourSelect.getSelectedIndex();
+                    int minute = minuteSelect.getSelectedIndex();
+                    garage.addReservation(day,hour,minute);
+            });
+
         }
 
     }

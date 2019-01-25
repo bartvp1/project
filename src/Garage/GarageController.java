@@ -24,8 +24,8 @@ public class GarageController implements Runnable {
         while (it.hasNext()) {
             Reservation res = (Reservation) it.next();
             Boolean done = res.isReserved();
-
-            if (res.getTime() - garageModel.getNowTime() < 60 && !done) {
+            int deltaTime = res.getTime() - garageModel.getNowTime();
+            if (deltaTime < 60 && deltaTime > 0 && !done) {
                 Location loc = garageModel.getFirstFreeLocation("NORMAL");
                 garageModel.addReservedLocation(loc);
                 res.setIsReserved(true);

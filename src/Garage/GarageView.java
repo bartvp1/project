@@ -45,7 +45,7 @@ public class GarageView extends JPanel {
                 Car car = garageModel.getCarAt(loc);
                 Color color = car != null ? car.getColor() : i < garageModel.getReservedLocationsPass() ? new Color(100, 180, 250) : new Color(255, 180, 180);
                 if (garageModel.getReservedLocations().contains(loc)) {
-                    color = new Color(170, 255, 170);
+                    color = new Color(255, 250, 150);
                 }
 
                 g2.setColor(color);
