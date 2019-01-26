@@ -2,9 +2,9 @@ import Control.ControlPanel;
 import Garage.GarageController;
 import Garage.GarageModel;
 import Garage.GarageView;
-import Graph.GraphController;
-import Graph.GraphModel;
-import Graph.GraphView;
+import CarGraph.GraphController;
+import CarGraph.GraphModel;
+import CarGraph.GraphView;
 import QueuesSummary.QueueSummaryModel;
 import QueuesSummary.QueueSummaryView;
 import Summary.SummaryController;
@@ -57,7 +57,7 @@ class MainPanel extends JPanel {
         QueueSummaryView queueSummaryView = new QueueSummaryView();
         QueueSummaryModel queueSummaryModel = new QueueSummaryModel(queueSummaryView);
         queueSummaryView.setLocation(controlPanel.getWidth() + garageView.getWidth() + 75, 25);
-        queueSummaryView.setSize(getToolkit().getScreenSize().width - controlPanel.getWidth() - garageView.getWidth() - 100, controlPanel.getHeight());
+        queueSummaryView.setSize(getToolkit().getScreenSize().width - controlPanel.getWidth() - garageView.getWidth() - 100, controlPanel.getHeight()-275);
 
 
         add(queueSummaryView);

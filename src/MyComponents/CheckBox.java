@@ -1,7 +1,5 @@
 package MyComponents;
 
-import Graph.GraphController;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;

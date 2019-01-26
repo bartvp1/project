@@ -1,7 +1,7 @@
 package Control;
 
 import Garage.GarageModel;
-import Graph.GraphController;
+import CarGraph.GraphController;
 import MyComponents.MyLabel;
 
 import javax.swing.*;

@@ -1,4 +1,4 @@
-package Graph;
+package CarGraph;
 
 import javax.swing.*;
 import java.awt.*;
