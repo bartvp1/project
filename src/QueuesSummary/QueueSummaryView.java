@@ -19,7 +19,7 @@ public class QueueSummaryView extends JPanel {
 
     public void init() {
         setBackground(new Color(47, 49, 54));
-        MyLabel titleLabel = new MyLabel("Rijen", JLabel.CENTER, "Title");
+        MyLabel titleLabel = new MyLabel("Car Queues", JLabel.CENTER, "Title");
 
         titleLabel.setBounds(0, 0, getWidth(), 50);
 //        titleLabel.setFont(new Font("Dubai Light", Font.PLAIN, 25));

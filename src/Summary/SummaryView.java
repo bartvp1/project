@@ -38,7 +38,7 @@ public class SummaryView extends JPanel {
 
     public void init() {
         setBackground(new Color(47, 49, 54));
-        MyLabel title = new MyLabel("Overzicht", JLabel.CENTER, "Title");
+        MyLabel title = new MyLabel("Overview", JLabel.CENTER, "Title");
         title.setBounds(0, 0, getWidth(), 50);
         add(title);
 
