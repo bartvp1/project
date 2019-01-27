@@ -19,14 +19,8 @@ public class GarageModel extends Model {
     private int numberOfNormalCars = 0;
     private int numberOfReservedCars = 0;
     private int enterSpeed = 3; // number of cars that can enter per minute
-    private int maxEntranceQueue = 10;
-    private int paymentSpeed = 7; // number of cars that can pay per minute
     private int exitSpeed = 5; // number of cars that can leave per minute
 
-    int weekDayArrivals = 100; // average number of arriving cars per hour
-    int weekendArrivals = 200; // average number of arriving cars per hour
-    int weekDayPassArrivals = 50; // average number of arriving cars per hour
-    int weekendPassArrivals = 5; // average number of arriving cars per hour
     private int numberOfOpenSpots;
 
     private CarQueue entranceCarQueue;
@@ -73,72 +67,45 @@ public class GarageModel extends Model {
         this.controller = controller;
     }
 
-    public GarageController getController() {
-        return controller;
-    }
 
-    public ArrayList<Location> getLocations() {
+    ArrayList<Location> getLocations() {
         return locations;
-    }
-
-    public void setLocations(ArrayList<Location> locations) {
-        this.locations = locations;
     }
 
     public void init() {
         addLocations();
-
     }
 
-    public ArrayList<Location> getReservedLocations() {
+    ArrayList<Location> getReservedLocations() {
         return reservedLocations;
     }
 
-    public void setReservedLocations(ArrayList<Location> reservedLocations) {
-        this.reservedLocations = reservedLocations;
-    }
 
-    public int getReservedLocationsPass() {
+    int getReservedLocationsPass() {
         return reservedPassLocations;
     }
 
-    public void setReservedLocationsPass(int reservedLocationsPass) {
-        this.reservedPassLocations = reservedLocationsPass;
-    }
 
     public int getTotalCars() {
         return this.numberOfCars;
     }
 
-    public int getNowTime() {
+    int getNowTime() {
         return nowTime;
     }
 
-    public void setNowTime(int nowTime) {
-        this.nowTime = nowTime;
-    }
 
-    public ArrayList<Reservation> getReservations() {
+    ArrayList<Reservation> getReservations() {
         return reservations;
     }
 
-    public void setReservations(ArrayList<Reservation> reservations) {
-        this.reservations = reservations;
-    }
 
-    public void addToPaymentCarQueue(Car car) {
+    void addToPaymentCarQueue(Car car) {
         paymentCarQueue.addCar(car);
     }
 
-    public void addToEntranceCarQueue(Car car) {
-        entranceCarQueue.addCar(car);
-    }
 
-    public void addToEntrancePassCarQueue(Car car) {
-        entrancePassQueue.addCar(car);
-    }
-
-    public void addToExitCarQueue(Car car) {
+    void addToExitCarQueue(Car car) {
         exitCarQueue.addCar(car);
     }
 
@@ -159,7 +126,7 @@ public class GarageModel extends Model {
         return week;
     }
 
-    public Location getFirstFreeLocation(String type) {
+    Location getFirstFreeLocation(String type) {
         int start_at = reservedPassLocations;
         if (type == "PASS") {
             start_at = 0;
@@ -180,7 +147,7 @@ public class GarageModel extends Model {
         return null;
     }
 
-    public Car getCarAt(Location location) {
+    Car getCarAt(Location location) {
         if (!locationIsValid(location)) {
             return null;
         }
@@ -192,12 +159,8 @@ public class GarageModel extends Model {
         if (location == null) {
             return false;
         }
-        int floor = location.getFloor();
-        int row = location.getRow();
-        int place = location.getPlace();
         int id = location.getId();
         return !(0 > id || id > locations.size());
-        //return !(floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces);
     }
 
     private void reservedForPass() {
@@ -252,12 +215,6 @@ public class GarageModel extends Model {
 
 
         nowTime = (day * 60 * 24) + (hour * 60) + minute;
-
-
-//        timeLabel.setText(day_string + " " + hour + ":" + minute);
-//
-//
-//        stats.setText(numberOfPassCars + " - " + numberOfNormalCars + " - " + "R_SPOTS: " + reservedLocations.size() + " - " + "R_CARS: " + numberOfReservedCars);
 
     }
 
@@ -321,9 +278,7 @@ public class GarageModel extends Model {
     public CarQueue getExitCarQueue() {
         return exitCarQueue;
     }
-//    public CarQueue getReservedCarQueue() {
-//        return paymentCarQueue;
-//    }
+
 
     public void addReservation(int day, int hour, int minute) {
         Reservation reservation = new Reservation(day, hour, minute);
@@ -335,20 +290,22 @@ public class GarageModel extends Model {
         return exitSpeed;
     }
 
-    public void addReservedLocation(Location location) {
+    void addReservedLocation(Location location) {
         this.reservedLocations.add(location);
     }
 
     public int getPaymentSpeed() {
-        return this.paymentSpeed;
+        // number of cars that can pay per minute
+        int paymentSpeed = 7;
+        return paymentSpeed;
     }
 
 
-    public void updateView() {
+    void updateView() {
         garageView.update(this);
     }
 
-    public CarQueue getEntrancePassQueue() {
+    CarQueue getEntrancePassQueue() {
         return entrancePassQueue;
     }
 
@@ -356,7 +313,7 @@ public class GarageModel extends Model {
         return entranceCarQueue;
     }
 
-    public boolean setCarAt(Location location, Car car) {
+    boolean setCarAt(Location location, Car car) {
         Car oldCar = getCarAt(location);
         if (oldCar == null && locationIsValid(location)) {
             cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
@@ -381,12 +338,20 @@ public class GarageModel extends Model {
         return enterSpeed;
     }
 
-    public int getNumberOfOpenSpots() {
+    int getNumberOfOpenSpots() {
         return numberOfOpenSpots;
     }
 
-    public int getNumberOfCars(String type) {
+    int getNumberOfCars(String type) {
+        // average number of arriving cars per hour
+        int weekDayArrivals = 100;
+        // average number of arriving cars per hour
+        int weekDayPassArrivals = 50;
         int weekDay = (type.equals("PASS")) ? weekDayPassArrivals : weekDayArrivals;
+        // average number of arriving cars per hour
+        int weekendPassArrivals = 5;
+        // average number of arriving cars per hour
+        int weekendArrivals = 200;
         int weekendDay = (type.equals("PASS")) ? weekendPassArrivals : weekendArrivals;
         Random random = new Random();
 
@@ -399,7 +364,7 @@ public class GarageModel extends Model {
         return (int) Math.round(numberOfCarsPerHour / 60);
     }
 
-    public void addArrivingCars(int numberOfCars, String type) {
+    void addArrivingCars(int numberOfCars, String type) {
         // Add the cars to the back of the queue.
 
         switch (type) {
@@ -423,11 +388,11 @@ public class GarageModel extends Model {
 
     }
 
-    public void decreaseNumberOfTotalCarsByOne() {
+    void decreaseNumberOfTotalCarsByOne() {
         this.numberOfCars--;
     }
 
-    public void increaseNumberOfTotalCarsByOne() {
+    void increaseNumberOfTotalCarsByOne() {
         this.numberOfCars++;
     }
 
@@ -447,9 +412,6 @@ public class GarageModel extends Model {
         return minute;
     }
 
-    public int getNumberOfCars() {
-        return numberOfCars;
-    }
 
     public int getNumberOfPassCars() {
         return numberOfPassCars;
@@ -459,9 +421,6 @@ public class GarageModel extends Model {
         return numberOfReservedCars;
     }
 
-    public int getTickPause() {
-        return controller.getTickPause();
-    }
 
     public void setTickPause(int ticks) {
         controller.setTickPause(ticks);
@@ -471,12 +430,9 @@ public class GarageModel extends Model {
         enterSpeed = speed;
     }
 
-    public int getMaxEntranceQueue() {
+    private int getMaxEntranceQueue() {
+        int maxEntranceQueue = 10;
         return maxEntranceQueue;
-    }
-
-    public void setMaxEntranceQueue(int maxEntranceQueue) {
-        this.maxEntranceQueue = maxEntranceQueue;
     }
 
 

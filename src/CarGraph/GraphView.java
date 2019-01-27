@@ -3,7 +3,6 @@ package CarGraph;
 import MyComponents.Model;
 import MyComponents.View;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
@@ -84,19 +83,19 @@ public class GraphView extends View {
      *          Daarna de lijnen en daarna de zwarte lijn vooraan
      */
     private void drawLines(Graphics2D g) {
-        boolean fillMode = model.getFillMode();
+
 
         // All Cars
-        if (fillMode) {
-            g.setColor(model.getColor("Total", true));
-            g.fill(model.getPath("Total"));
 
-            g.setColor(model.getColor("Normal", true));
-            g.fill(model.getPath("Normal"));
+        g.setColor(model.getColor("Total", true));
+        g.fill(model.getPath("Total"));
 
-            g.setColor(model.getColor("Pass", true));
-            g.fill(model.getPath("Pass"));
-        }
+        g.setColor(model.getColor("Normal", true));
+        g.fill(model.getPath("Normal"));
+
+        g.setColor(model.getColor("Pass", true));
+        g.fill(model.getPath("Pass"));
+
 
         ArrayList<Line2D> totalLines = new ArrayList<>(model.getLines("Total"));
         ArrayList<Line2D> normalLines = new ArrayList<>(model.getLines("Normal"));

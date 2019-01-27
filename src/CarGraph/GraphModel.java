@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GraphModel extends Model {
-    private boolean fillMode = true;
     private int STARTING_X = 40;
     private boolean nextWeek = false;
     private int currentWeek;
@@ -129,9 +128,6 @@ public class GraphModel extends Model {
         lines.add(line);
     }
 
-    void toggleFillMode() {
-        fillMode = !fillMode;
-    }
 
     Path2D getPath(String type) {
         double bottomY = graphView.getHeight() - 25 - 10;
@@ -162,10 +158,6 @@ public class GraphModel extends Model {
 
     int getStartingX() {
         return STARTING_X;
-    }
-
-    boolean getFillMode() {
-        return fillMode;
     }
 
     void update() {
