@@ -1,39 +1,28 @@
 package Summary;
 
+import MyComponents.Model;
 import MyComponents.MyLabel;
+import MyComponents.View;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
-public class SummaryView extends JPanel {
-    private String timeText = "Time: ";
-    private String dayNameText = "Day: ";
-    private String totalCarsText = "Total Cars: ";
-    private String passCarsText = "Pass Cars: ";
-    private String normalCarsText = "Normal Cars: ";
+public class SummaryView extends View {
 
     private MyLabel timeLabel = new MyLabel("", JLabel.CENTER, "Title_small");
-    private JLabel dayNameLabel = new JLabel(dayNameText, JLabel.RIGHT);
     private MyLabel totalCarsLabel = new MyLabel("", JLabel.LEFT, "Title_small");
     private MyLabel passCarLabel = new MyLabel("", JLabel.LEFT, "Title_small");
     private MyLabel normalCarLabel = new MyLabel("", JLabel.LEFT, "Title_small");
     private MyLabel reservedCarLabel = new MyLabel("", JLabel.LEFT, "Title_small");
-    String[] days = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"};
+    private String[] days = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"};
 
-    public SummaryView() {
-        super(null);
-    }
+    private HashMap<String, MyLabel> dayLabels = new HashMap<>();
 
-    String[] labelNames = {"TotalCars", "PassCars", "NormalCars", "ReservedCars"};
-    HashMap<String, JLabel> labels = new HashMap<>();
-
-    HashMap<String, MyLabel> dayLabels = new HashMap<>();
-
-    JProgressBar passCarBar = new JProgressBar(0, 540);
-    JProgressBar totalCarBar = new JProgressBar(0, 540);
-    JProgressBar normalCarBar = new JProgressBar(0, 540);
-    JProgressBar reservedCarBar = new JProgressBar(0, 540);
+    private JProgressBar passCarBar = new JProgressBar(0, 540);
+    private JProgressBar totalCarBar = new JProgressBar(0, 540);
+    private JProgressBar normalCarBar = new JProgressBar(0, 540);
+    private JProgressBar reservedCarBar = new JProgressBar(0, 540);
 
 
     public void init() {
@@ -99,44 +88,9 @@ public class SummaryView extends JPanel {
         timeLabel.setBounds(525, 50, getWidth() / 2, getHeight() - 50);
     }
 
-    String timeString;
-    SummaryModel model;
+    private String timeString;
+    private Model model;
 
-    void update(SummaryModel model) {
-        this.model = model;
-
-        normalCarLabel.setText(Integer.toString(model.getNormalCars()));
-        reservedCarLabel.setText(Integer.toString(model.getReservedCars()));
-        totalCarsLabel.setText(Integer.toString(model.getTotalCars()));
-        passCarLabel.setText(Integer.toString(model.getPassCars()));
-
-        totalCarBar.setValue(model.getTotalCars());
-        passCarBar.setValue(model.getPassCars());
-        normalCarBar.setValue(model.getNormalCars());
-
-
-        reservedCarBar.setMaximum(model.getReservedLocations());
-        reservedCarBar.setValue(model.getReservedCars());
-
-        timeLabel.setText(model.getHours() + ":" + model.getMinutes());
-
-        for (String day : days) {
-            MyLabel label = dayLabels.get(day);
-
-            Color color = day.equals(model.getDayName()) ? Color.WHITE : new Color(255, 255, 255, 25);
-            label.setForeground(color);
-        }
-
-
-        String hours = Integer.toString(model.getHours());
-        String minutes = Integer.toString(model.getMinutes());
-        hours = hours.length() <= 1 ? "0" + hours : hours;
-        minutes = minutes.length() <= 1 ? "0" + minutes : minutes;
-
-        timeString = hours + ":" + minutes;
-
-        repaint();
-    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -144,28 +98,51 @@ public class SummaryView extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        BasicStroke stroke = (BasicStroke) g2.getStroke();
-        g.setColor(new Color(0, 0, 0, 150));
-
-        g2.setColor(new Color(0, 0, 0, 150));
-        g2.setStroke(new BasicStroke(2));
-        g2.drawLine(getWidth() - 2, 0, getWidth() - 2, getHeight() - 4);
-        g2.drawLine(0, getHeight() - 2, getWidth(), getHeight() - 2);
-
 
         if (model != null) {
             g2.setFont(new Font("Arial", Font.PLAIN, 75));
             g2.setColor(Color.WHITE);
-
             g2.drawString(timeString, 600, getHeight() / 2 + 50);
+        }
+    }
 
+    @Override
+    protected void update(Model model) {
+        SummaryModel sModel = (SummaryModel) model;
+
+        this.model = model;
+
+        normalCarLabel.setText(Integer.toString(sModel.getNormalCars()));
+        reservedCarLabel.setText(Integer.toString(sModel.getReservedCars()));
+        totalCarsLabel.setText(Integer.toString(sModel.getTotalCars()));
+        passCarLabel.setText(Integer.toString(sModel.getPassCars()));
+
+        totalCarBar.setValue(sModel.getTotalCars());
+        passCarBar.setValue(sModel.getPassCars());
+        normalCarBar.setValue(sModel.getNormalCars());
+
+
+        reservedCarBar.setMaximum(sModel.getReservedLocations());
+        reservedCarBar.setValue(sModel.getReservedCars());
+
+        timeLabel.setText(sModel.getHours() + ":" + sModel.getMinutes());
+
+        for (String day : days) {
+            MyLabel label = dayLabels.get(day);
+
+            Color color = day.equals(sModel.getDayName()) ? Color.WHITE : new Color(255, 255, 255, 25);
+            label.setForeground(color);
         }
 
-        g.setColor(new Color(0, 0, 0, 150));
-        g2.setStroke(new BasicStroke(.4f));
-        g.drawLine(0, 0, getWidth() - 1, 0);
-        g.drawLine(0, 0, 0, getHeight());
-        g2.setStroke(stroke);
 
+        String hours = Integer.toString(sModel.getHours());
+        String minutes = Integer.toString(sModel.getMinutes());
+        hours = hours.length() <= 1 ? "0" + hours : hours;
+        minutes = minutes.length() <= 1 ? "0" + minutes : minutes;
+
+        timeString = hours + ":" + minutes;
+
+
+        repaint();
     }
 }

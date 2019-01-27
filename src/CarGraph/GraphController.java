@@ -1,31 +1,31 @@
 package CarGraph;
 
 import Garage.GarageModel;
+import MyComponents.Controller;
+import MyComponents.Model;
 
-public class GraphController implements Runnable {
+public class GraphController extends Controller implements Runnable {
     private int ticks = 10;
     private Thread thread = new Thread(this);
     private boolean running = true;
+    private Model garage;
 
-    private GraphModel graphModel;
-    private GarageModel garage;
 
-    public GraphController(GraphModel graphModel, GarageModel garage) {
-        this.graphModel = graphModel;
+    public GraphController(Model model) {
+        super(model);
+    }
+
+    public void setGarage(Model garage) {
         this.garage = garage;
     }
 
     public void toggleFillMode() {
-        graphModel.toggleFillMode();
+        ((GraphModel) model).toggleFillMode();
     }
 
     public void setTicks(int ticks) {
         this.ticks = ticks;
 
-    }
-
-    public int getTicks() {
-        return ticks;
     }
 
     public void init() {
@@ -36,11 +36,11 @@ public class GraphController implements Runnable {
     public void run() {
 
         while (running) {
-            graphModel.nextValue("Total", garage.getTotalCars());
-            graphModel.nextValue("Pass", garage.getNumberOfPassCars());
-            graphModel.nextValue("Normal", garage.getNumberOfNormalCars());
-            graphModel.setCurrentWeek(garage.getWeek());
-            graphModel.update();
+            ((GraphModel) model).nextValue("Total", ((GarageModel) garage).getTotalCars());
+            ((GraphModel) model).nextValue("Pass", ((GarageModel) garage).getNumberOfPassCars());
+            ((GraphModel) model).nextValue("Normal", ((GarageModel) garage).getNumberOfNormalCars());
+            ((GraphModel) model).setCurrentWeek(((GarageModel) garage).getWeek());
+            ((GraphModel) model).update();
 
             try {
                 Thread.sleep(this.ticks);

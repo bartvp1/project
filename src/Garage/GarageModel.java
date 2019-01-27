@@ -1,11 +1,12 @@
 package Garage;
 
 import Garage.Car.*;
+import MyComponents.Model;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GarageModel {
+public class GarageModel extends Model {
     private int numberOfRows;
     private int numberOfFloors;
     private int numberOfPlaces;
@@ -477,7 +478,6 @@ public class GarageModel {
     public void setMaxEntranceQueue(int maxEntranceQueue) {
         this.maxEntranceQueue = maxEntranceQueue;
     }
-
 
 
     public void setExitSpeed(int speed) {

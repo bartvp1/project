@@ -1,7 +1,7 @@
 package Control;
 
-import Garage.GarageModel;
 import CarGraph.GraphController;
+import Garage.GarageModel;
 import MyComponents.MyLabel;
 
 import javax.swing.*;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 public class ControlPanel extends JPanel {
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private String[] categories = {"Control Panel","Reservations","About"};
+    private String[] categories = {"Control Panel", "Reservations", "About"};
 
     private GraphController graphController;
     private GarageModel garage;
@@ -101,6 +101,23 @@ public class ControlPanel extends JPanel {
         exitButton.addActionListener(e -> System.exit(0));
     }
 
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+        g2.setColor(new Color(0, 0, 0, 150));
+        g2.setStroke(new BasicStroke(2));
+        g2.drawLine(getWidth() - 2, 0, getWidth() - 2, getHeight() - 4);
+        g2.drawLine(0, getHeight() - 2, getWidth(), getHeight() - 2);
+
+
+        g.setColor(new Color(0, 0, 0, 150));
+        g2.setStroke(new BasicStroke(.4f));
+        g.drawLine(0, 0, getWidth() - 1, 0);
+        g.drawLine(0, 0, 0, getHeight());
+    }
 
     /**
      * @param categoryPanel de categorypanel waar de categories staan
@@ -190,7 +207,7 @@ public class ControlPanel extends JPanel {
             //Panel
             JPanel enterSpeed = new JPanel(new BorderLayout(10, 0));
             enterSpeed.setOpaque(false);
-            JSlider enterSpeedSlider = new JSlider(0,20,garage.getEnterSpeed());
+            JSlider enterSpeedSlider = new JSlider(0, 20, garage.getEnterSpeed());
             enterSpeedSlider.setOpaque(false);
 
             enterSpeed.add(new MyLabel("Entering (cars/minute): " + enterSpeedSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
@@ -208,7 +225,7 @@ public class ControlPanel extends JPanel {
 
 
             //exits
-            JSlider totalExitsSlider = new JSlider(0,20,garage.getExitSpeed());
+            JSlider totalExitsSlider = new JSlider(0, 20, garage.getExitSpeed());
             totalExitsSlider.setOpaque(false);
 
             //Panel
@@ -266,7 +283,7 @@ public class ControlPanel extends JPanel {
             panel.add(new MyLabel(" : ", JLabel.CENTER, "description"));
             panel.add(minuteSelect);
             panel.add(Box.createRigidArea(new Dimension(45, 0)));
-            panel.add(button,BorderLayout.EAST);
+            panel.add(button, BorderLayout.EAST);
             super.add(panel);
 
             button.addActionListener(e -> {

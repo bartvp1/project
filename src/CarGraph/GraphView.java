@@ -1,5 +1,8 @@
 package CarGraph;
 
+import MyComponents.Model;
+import MyComponents.View;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -7,14 +10,11 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
-public class GraphView extends JPanel {
+public class GraphView extends View {
     private GraphModel model;
 
     private String[] dagen = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"};
 
-    public GraphView() {
-        super(null);
-    }
 
     void setModel(GraphModel model) {
         this.model = model;
@@ -147,4 +147,8 @@ public class GraphView extends JPanel {
     }
 
 
+    @Override
+    protected void update(Model model) {
+        repaint();
+    }
 }

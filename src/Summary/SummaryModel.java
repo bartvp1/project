@@ -1,19 +1,21 @@
 package Summary;
 
-public class SummaryModel {
-    private SummaryView summaryView;
+import MyComponents.Model;
+import MyComponents.View;
+
+public class SummaryModel extends Model {
+    private View summaryView;
     private int totalCars;
     private int passCars;
     private int normalCars;
     private int reservedCars;
     private int reservedLocations;
-    private String currentDay;
 
-    public int getReservedCars() {
+    int getReservedCars() {
         return reservedCars;
     }
 
-    public void setReservedCars(int reservedCars) {
+    void setReservedCars(int reservedCars) {
         this.reservedCars = reservedCars;
     }
 
@@ -34,14 +36,6 @@ public class SummaryModel {
         return minutes;
     }
 
-    public String getCurrentDay() {
-        return currentDay;
-    }
-
-    public void setCurrentDay(String currentDay) {
-        this.currentDay = currentDay;
-    }
-
     void setMinutes(int minutes) {
         this.minutes = minutes;
     }
@@ -55,13 +49,14 @@ public class SummaryModel {
     }
 
 
-    public SummaryModel(SummaryView summaryView) {
+    public SummaryModel(View summaryView) {
         this.summaryView = summaryView;
     }
 
 
     void update() {
-        this.summaryView.update(this);
+        SummaryView view = (SummaryView) summaryView;
+        view.update(this);
     }
 
     void setTotalCars(int totalCars) {
@@ -76,23 +71,23 @@ public class SummaryModel {
         this.normalCars = normalCars;
     }
 
-    public int getTotalCars() {
+    int getTotalCars() {
         return totalCars;
     }
 
-    public int getPassCars() {
+    int getPassCars() {
         return passCars;
     }
 
-    public int getNormalCars() {
+    int getNormalCars() {
         return normalCars;
     }
 
-    public void setReservedLocation(int numberOfReservedLocations) {
+    void setReservedLocation(int numberOfReservedLocations) {
         this.reservedLocations = numberOfReservedLocations;
     }
 
-    public int getReservedLocations() {
+    int getReservedLocations() {
         return reservedLocations;
     }
 }

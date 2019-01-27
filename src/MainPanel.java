@@ -1,10 +1,10 @@
+import CarGraph.GraphController;
+import CarGraph.GraphModel;
+import CarGraph.GraphView;
 import Control.ControlPanel;
 import Garage.GarageController;
 import Garage.GarageModel;
 import Garage.GarageView;
-import CarGraph.GraphController;
-import CarGraph.GraphModel;
-import CarGraph.GraphView;
 import QueuesSummary.QueueSummaryModel;
 import QueuesSummary.QueueSummaryView;
 import Summary.SummaryController;
@@ -39,7 +39,8 @@ class MainPanel extends JPanel {
 
         GraphView graphView = new GraphView();
         GraphModel graphModel = new GraphModel(graphView, garageModel);
-        GraphController graphController = new GraphController(graphModel, garageModel);
+        GraphController graphController = new GraphController(graphModel);
+        graphController.setGarage(garageModel);
         graphController.init();
         graphView.init();
         add(graphView);
@@ -57,7 +58,7 @@ class MainPanel extends JPanel {
         QueueSummaryView queueSummaryView = new QueueSummaryView();
         QueueSummaryModel queueSummaryModel = new QueueSummaryModel(queueSummaryView);
         queueSummaryView.setLocation(controlPanel.getWidth() + garageView.getWidth() + 75, 25);
-        queueSummaryView.setSize(getToolkit().getScreenSize().width - controlPanel.getWidth() - garageView.getWidth() - 100, controlPanel.getHeight()-275);
+        queueSummaryView.setSize(getToolkit().getScreenSize().width - controlPanel.getWidth() - garageView.getWidth() - 100, controlPanel.getHeight() - 275);
 
 
         add(queueSummaryView);
@@ -67,7 +68,10 @@ class MainPanel extends JPanel {
 
         SummaryView summaryView = new SummaryView();
         SummaryModel summaryModel = new SummaryModel(summaryView);
-        SummaryController summaryController = new SummaryController(summaryModel, garageModel, queueSummaryModel);
+        SummaryController summaryController = new SummaryController(summaryModel);
+        summaryController.setGarageModel(garageModel);
+        summaryController.setQueueSummaryModel(queueSummaryModel);
+//        SummaryController summaryController = new SummaryController(summaryModel, garageModel, queueSummaryModel);
 
 
         int height = controlPanel.getHeight() - garageView.getHeight() - garageView.getY();
@@ -77,7 +81,7 @@ class MainPanel extends JPanel {
         summaryView.setLocation(controlPanel.getWidth() + 50, garageView.getHeight() + 50);
         add(summaryView);
         summaryView.init();
-        summaryController.init();
+        summaryController.start();
         panels.add(summaryView);
 
 

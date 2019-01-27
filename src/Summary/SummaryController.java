@@ -1,49 +1,83 @@
 package Summary;
 
 import Garage.GarageModel;
+import MyComponents.Controller;
+import MyComponents.Model;
 import QueuesSummary.QueueSummaryModel;
 
-public class SummaryController implements Runnable {
+public class SummaryController extends Controller implements Runnable {
     private Thread thread = new Thread(this);
-    private boolean running = true;
-    private SummaryModel model;
-    private QueueSummaryModel queueSummaryModel;
-    GarageModel garageModel;
+    private Model queueSummaryModel;
+    private Model garageModel;
+    private boolean running = false;
 
-    public SummaryController(SummaryModel model, GarageModel garage, QueueSummaryModel queueSummaryModel) {
-        this.model = model;
-        this.garageModel = garage;
+
+    public SummaryController(Model model) {
+        super(model);
+    }
+
+    public void setGarageModel(Model garageModel) {
+        this.garageModel = garageModel;
+    }
+
+    public void setQueueSummaryModel(Model queueSummaryModel) {
         this.queueSummaryModel = queueSummaryModel;
     }
 
-    public void init() {
-        thread.start();
+
+    public void start() {
+        if (!running) {
+            thread = new Thread(this);
+            thread.start();
+            running = true;
+        } else {
+            System.out.println("Already running");
+        }
+    }
+
+    public void stop() {
+        if (running) {
+            running = false;
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            thread = null;
+        } else {
+            System.out.println("Not running");
+        }
     }
 
     @Override
     public void run() {
         while (running) {
+            SummaryModel sModel = (SummaryModel) model;
+            if (sModel != null) {
+                GarageModel gModel = (GarageModel) garageModel;
+                sModel.setNormalCars(gModel.getNumberOfNormalCars());
+                sModel.setPassCars(gModel.getNumberOfPassCars());
+                sModel.setTotalCars(gModel.getTotalCars());
+                sModel.setReservedCars(gModel.getNumberOfReservedCars());
+                sModel.setReservedLocation(gModel.getNumberOfReservedLocations());
+                sModel.setDayName(gModel.getDayName());
+                sModel.setHours(gModel.getHour());
+                sModel.setMinutes(gModel.getMinute());
+                sModel.update();
+            }
 
-            model.setNormalCars(garageModel.getNumberOfNormalCars());
-            model.setPassCars(garageModel.getNumberOfPassCars());
-            model.setTotalCars(garageModel.getTotalCars());
-            model.setReservedCars(garageModel.getNumberOfReservedCars());
-            model.setReservedLocation(garageModel.getNumberOfReservedLocations());
-            model.setDayName(garageModel.getDayName());
-            model.setHours(garageModel.getHour());
-            model.setMinutes(garageModel.getMinute());
+            QueueSummaryModel qModel = (QueueSummaryModel) queueSummaryModel;
+            if (qModel != null) {
+                GarageModel gModel = (GarageModel) garageModel;
+                qModel.setCurrentEntranceSize(gModel.getEntranceCarQueue().carsInQueue());
+                qModel.setCurrentExitSize(gModel.getExitCarQueue().carsInQueue());
+                qModel.setCurrentPaymentSize(gModel.getPaymentCarQueue().carsInQueue());
+                qModel.setMaxEntranceSize(gModel.getEnterSpeed());
+                qModel.setMaxExitSize(gModel.getExitSpeed());
+                qModel.setMaxPaymentSize(gModel.getPaymentSpeed());
+                qModel.update();
+            }
 
-            model.update();
-
-
-            queueSummaryModel.setCurrentEntranceSize(garageModel.getEntranceCarQueue().carsInQueue());
-            queueSummaryModel.setCurrentExitSize(garageModel.getExitCarQueue().carsInQueue());
-            queueSummaryModel.setCurrentPaymentSize(garageModel.getPaymentCarQueue().carsInQueue());
-            queueSummaryModel.setMaxEntranceSize(garageModel.getEnterSpeed());
-            queueSummaryModel.setMaxExitSize(garageModel.getExitSpeed());
-            queueSummaryModel.setMaxPaymentSize(garageModel.getPaymentSpeed());
-
-            queueSummaryModel.update();
 
             try {
                 Thread.sleep(50);

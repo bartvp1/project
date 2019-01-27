@@ -1,23 +1,27 @@
 package QueuesSummary;
 
-public class QueueSummaryModel {
-    int maxEntranceSize;
-    int currentEntranceSize;
-    int maxPaymentSize;
-    int currentPaymentSize;
-    int maxExitSize;
-    int currentExitSize;
-    QueueSummaryView view;
+import MyComponents.Model;
+import MyComponents.View;
 
-    public QueueSummaryModel(QueueSummaryView view) {
+public class QueueSummaryModel extends Model {
+    private int maxEntranceSize;
+    private int currentEntranceSize;
+    private int maxPaymentSize;
+    private int currentPaymentSize;
+    private int maxExitSize;
+    private int currentExitSize;
+    private View view;
+
+    public QueueSummaryModel(View view) {
         this.view = view;
     }
 
-    public void update(){
-        this.view.update(this);
+    public void update() {
+        QueueSummaryView qView = (QueueSummaryView) view;
+        qView.update(this);
     }
 
-    public int getMaxEntranceSize() {
+    int getMaxEntranceSize() {
         return maxEntranceSize;
     }
 
@@ -25,7 +29,7 @@ public class QueueSummaryModel {
         this.maxEntranceSize = maxEntranceSize;
     }
 
-    public int getCurrentEntranceSize() {
+    int getCurrentEntranceSize() {
         return currentEntranceSize;
     }
 
@@ -33,7 +37,7 @@ public class QueueSummaryModel {
         this.currentEntranceSize = currentEntranceSize;
     }
 
-    public int getMaxPaymentSize() {
+    int getMaxPaymentSize() {
         return maxPaymentSize;
     }
 
@@ -41,7 +45,7 @@ public class QueueSummaryModel {
         this.maxPaymentSize = maxPaymentSize;
     }
 
-    public int getCurrentPaymentSize() {
+    int getCurrentPaymentSize() {
         return currentPaymentSize;
     }
 
@@ -49,7 +53,7 @@ public class QueueSummaryModel {
         this.currentPaymentSize = currentPaymentSize;
     }
 
-    public int getMaxExitSize() {
+    int getMaxExitSize() {
         return maxExitSize;
     }
 
@@ -57,7 +61,7 @@ public class QueueSummaryModel {
         this.maxExitSize = maxExitSize;
     }
 
-    public int getCurrentExitSize() {
+    int getCurrentExitSize() {
         return currentExitSize;
     }
 
