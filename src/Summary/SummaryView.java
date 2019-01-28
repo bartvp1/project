@@ -67,7 +67,7 @@ public class SummaryView extends View {
         normalCarBar.setValue(500);
         normalCarBar.setForeground(Color.RED);
 
-        panel.add(new MyLabel("Totaal betalende auto's", JLabel.LEFT, "Title_small"));
+        panel.add(new MyLabel("Reguliere klanten", JLabel.LEFT, "Title_small"));
         panel.add(normalCarBar);
         panel.add(normalCarLabel);
 
@@ -141,7 +141,6 @@ public class SummaryView extends View {
         minutes = minutes.length() <= 1 ? "0" + minutes : minutes;
 
         timeString = hours + ":" + minutes;
-
 
         repaint();
     }

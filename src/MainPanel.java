@@ -80,7 +80,6 @@ class MainPanel extends JPanel {
         QueueSummaryModel queueSummaryModel = new QueueSummaryModel(queueSummaryView);
 
         add(queueSummaryView);
-
         queueSummaryView.init();
 
 
