@@ -1,6 +1,7 @@
 package Control;
 
 import CarGraph.GraphController;
+import Garage.FinancesController;
 import Garage.GarageModel;
 import MyComponents.MyLabel;
 
@@ -22,15 +23,17 @@ import java.util.ArrayList;
  */
 public class ControlPanel extends JPanel {
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private String[] categories = {"Control Panel", "Reservations", "About"};
+    private String[] categories = {"Control Panel", "Reservations", "Finances", "About"};
 
     private GraphController graphController;
     private GarageModel garage;
+    private FinancesController FC;
     private ArrayList<JButton> buttons = new ArrayList<>();
 
-    public ControlPanel(GarageModel garage, GraphController graph) {
+    public ControlPanel(GarageModel garage, FinancesController FC, GraphController graph) {
         super(null);
         this.garage = garage;
+        this.FC = FC;
         this.graphController = graph;
     }
 
@@ -71,11 +74,21 @@ public class ControlPanel extends JPanel {
         settingsPanel.setOpaque(false);
         super.add(settingsPanel);
 
+
+        //Panel met de finan
+        JPanel settingsPanel1 = new JPanel(new CardLayout());
+        int settingsX1 = categoryPanel.getWidth() + categoryPanel.getX() + 10;
+        settingsPanel1.setBounds(settingsX1, titleLabel.getHeight() + 10, getWidth() - settingsX1 - 10, getHeight() - titleLabel.getHeight() - 30);
+        settingsPanel1.setOpaque(false);
+        super.add(settingsPanel1);
+        
+
         createCategoryButtons(categoryPanel, settingsPanel);
 
         // De verschillende menu's toevoegen aan de settingspanel
         settingsPanel.add(new SimulatorSettings(), "Control Panel");
         settingsPanel.add(new ReservationPanel(), "Reservations");
+        settingsPanel.add(new FinancesPanel(), "Finances");
         settingsPanel.add(new AboutSettings(), "About");
 
         // De eerste panel die je ziet is de chart settings
@@ -304,6 +317,20 @@ public class ControlPanel extends JPanel {
             setBackground(new Color(0x454545));
             add(new MyLabel("About", JLabel.CENTER, "title_small"), BorderLayout.NORTH);
             add(new MyLabel("<html>Deze parkeersimulator is gemaakt door: <br><ul><li>Vincent Huisman</li><li>Riet van Noordt Wieringa</li><li>Jarno Steursma</li><li>Bart van Poele</li></ul> </html>", JLabel.CENTER, "description"));
+        }
+    }
+
+
+
+    class FinancesPanel extends JPanel {
+        //todo: Informatie over ons, dat we zo cool zijn enzo.
+        FinancesPanel() {
+            setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+            setBackground(new Color(0x454545));
+            add(new MyLabel("Finances", JLabel.CENTER, "title_small"), BorderLayout.NORTH);
+
+            add(new MyLabel(FC.getPriceNormal() + "", JLabel.CENTER, "description"));
+
         }
     }
 }
