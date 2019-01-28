@@ -9,9 +9,13 @@ public class GarageController implements Runnable {
     private boolean running = true;
     private int ticks = 100;
     private GarageModel garageModel;
+    private FinancesController FC;
 
-    public GarageController(GarageModel garageModel) {
+
+
+    public GarageController(GarageModel garageModel, FinancesController FC) {
         this.garageModel = garageModel;
+        this.FC = FC;
     }
 
     public void init() {
@@ -60,7 +64,15 @@ public class GarageController implements Runnable {
         int i = 0;
         while (garageModel.getPaymentCarQueue().carsInQueue() > 0 && i < garageModel.getPaymentSpeed()) {
             Car car = garageModel.getPaymentCarQueue().removeCar();
+
+
             // TODO Handle payment.
+            int timeStay = 0;
+            timeStay = (car.getMinutesStay() / 60);
+
+
+            FC.setTotalEarned(FC.getTotalEarned() + timeStay);
+
             carLeavesSpot(car);
             i++;
             if (car instanceof CarNormal) {

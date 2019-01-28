@@ -9,16 +9,31 @@ public class FinancesController extends Model {
     double pricePassHolders;
     double priceNormal;
 
+    int totalEarned;
+
+
+
     public FinancesController()
     {
          priceReservation = 2.5;
          pricePassHolders = 0;
          priceNormal = 3;
+         totalEarned = 0;
     }
 
     public int getTotalCars() {
         return totalCars;
     }
+
+
+    public int getTotalEarned() {
+        return totalEarned;
+    }
+
+    public void setTotalEarned(int totalEarned) {
+        this.totalEarned = totalEarned;
+    }
+
 
     public double getPriceReservation() {
         return priceReservation;
