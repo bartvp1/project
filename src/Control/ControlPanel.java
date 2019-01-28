@@ -26,7 +26,7 @@ public class ControlPanel extends JPanel {
 
     public void init() {
         setBackground(new Color(47, 49, 54));
-        setBounds(25, 25, 450, 700);
+//        setBounds(25, 25, 450, 700);
 
         JLabel titleLabel = new JLabel("Configuration", JLabel.CENTER);
         titleLabel.setBounds(0, 0, getWidth(), 50);

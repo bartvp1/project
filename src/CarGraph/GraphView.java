@@ -21,8 +21,8 @@ public class GraphView extends View {
 
     public void init() {
         setBackground(new Color(47, 49, 54));
-        setLocation(0, (model.getScreenHeight() / 4) * 3);
-        setSize(model.getScreenWidth(), model.getScreenHeight() / 4);
+//        setLocation(0, (model.getScreenHeight() / 4) * 3);
+//        setSize(model.getScreenWidth(), model.getScreenHeight() / 4);
     }
 
     /**
@@ -60,7 +60,7 @@ public class GraphView extends View {
 
             g.drawLine(x, beginY, x, getHeight() - gridSize - 10);
             g.setColor(Color.WHITE);
-            g.drawString(dagen[i], x + (int) dayWidth / 2, getHeight() - 10);
+            g.drawString(dagen[i], x + (int) dayWidth / 2 - 25, getHeight() - 10);
             i++;
         }
 

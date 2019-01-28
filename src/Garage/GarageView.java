@@ -15,7 +15,7 @@ public class GarageView extends JPanel {
         add(title);
 
         setBackground(new Color(47, 49, 54));
-        setBounds(500, 25, 900, 425);
+
         repaint();
 
     }

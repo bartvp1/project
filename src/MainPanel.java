@@ -16,13 +16,39 @@ import javax.swing.*;
 import java.awt.*;
 
 class MainPanel extends JPanel {
+    private static final int screenWidth;
+    private static final int screenHeight;
 
+
+    private static final int margin = 25;
+
+    private static final Rectangle graphBounds, controlBounds, simBounds, summaryBounds, queueBounds;
+
+    private static final int simHeight, simWidth;
+
+    static {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenWidth = screenSize.width;
+        screenHeight = screenSize.height;
+        simWidth = 900;
+        simHeight = 425;
+
+        graphBounds = new Rectangle(0, screenHeight - (screenHeight / 4), screenWidth, screenHeight / 4);
+        simBounds = new Rectangle((screenWidth / 2) - (simWidth / 2), margin, simWidth, simHeight);
+        controlBounds = new Rectangle(margin, margin, (screenWidth - simBounds.width) / 2 - (margin * 2), screenHeight - graphBounds.height - (margin * 2));
+        summaryBounds = new Rectangle(simBounds.x, simBounds.y + simBounds.height + margin, simBounds.width, screenHeight - graphBounds.height - simBounds.height - (margin * 3));
+        queueBounds = new Rectangle(simBounds.x + simBounds.width + margin, margin, screenWidth - controlBounds.width - simBounds.width - (margin * 4), simBounds.height);
+
+    }
 
     void init() {
         setLayout(null);
         setBackground(new Color(55, 57, 63));
 
+
         GarageView garageView = new GarageView();
+//        garageView.setBounds(simX, simY, simWidth, simHeight);
+        garageView.setBounds(simBounds);
         GarageModel garageModel = new GarageModel(garageView);
         GarageController garageController = new GarageController(garageModel);
         garageModel.setController(garageController);
@@ -33,6 +59,10 @@ class MainPanel extends JPanel {
         FinancesController financeController = new FinancesController();
 
         GraphView graphView = new GraphView();
+        graphView.setBounds(graphBounds);
+//        graphView.setBounds(graphX, graphY, graphWidth, graphHeight);
+//        graphView.setBounds(graphBounds);
+
         GraphModel graphModel = new GraphModel(graphView, garageModel);
         GraphController graphController = new GraphController(graphModel);
         graphController.setGarage(garageModel);
@@ -41,19 +71,19 @@ class MainPanel extends JPanel {
         add(graphView);
 
 
-//        ControlPanel controlPanel = new ControlPanel(garageModel, graphController);
         ControlPanel controlPanel = new ControlPanel(garageModel, financeController, graphController);
-//
-//        controlPanel.setLocation(25, 25);
-//        controlPanel.setSize(450, 700);
+//        controlPanel.setBounds(controlX, controlY, controlWidth, controlHeight);
+        controlPanel.setBounds(controlBounds);
         controlPanel.init();
         add(controlPanel);
 
 
         QueueSummaryView queueSummaryView = new QueueSummaryView();
+        queueSummaryView.setBounds(queueBounds);
         QueueSummaryModel queueSummaryModel = new QueueSummaryModel(queueSummaryView);
-        queueSummaryView.setLocation(controlPanel.getWidth() + garageView.getWidth() + 75, 25);
-        queueSummaryView.setSize(getToolkit().getScreenSize().width - controlPanel.getWidth() - garageView.getWidth() - 100, controlPanel.getHeight() - 275);
+
+//        queueSummaryView.setLocation(controlPanel.getWidth() + garageView.getWidth() + 75, 25);
+//        queueSummaryView.setSize(getToolkit().getScreenSize().width - controlPanel.getWidth() - garageView.getWidth() - 100, controlPanel.getHeight() - 275);
 
 
         add(queueSummaryView);
@@ -68,10 +98,7 @@ class MainPanel extends JPanel {
         summaryController.setQueueSummaryModel(queueSummaryModel);
 
 
-        int height = controlPanel.getHeight() - garageView.getHeight() - garageView.getY();
-
-        summaryView.setSize(garageView.getWidth(), height);
-        summaryView.setLocation(controlPanel.getWidth() + 50, garageView.getHeight() + 50);
+        summaryView.setBounds(summaryBounds);
         add(summaryView);
         summaryView.init();
         summaryController.start();
