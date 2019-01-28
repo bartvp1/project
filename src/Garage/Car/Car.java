@@ -8,12 +8,21 @@ public abstract class Car {
 
     private Location location;
     private int minutesLeft;
+    private int minutesStay;
     private boolean isPaying;
     private boolean hasToPay;
 
 
     public Car() {
 
+    }
+
+    public int getMinutesStay() {
+        return minutesStay;
+    }
+
+    public void setMinutesStay(int minutesStay) {
+        this.minutesStay = minutesStay;
     }
 
     public Location getLocation() {

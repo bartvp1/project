@@ -11,6 +11,7 @@ public class CarNormal extends Car {
     public CarNormal() {
         Random random = new Random();
         int stayMinutes = (int) (15 + random.nextFloat() * 3 * 60);
+        this.setMinutesStay(stayMinutes);
         this.setMinutesLeft(stayMinutes);
         this.setHasToPay(true);
     }

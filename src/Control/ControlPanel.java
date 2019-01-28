@@ -306,6 +306,7 @@ public class ControlPanel extends JPanel {
             add(new MyLabel( "Price P/H: €" +FC.getPriceNormal(), JLabel.CENTER, "description"));
             add(new MyLabel( "Price Passholders P/H: €" +FC.getPricePassHolders(), JLabel.CENTER, "description"));
             add(new MyLabel( "Price Reservation P/H: €" +FC.getPriceReservation(), JLabel.CENTER, "description"));
+            add(new MyLabel( "Total provit €" +FC.getTotalEarned(), JLabel.CENTER, "description"));
 
         }
     }

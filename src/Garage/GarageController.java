@@ -8,11 +8,15 @@ import java.util.Iterator;
 
 public class GarageController extends Controller {
     private int ticks = 100;
+    private FinancesController FC;
 
     public GarageController(Model model) {
         super(model);
     }
 
+    public void setFinanceController(FinancesController FC) {
+        this.FC = FC;
+    }
 
     private void reserveLocations() {
         Iterator it = ((GarageModel) model).getReservations().iterator();
@@ -56,6 +60,12 @@ public class GarageController extends Controller {
         while (((GarageModel) model).getPaymentCarQueue().carsInQueue() > 0 && i < ((GarageModel) model).getPaymentSpeed()) {
             Car car = ((GarageModel) model).getPaymentCarQueue().removeCar();
             // TODO Handle payment.
+            int timeStay = 0;
+            timeStay = (car.getMinutesStay() / 60);
+
+
+            FC.setTotalEarned(FC.getTotalEarned() + timeStay);
+
             carLeavesSpot(car);
             i++;
             if (car instanceof CarNormal) {

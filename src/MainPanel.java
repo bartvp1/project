@@ -50,7 +50,8 @@ class MainPanel extends JPanel {
 //        garageView.setBounds(simX, simY, simWidth, simHeight);
         garageView.setBounds(simBounds);
         GarageModel garageModel = new GarageModel(garageView);
-        GarageController garageController = new GarageController(garageModel);
+        FinancesController fc = new FinancesController();
+        GarageController garageController = new GarageController(garageModel, fc);
         garageModel.setController(garageController);
         garageController.start();
         garageModel.init();
