@@ -3,6 +3,7 @@ package Control;
 import CarGraph.GraphController;
 import Garage.FinancesController;
 import Garage.GarageModel;
+import MyComponents.MyButton;
 import MyComponents.MyLabel;
 
 import javax.swing.*;
@@ -10,12 +11,12 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class ControlPanel extends JPanel {
-    private String[] categories = {"Control Panel", "Reservations", "About"};
+    private String[] categories = {"Control", "Reserveren", "About"};
 
     private GraphController graphController;
     private GarageModel garage;
     private FinancesController FC;
-    private ArrayList<JButton> buttons = new ArrayList<>();
+    private ArrayList<MyButton> buttons = new ArrayList<>();
 
     public ControlPanel(GarageModel garage, FinancesController FC, GraphController graph) {
         super(null);
@@ -35,8 +36,8 @@ public class ControlPanel extends JPanel {
         add(titleLabel);
 
         //Panel met de Configuratie Tabs
-        JPanel categoryPanel = new JPanel(new GridLayout(8, 1, 0, 20));
-        categoryPanel.setBounds(10, titleLabel.getHeight() + 10, 100, 620);
+        JPanel categoryPanel = new JPanel(new GridLayout(10, 1, 0, 20));
+        categoryPanel.setBounds(10, titleLabel.getHeight() + 10, 120, 620);
         categoryPanel.setBackground(Color.DARK_GRAY);
         categoryPanel.setOpaque(false);
         add(categoryPanel);
@@ -60,14 +61,15 @@ public class ControlPanel extends JPanel {
         createCategoryButtons(categoryPanel, settingsPanel);
 
         // De verschillende menu's toevoegen aan de settingspanel
-        settingsPanel.add(new SimulatorSettings(), "Control Panel");
-        settingsPanel.add(new ReservationPanel(), "Reservations");
+        settingsPanel.add(new SimulatorSettings(), "Control");
+        settingsPanel.add(new ReservationPanel(), "Reserveren");
         settingsPanel.add(new FinancesPanel(), "Finances");
         settingsPanel.add(new AboutSettings(), "About");
 
         // De eerste panel die je ziet is de chart settings
         CardLayout cl = (CardLayout) settingsPanel.getLayout();
         cl.show(settingsPanel, "Control Panel");
+
 
         // leegje knopjes erin gooien zodat exitbutton onderaan kan staan
         for (int i = 0; i < 3; i++) {
@@ -76,13 +78,7 @@ public class ControlPanel extends JPanel {
             categoryPanel.add(p);
         }
         // exit button sluit alles af
-        JButton exitButton = new JButton("Exit");
-        exitButton.setBackground(new Color(225, 0, 0));
-        exitButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        exitButton.setForeground(new Color(0, 0, 0, 255));
-        exitButton.setBorder(null);
-        exitButton.setFocusPainted(false);
-        //exitButton.setAlignmentY(100);
+        MyButton exitButton = new MyButton("Exit");
         categoryPanel.add(exitButton);
 
         exitButton.addActionListener(e -> System.exit(0));
@@ -115,13 +111,9 @@ public class ControlPanel extends JPanel {
      */
     private void createCategoryButtons(JPanel categoryPanel, JPanel settingsPanel) {
         for (String s : categories) {
-            JButton button = new JButton(s);
+            MyButton button = new MyButton(s);
             buttons.add(button);
-            button.setFocusPainted(false);
-            button.setBorder(null);
-            button.setForeground(Color.WHITE);
-            button.setContentAreaFilled(true);
-            if (s.equals("Control Panel")) {
+            if (s.equals("Control")) {
                 button.setBackground(new Color(0x454545));
             } else {
                 button.setBackground(new Color(0x5D5D5D));
@@ -132,11 +124,14 @@ public class ControlPanel extends JPanel {
             button.addActionListener(e -> {
                 CardLayout cl = (CardLayout) settingsPanel.getLayout();
                 cl.show(settingsPanel, s);
+
                 for (JButton clickedButton : buttons) {
                     if (clickedButton.equals(button)) {
-                        clickedButton.setBackground(new Color(0x454545));
+                        clickedButton.setSelected(true);
+//                        clickedButton.setBackground(new Color(0x454545));
                     } else {
-                        clickedButton.setBackground(new Color(0x5D5D5D));
+                        clickedButton.setSelected(false);
+//                        clickedButton.setBackground(new Color(0x5D5D5D));
                     }
                 }
             });
@@ -295,7 +290,6 @@ public class ControlPanel extends JPanel {
     }
 
 
-
     class FinancesPanel extends JPanel {
         //todo: Informatie over ons, dat we zo cool zijn enzo.
         FinancesPanel() {
@@ -303,10 +297,10 @@ public class ControlPanel extends JPanel {
             setBackground(new Color(0x454545));
             add(new MyLabel("Finances", JLabel.CENTER, "title_small"), BorderLayout.NORTH);
 
-            add(new MyLabel( "Price P/H: €" +FC.getPriceNormal(), JLabel.CENTER, "description"));
-            add(new MyLabel( "Price Passholders P/H: €" +FC.getPricePassHolders(), JLabel.CENTER, "description"));
-            add(new MyLabel( "Price Reservation P/H: €" +FC.getPriceReservation(), JLabel.CENTER, "description"));
-            add(new MyLabel( "Total provit €" +FC.getTotalEarned(), JLabel.CENTER, "description"));
+            add(new MyLabel("Price P/H: €" + FC.getPriceNormal(), JLabel.CENTER, "description"));
+            add(new MyLabel("Price Passholders P/H: €" + FC.getPricePassHolders(), JLabel.CENTER, "description"));
+            add(new MyLabel("Price Reservation P/H: €" + FC.getPriceReservation(), JLabel.CENTER, "description"));
+            add(new MyLabel("Total provit €" + FC.getTotalEarned(), JLabel.CENTER, "description"));
 
         }
     }

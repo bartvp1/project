@@ -14,57 +14,74 @@ import Summary.SummaryView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 class MainPanel extends JPanel {
-    ControlPanel controlPanel;
+    private static final int screenWidth;
+    private static final int screenHeight;
 
-    ArrayList<JPanel> panels = new ArrayList<>();
 
+    private static final int margin = 25;
+
+    private static final Rectangle graphBounds, controlBounds, simBounds, summaryBounds, queueBounds;
+
+    private static final int simHeight, simWidth;
+
+    static {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenWidth = screenSize.width;
+        screenHeight = screenSize.height;
+        simWidth = 900;
+        simHeight = 425;
+
+        graphBounds = new Rectangle(0, screenHeight - (screenHeight / 4), screenWidth, screenHeight / 4);
+        simBounds = new Rectangle((screenWidth / 2) - (simWidth / 2), margin, simWidth, simHeight);
+        controlBounds = new Rectangle(margin, margin, (screenWidth - simBounds.width) / 2 - (margin * 2), screenHeight - graphBounds.height - (margin * 2));
+        summaryBounds = new Rectangle(simBounds.x, simBounds.y + simBounds.height + margin, simBounds.width, screenHeight - graphBounds.height - simBounds.height - (margin * 3));
+        queueBounds = new Rectangle(simBounds.x + simBounds.width + margin, margin, screenWidth - controlBounds.width - simBounds.width - (margin * 4), simBounds.height);
+
+    }
 
     void init() {
         setLayout(null);
         setBackground(new Color(55, 57, 63));
 
+
         GarageView garageView = new GarageView();
-        garageView.setBounds(500, 25, 900, 425);
+        garageView.setBounds(simBounds);
         GarageModel garageModel = new GarageModel(garageView);
         FinancesController fc = new FinancesController();
-        GarageController garageController = new GarageController(garageModel, fc);
+        GarageController garageController = new GarageController(garageModel);
+        garageController.setFinanceController(fc);
+
+
         garageModel.setController(garageController);
-        garageController.init();
+        garageController.start();
         garageModel.init();
         add(garageView);
-        garageView.setVisible(true);
 
         FinancesController financeController = new FinancesController();
 
         GraphView graphView = new GraphView();
+        graphView.setBounds(graphBounds);
         GraphModel graphModel = new GraphModel(graphView, garageModel);
         GraphController graphController = new GraphController(graphModel);
         graphController.setGarage(garageModel);
-        graphController.init();
+        graphController.start();
         graphView.init();
         add(graphView);
 
 
-        controlPanel = new ControlPanel(garageModel, financeController, graphController);
-
-        controlPanel.setLocation(25, 25);
-        controlPanel.setSize(450, 700);
+        ControlPanel controlPanel = new ControlPanel(garageModel, financeController, graphController);
+        controlPanel.setBounds(controlBounds);
         controlPanel.init();
         add(controlPanel);
-        panels.add(controlPanel);
 
 
         QueueSummaryView queueSummaryView = new QueueSummaryView();
+        queueSummaryView.setBounds(queueBounds);
         QueueSummaryModel queueSummaryModel = new QueueSummaryModel(queueSummaryView);
-        queueSummaryView.setLocation(controlPanel.getWidth() + garageView.getWidth() + 75, 25);
-        queueSummaryView.setSize(getToolkit().getScreenSize().width - controlPanel.getWidth() - garageView.getWidth() - 100, controlPanel.getHeight() - 275);
-
 
         add(queueSummaryView);
-
         queueSummaryView.init();
 
 
@@ -73,20 +90,12 @@ class MainPanel extends JPanel {
         SummaryController summaryController = new SummaryController(summaryModel);
         summaryController.setGarageModel(garageModel);
         summaryController.setQueueSummaryModel(queueSummaryModel);
-//        SummaryController summaryController = new SummaryController(summaryModel, garageModel, queueSummaryModel);
 
 
-        int height = controlPanel.getHeight() - garageView.getHeight() - garageView.getY();
-
-
-        summaryView.setSize(garageView.getWidth(), height);
-        summaryView.setLocation(controlPanel.getWidth() + 50, garageView.getHeight() + 50);
+        summaryView.setBounds(summaryBounds);
         add(summaryView);
         summaryView.init();
         summaryController.start();
-        panels.add(summaryView);
-
-
     }
 
 }

@@ -17,9 +17,7 @@ public class GarageView extends View {
         add(title);
 
         setBackground(new Color(47, 49, 54));
-
         repaint();
-
     }
 
     @Override
