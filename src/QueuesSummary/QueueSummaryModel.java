@@ -1,19 +1,16 @@
 package QueuesSummary;
 
+import Garage.GarageModel;
 import MyComponents.Model;
 import MyComponents.View;
 
 public class QueueSummaryModel extends Model {
-    private int maxEntranceSize;
-    private int currentEntranceSize;
-    private int maxPaymentSize;
-    private int currentPaymentSize;
-    private int maxExitSize;
-    private int currentExitSize;
     private View view;
+    private Model garage;
 
-    public QueueSummaryModel(View view) {
+    public QueueSummaryModel(View view, Model garage) {
         this.view = view;
+        this.garage = garage;
     }
 
     public void update() {
@@ -21,51 +18,16 @@ public class QueueSummaryModel extends Model {
         qView.update(this);
     }
 
-    int getMaxEntranceSize() {
-        return maxEntranceSize;
+    public int getEntranceSize(){
+        return ((GarageModel)garage).entranceCarQueue.carsInQueue();
     }
-
-    public void setMaxEntranceSize(int maxEntranceSize) {
-        this.maxEntranceSize = maxEntranceSize;
+    public int getEntrancePassSize(){
+        return ((GarageModel)garage).entrancePassQueue.carsInQueue();
     }
-
-    int getCurrentEntranceSize() {
-        return currentEntranceSize;
+    public int getPaymentSize(){
+        return ((GarageModel)garage).paymentCarQueue.carsInQueue();
     }
-
-    public void setCurrentEntranceSize(int currentEntranceSize) {
-        this.currentEntranceSize = currentEntranceSize;
-    }
-
-    int getMaxPaymentSize() {
-        return maxPaymentSize;
-    }
-
-    public void setMaxPaymentSize(int maxPaymentSize) {
-        this.maxPaymentSize = maxPaymentSize;
-    }
-
-    int getCurrentPaymentSize() {
-        return currentPaymentSize;
-    }
-
-    public void setCurrentPaymentSize(int currentPaymentSize) {
-        this.currentPaymentSize = currentPaymentSize;
-    }
-
-    int getMaxExitSize() {
-        return maxExitSize;
-    }
-
-    public void setMaxExitSize(int maxExitSize) {
-        this.maxExitSize = maxExitSize;
-    }
-
-    int getCurrentExitSize() {
-        return currentExitSize;
-    }
-
-    public void setCurrentExitSize(int currentExitSize) {
-        this.currentExitSize = currentExitSize;
+    public int getExitQueue(){
+        return ((GarageModel)garage).exitCarQueue.carsInQueue();
     }
 }

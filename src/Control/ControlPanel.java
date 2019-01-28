@@ -96,7 +96,7 @@ public class ControlPanel extends JPanel {
         cl.show(settingsPanel, "Control Panel");
 
         // leegje knopjes erin gooien zodat exitbutton onderaan kan staan
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             JPanel p = new JPanel();
             p.setVisible(false);
             categoryPanel.add(p);

@@ -58,7 +58,7 @@ class MainPanel extends JPanel {
 
 
         QueueSummaryView queueSummaryView = new QueueSummaryView();
-        QueueSummaryModel queueSummaryModel = new QueueSummaryModel(queueSummaryView);
+        QueueSummaryModel queueSummaryModel = new QueueSummaryModel(queueSummaryView,garageModel);
         queueSummaryView.setLocation(controlPanel.getWidth() + garageView.getWidth() + 75, 25);
         queueSummaryView.setSize(getToolkit().getScreenSize().width - controlPanel.getWidth() - garageView.getWidth() - 100, controlPanel.getHeight() - 275);
 

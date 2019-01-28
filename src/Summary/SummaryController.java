@@ -69,12 +69,6 @@ public class SummaryController extends Controller implements Runnable {
             QueueSummaryModel qModel = (QueueSummaryModel) queueSummaryModel;
             if (qModel != null) {
                 GarageModel gModel = (GarageModel) garageModel;
-                qModel.setCurrentEntranceSize(gModel.getEntranceCarQueue().carsInQueue());
-                qModel.setCurrentExitSize(gModel.getExitCarQueue().carsInQueue());
-                qModel.setCurrentPaymentSize(gModel.getPaymentCarQueue().carsInQueue());
-                qModel.setMaxEntranceSize(gModel.getEnterSpeed());
-                qModel.setMaxExitSize(gModel.getExitSpeed());
-                qModel.setMaxPaymentSize(gModel.getPaymentSpeed());
                 qModel.update();
             }
 
