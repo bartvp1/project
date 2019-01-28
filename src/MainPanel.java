@@ -2,6 +2,7 @@ import CarGraph.GraphController;
 import CarGraph.GraphModel;
 import CarGraph.GraphView;
 import Control.ControlPanel;
+import Garage.FinancesController;
 import Garage.GarageController;
 import Garage.GarageModel;
 import Garage.GarageView;
@@ -29,6 +30,7 @@ class MainPanel extends JPanel {
         garageModel.init();
         add(garageView);
 
+        FinancesController financeController = new FinancesController();
 
         GraphView graphView = new GraphView();
         GraphModel graphModel = new GraphModel(graphView, garageModel);
@@ -39,7 +41,11 @@ class MainPanel extends JPanel {
         add(graphView);
 
 
-        ControlPanel controlPanel = new ControlPanel(garageModel, graphController);
+//        ControlPanel controlPanel = new ControlPanel(garageModel, graphController);
+        ControlPanel controlPanel = new ControlPanel(garageModel, financeController, graphController);
+//
+//        controlPanel.setLocation(25, 25);
+//        controlPanel.setSize(450, 700);
         controlPanel.init();
         add(controlPanel);
 
