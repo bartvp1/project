@@ -303,7 +303,9 @@ public class ControlPanel extends JPanel {
             setBackground(new Color(0x454545));
             add(new MyLabel("Finances", JLabel.CENTER, "title_small"), BorderLayout.NORTH);
 
-            add(new MyLabel(FC.getPriceNormal() + "", JLabel.CENTER, "description"));
+            add(new MyLabel( "Price P/H: €" +FC.getPriceNormal(), JLabel.CENTER, "description"));
+            add(new MyLabel( "Price Passholders P/H: €" +FC.getPricePassHolders(), JLabel.CENTER, "description"));
+            add(new MyLabel( "Price Reservation P/H: €" +FC.getPriceReservation(), JLabel.CENTER, "description"));
 
         }
     }
