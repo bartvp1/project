@@ -19,15 +19,15 @@ public class QueueSummaryModel extends Model {
     }
 
     public int getEntranceSize(){
-        return ((GarageModel)garage).entranceCarQueue.carsInQueue();
+        return ((GarageModel) garage).getEntranceCarQueue().carsInQueue();
     }
     public int getEntrancePassSize(){
-        return ((GarageModel)garage).entrancePassQueue.carsInQueue();
+        return ((GarageModel) garage).getEntrancePassQueue().carsInQueue();
     }
     public int getPaymentSize(){
-        return ((GarageModel)garage).paymentCarQueue.carsInQueue();
+        return ((GarageModel) garage).getPaymentCarQueue().carsInQueue();
     }
-    public int getExitQueue(){
-        return ((GarageModel)garage).exitCarQueue.carsInQueue();
+    public int getExitQueue() {
+        return ((GarageModel) garage).getExitCarQueue().carsInQueue();
     }
 }

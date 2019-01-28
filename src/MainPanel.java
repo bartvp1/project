@@ -79,7 +79,7 @@ class MainPanel extends JPanel {
 
         QueueSummaryView queueSummaryView = new QueueSummaryView();
         queueSummaryView.setBounds(queueBounds);
-        QueueSummaryModel queueSummaryModel = new QueueSummaryModel(queueSummaryView);
+        QueueSummaryModel queueSummaryModel = new QueueSummaryModel(queueSummaryView,garageModel);
 
         add(queueSummaryView);
         queueSummaryView.init();
