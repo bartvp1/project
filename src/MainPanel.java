@@ -52,6 +52,8 @@ class MainPanel extends JPanel {
         FinancesController fc = new FinancesController();
         GarageController garageController = new GarageController(garageModel);
         garageController.setFinanceController(fc);
+
+
         garageModel.setController(garageController);
         garageController.start();
         garageModel.init();
