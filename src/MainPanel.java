@@ -47,11 +47,11 @@ class MainPanel extends JPanel {
 
 
         GarageView garageView = new GarageView();
-//        garageView.setBounds(simX, simY, simWidth, simHeight);
         garageView.setBounds(simBounds);
         GarageModel garageModel = new GarageModel(garageView);
         FinancesController fc = new FinancesController();
-        GarageController garageController = new GarageController(garageModel, fc);
+        GarageController garageController = new GarageController(garageModel);
+        garageController.setFinanceController(fc);
         garageModel.setController(garageController);
         garageController.start();
         garageModel.init();
@@ -61,9 +61,6 @@ class MainPanel extends JPanel {
 
         GraphView graphView = new GraphView();
         graphView.setBounds(graphBounds);
-//        graphView.setBounds(graphX, graphY, graphWidth, graphHeight);
-//        graphView.setBounds(graphBounds);
-
         GraphModel graphModel = new GraphModel(graphView, garageModel);
         GraphController graphController = new GraphController(graphModel);
         graphController.setGarage(garageModel);
@@ -73,7 +70,6 @@ class MainPanel extends JPanel {
 
 
         ControlPanel controlPanel = new ControlPanel(garageModel, financeController, graphController);
-//        controlPanel.setBounds(controlX, controlY, controlWidth, controlHeight);
         controlPanel.setBounds(controlBounds);
         controlPanel.init();
         add(controlPanel);
@@ -82,10 +78,6 @@ class MainPanel extends JPanel {
         QueueSummaryView queueSummaryView = new QueueSummaryView();
         queueSummaryView.setBounds(queueBounds);
         QueueSummaryModel queueSummaryModel = new QueueSummaryModel(queueSummaryView);
-
-//        queueSummaryView.setLocation(controlPanel.getWidth() + garageView.getWidth() + 75, 25);
-//        queueSummaryView.setSize(getToolkit().getScreenSize().width - controlPanel.getWidth() - garageView.getWidth() - 100, controlPanel.getHeight() - 275);
-
 
         add(queueSummaryView);
 
