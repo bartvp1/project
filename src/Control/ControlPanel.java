@@ -70,13 +70,6 @@ public class ControlPanel extends JPanel {
         CardLayout cl = (CardLayout) settingsPanel.getLayout();
         cl.show(settingsPanel, "Control Panel");
 
-//        todo: TEST!
-//        categoryPanel.add(new MyButton("Control"));
-//        categoryPanel.add(new MyButton("Reserveren"));
-//        categoryPanel.add(new MyButton("About"));
-
-
-//        todo: END TEST
 
         // leegje knopjes erin gooien zodat exitbutton onderaan kan staan
         for (int i = 0; i < 3; i++) {
@@ -86,12 +79,6 @@ public class ControlPanel extends JPanel {
         }
         // exit button sluit alles af
         MyButton exitButton = new MyButton("Exit");
-//        exitButton.setBackground(new Color(225, 0, 0));
-//        exitButton.setFont(new Font("Arial", Font.PLAIN, 20));
-//        exitButton.setForeground(new Color(0, 0, 0, 255));
-//        exitButton.setBorder(null);
-//        exitButton.setFocusPainted(false);
-        //exitButton.setAlignmentY(100);
         categoryPanel.add(exitButton);
 
         exitButton.addActionListener(e -> System.exit(0));

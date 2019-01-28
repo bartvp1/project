@@ -58,6 +58,9 @@ public class MyButton extends JButton {
                 if (!text.equals("Exit")) {
                     color = new Color(114, 137, 218);
                     textColor = new Color(255, 255, 255);
+                } else {
+                    textColor = new Color(255, 255, 255);
+                    color = new Color(100, 20, 20);
                 }
 
 
@@ -69,6 +72,8 @@ public class MyButton extends JButton {
                 if (!text.equals("Exit")) {
                     color = new Color(74, 78, 86);
                     textColor = new Color(120, 122, 128);
+                } else {
+                    color = new Color(74, 20, 20);
                 }
             }
 
@@ -82,6 +87,8 @@ public class MyButton extends JButton {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
         if (selected) {
             g2.setColor(SelectedColor);
         } else {
@@ -113,8 +120,8 @@ public class MyButton extends JButton {
         } else {
             g2.setColor(textColor);
         }
-
-        g2.drawString(text, getWidth() / 3 + 5, getHeight() / 2 + 5);
+        g2.setFont(new Font("Dubai Light", Font.BOLD, 15));
+        g2.drawString(text, getWidth() / 3 + 2, getHeight() / 2 + 5);
     }
 
     @Override
