@@ -1,12 +1,14 @@
 package Garage;
 
 import Garage.Car.Car;
+import MyComponents.Model;
 import MyComponents.MyLabel;
+import MyComponents.View;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GarageView extends JPanel {
+public class GarageView extends View {
     private GarageModel garageModel = null;
     private MyLabel title = new MyLabel("Garage", JLabel.CENTER, "Title");
 
@@ -20,9 +22,9 @@ public class GarageView extends JPanel {
 
     }
 
-
-    public void update(GarageModel garageModel) {
-        this.garageModel = garageModel;
+    @Override
+    protected void update(Model model) {
+        this.garageModel = (GarageModel) model;
         repaint();
     }
 
