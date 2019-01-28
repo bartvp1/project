@@ -5,12 +5,9 @@ import MyComponents.Controller;
 import MyComponents.Model;
 import QueuesSummary.QueueSummaryModel;
 
-public class SummaryController extends Controller implements Runnable {
-    private Thread thread = new Thread(this);
+public class SummaryController extends Controller {
     private Model queueSummaryModel;
     private Model garageModel;
-    private boolean running = false;
-
 
     public SummaryController(Model model) {
         super(model);
@@ -24,34 +21,9 @@ public class SummaryController extends Controller implements Runnable {
         this.queueSummaryModel = queueSummaryModel;
     }
 
-
-    public void start() {
-        if (!running) {
-            thread = new Thread(this);
-            thread.start();
-            running = true;
-        } else {
-            System.out.println("Already running");
-        }
-    }
-
-    public void stop() {
-        if (running) {
-            running = false;
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            thread = null;
-        } else {
-            System.out.println("Not running");
-        }
-    }
-
     @Override
     public void run() {
-        while (running) {
+        while (thread != null) {
             SummaryModel sModel = (SummaryModel) model;
             if (sModel != null) {
                 GarageModel gModel = (GarageModel) garageModel;

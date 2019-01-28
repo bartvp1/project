@@ -1,43 +1,38 @@
 package Garage;
 
 import Garage.Car.*;
+import MyComponents.Controller;
+import MyComponents.Model;
 
 import java.util.Iterator;
 
-public class GarageController implements Runnable {
-    Thread thread = new Thread(this);
-    private boolean running = true;
+public class GarageController extends Controller {
     private int ticks = 100;
-    private GarageModel garageModel;
     private FinancesController FC;
 
+    public GarageController(Model model) {
+        super(model);
+    }
 
-
-    public GarageController(GarageModel garageModel, FinancesController FC) {
-        this.garageModel = garageModel;
+    public void setFinanceController(FinancesController FC) {
         this.FC = FC;
     }
 
-    public void init() {
-        thread.start();
-    }
-
-
-    public void reserveLocations() {
-        Iterator it = garageModel.getReservations().iterator();
+    private void reserveLocations() {
+        Iterator it = ((GarageModel) model).getReservations().iterator();
         while (it.hasNext()) {
             Reservation res = (Reservation) it.next();
             Boolean done = res.isReserved();
-            int deltaTime = res.getTime() - garageModel.getNowTime();
+            int deltaTime = res.getTime() - ((GarageModel) model).getNowTime();
             if (deltaTime < 60 && deltaTime > 0 && !done) {
-                Location loc = garageModel.getFirstFreeLocation("NORMAL");
-                garageModel.addReservedLocation(loc);
+                Location loc = ((GarageModel) model).getFirstFreeLocation("NORMAL");
+                ((GarageModel) model).addReservedLocation(loc);
                 res.setIsReserved(true);
             }
         }
     }
 
-    public void handleExit() {
+    private void handleExit() {
         carsReadyToLeave();
         carsPaying();
         carsLeaving();
@@ -47,25 +42,23 @@ public class GarageController implements Runnable {
         // Let cars leave.
         int i = 0;
 
-        while (garageModel.getExitCarQueue().carsInQueue() > 0 && i < garageModel.getExitSpeed()) {
-            garageModel.getExitCarQueue().removeCar();
+        while (((GarageModel) model).getExitCarQueue().carsInQueue() > 0 && i < ((GarageModel) model).getExitSpeed()) {
+            ((GarageModel) model).getExitCarQueue().removeCar();
             i++;
-            garageModel.decreaseNumberOfTotalCarsByOne();
+            ((GarageModel) model).decreaseNumberOfTotalCarsByOne();
         }
     }
 
     private void carLeavesSpot(Car car) {
-        garageModel.removeCarAt(car.getLocation());
-        garageModel.addToExitCarQueue(car);
+        ((GarageModel) model).removeCarAt(car.getLocation());
+        ((GarageModel) model).addToExitCarQueue(car);
     }
 
     private void carsPaying() {
         // Let cars pay.
         int i = 0;
-        while (garageModel.getPaymentCarQueue().carsInQueue() > 0 && i < garageModel.getPaymentSpeed()) {
-            Car car = garageModel.getPaymentCarQueue().removeCar();
-
-
+        while (((GarageModel) model).getPaymentCarQueue().carsInQueue() > 0 && i < ((GarageModel) model).getPaymentSpeed()) {
+            Car car = ((GarageModel) model).getPaymentCarQueue().removeCar();
             // TODO Handle payment.
             int timeStay = 0;
             timeStay = (car.getMinutesStay() / 60);
@@ -76,34 +69,34 @@ public class GarageController implements Runnable {
             carLeavesSpot(car);
             i++;
             if (car instanceof CarNormal) {
-                garageModel.decreaseNumberOfNormalCarsByOne();
+                ((GarageModel) model).decreaseNumberOfNormalCarsByOne();
             }
             if (car instanceof CarReserved) {
-                garageModel.decreaseNumberOfReservedCarsByOne();
+                ((GarageModel) model).decreaseNumberOfReservedCarsByOne();
             }
         }
     }
 
     private void carsReadyToLeave() {
         // Add leaving cars to the payment queue.
-        Car car = garageModel.getFirstLeavingCar();
+        Car car = ((GarageModel) model).getFirstLeavingCar();
         while (car != null) {
             if (car.getHasToPay()) {
                 car.setIsPaying(true);
-                garageModel.addToPaymentCarQueue(car);
+                ((GarageModel) model).addToPaymentCarQueue(car);
             } else {
-                garageModel.removeCarAt(car.getLocation());
-                garageModel.addToExitCarQueue(car);
-                garageModel.decreaseNumberOfPassCarsByOne();
+                ((GarageModel) model).removeCarAt(car.getLocation());
+                ((GarageModel) model).addToExitCarQueue(car);
+                ((GarageModel) model).decreaseNumberOfPassCarsByOne();
             }
-            car = garageModel.getFirstLeavingCar();
+            car = ((GarageModel) model).getFirstLeavingCar();
         }
     }
 
-    public void carTick() {
-        int size = garageModel.getLocations().size();
+    private void carTick() {
+        int size = ((GarageModel) model).getLocations().size();
         for (int i = 0; i < size; i++) {
-            Car car = garageModel.getCarAt(garageModel.getLocations().get(i));
+            Car car = ((GarageModel) model).getCarAt(((GarageModel) model).getLocations().get(i));
             if (car != null) {
                 car.tick();
             }
@@ -111,71 +104,71 @@ public class GarageController implements Runnable {
     }
 
     private void carsArriving() {
-        int numberOfCars = garageModel.getNumberOfCars("NORMAL");
-        garageModel.addArrivingCars(numberOfCars, "NORMAL");
+        int numberOfCars = ((GarageModel) model).getNumberOfCars("NORMAL");
+        ((GarageModel) model).addArrivingCars(numberOfCars, "NORMAL");
 
-        numberOfCars = garageModel.getNumberOfCars("PASS");
-        garageModel.addArrivingCars(numberOfCars, "PASS");
+        numberOfCars = ((GarageModel) model).getNumberOfCars("PASS");
+        ((GarageModel) model).addArrivingCars(numberOfCars, "PASS");
 
-        Iterator it = garageModel.getReservations().iterator();
+        Iterator it = ((GarageModel) model).getReservations().iterator();
         while (it.hasNext()) {
             Reservation res = (Reservation) it.next();
             Boolean hasReservedSpot = res.isReserved();
-            if ((res.getTime() - garageModel.getNowTime()) == 0 && hasReservedSpot && !res.getQueued()) {
-                garageModel.addArrivingCars(1, "RESERVED");
+            if ((res.getTime() - ((GarageModel) model).getNowTime()) == 0 && hasReservedSpot && !res.getQueued()) {
+                ((GarageModel) model).addArrivingCars(1, "RESERVED");
                 res.setQueued(true);
             }
         }
     }
 
-    public int getTickPause() {
+    int getTickPause() {
         return this.ticks;
     }
 
-    public void setTickPause(int ticks) {
+    void setTickPause(int ticks) {
         this.ticks = ticks;
     }
 
-    public void handleEntrance() {
+    private void handleEntrance() {
         carsArriving();
-        carsEntering(garageModel.getEntrancePassQueue());
-        carsEntering(garageModel.getEntranceCarQueue());
+        carsEntering(((GarageModel) model).getEntrancePassQueue());
+        carsEntering(((GarageModel) model).getEntranceCarQueue());
     }
 
     private void carsEntering(CarQueue queue) {
         int i = 0;
         // Remove car from the front of the queue and assign to a parking space.
 
-        while (queue.carsInQueue() > 0 && garageModel.getNumberOfOpenSpots() > 0 && i < garageModel.getEnterSpeed()) {
+        while (queue.carsInQueue() > 0 && ((GarageModel) model).getNumberOfOpenSpots() > 0 && i < ((GarageModel) model).getEnterSpeed()) {
             Car car = queue.removeCar();
             Location freeLocation;
             if (car instanceof CarPass) {
-                freeLocation = garageModel.getFirstFreeLocation("PASS");
-                garageModel.increaseNumberOfPassCarsByOne();
+                freeLocation = ((GarageModel) model).getFirstFreeLocation("PASS");
+                ((GarageModel) model).increaseNumberOfPassCarsByOne();
             } else if (car instanceof CarReserved) {
-                Location loc = garageModel.getFirstFreeLocation("RESERVED");
+                Location loc = ((GarageModel) model).getFirstFreeLocation("RESERVED");
                 freeLocation = loc;
-                garageModel.increaseNumberOfReservedCarsByOne();
+                ((GarageModel) model).increaseNumberOfReservedCarsByOne();
             } else {
-                freeLocation = garageModel.getFirstFreeLocation("NORMAL");
-                garageModel.increaseNumberOfNormalCarsByOne();
+                freeLocation = ((GarageModel) model).getFirstFreeLocation("NORMAL");
+                ((GarageModel) model).increaseNumberOfNormalCarsByOne();
 
             }
-            garageModel.increaseNumberOfTotalCarsByOne();
+            ((GarageModel) model).increaseNumberOfTotalCarsByOne();
 
-            garageModel.setCarAt(freeLocation, car);
+            ((GarageModel) model).setCarAt(freeLocation, car);
             i++;
         }
     }
 
     @Override
     public void run() {
-        while (running) {
+        while (thread != null) {
             reserveLocations();
-            garageModel.advanceTime();
+            ((GarageModel) model).advanceTime();
             handleExit();
             carTick();
-            garageModel.updateView();
+            ((GarageModel) model).updateView();
             handleEntrance();
             try {
                 Thread.sleep(ticks);

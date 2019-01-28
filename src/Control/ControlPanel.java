@@ -9,21 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * Control Panel beheert de controls
- * Bestaat uit twee delen:
- * 1. Een deel waar je de categorie kunt kiezen.
- * Categorieen: "Chart", "Simulator", "Control Panel", "About";
- * <p>
- * 2. Een deel wat bestaat uit de panel met de settings die bij de categorie hoort.
- * De card layout zorgt ervoor dat er wordt geswitched als een categorie wordt geklikt.
- * De verschillende settings (Panels) worden beheert in aparte classes onderaan de pagina.
- * <p>
- * Als het blijkt dat we weinig settings hebben kunnen we alles op 1 panel doen.
- */
 public class ControlPanel extends JPanel {
-    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private String[] categories = {"Control Panel", "Reservations", "Finances", "About"};
+    private String[] categories = {"Control Panel", "Reservations", "About"};
 
     private GraphController graphController;
     private GarageModel garage;
@@ -37,42 +24,29 @@ public class ControlPanel extends JPanel {
         this.graphController = graph;
     }
 
-    /**
-     * Grafiek Settings
-     * <p>
-     * Speed
-     * Show different Cars
-     * Change Grafiek style?
-     * Toggle scroll / repeat
-     * Start
-     * Stop
-     * Pause
-     * Reset
-     */
-
-
     public void init() {
-        super.setBackground(new Color(47, 49, 54));
+        setBackground(new Color(47, 49, 54));
+//        setBounds(25, 25, 450, 700);
 
         JLabel titleLabel = new JLabel("Configuration", JLabel.CENTER);
         titleLabel.setBounds(0, 0, getWidth(), 50);
         titleLabel.setFont(new Font("Dubai Light", Font.PLAIN, 25));
         titleLabel.setForeground(Color.WHITE);
-        super.add(titleLabel);
+        add(titleLabel);
 
         //Panel met de Configuratie Tabs
         JPanel categoryPanel = new JPanel(new GridLayout(8, 1, 0, 20));
         categoryPanel.setBounds(10, titleLabel.getHeight() + 10, 100, 620);
         categoryPanel.setBackground(Color.DARK_GRAY);
         categoryPanel.setOpaque(false);
-        super.add(categoryPanel);
+        add(categoryPanel);
 
         //Panel met de settings
         JPanel settingsPanel = new JPanel(new CardLayout());
         int settingsX = categoryPanel.getWidth() + categoryPanel.getX() + 10;
         settingsPanel.setBounds(settingsX, titleLabel.getHeight() + 10, getWidth() - settingsX - 10, getHeight() - titleLabel.getHeight() - 30);
         settingsPanel.setOpaque(false);
-        super.add(settingsPanel);
+        add(settingsPanel);
 
 
         //Panel met de finan
@@ -81,7 +55,7 @@ public class ControlPanel extends JPanel {
         settingsPanel1.setBounds(settingsX1, titleLabel.getHeight() + 10, getWidth() - settingsX1 - 10, getHeight() - titleLabel.getHeight() - 30);
         settingsPanel1.setOpaque(false);
         super.add(settingsPanel1);
-        
+
 
         createCategoryButtons(categoryPanel, settingsPanel);
 
@@ -147,7 +121,7 @@ public class ControlPanel extends JPanel {
             button.setBorder(null);
             button.setForeground(Color.WHITE);
             button.setContentAreaFilled(true);
-            if (s == "Control Panel") {
+            if (s.equals("Control Panel")) {
                 button.setBackground(new Color(0x454545));
             } else {
                 button.setBackground(new Color(0x5D5D5D));

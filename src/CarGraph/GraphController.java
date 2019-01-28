@@ -4,12 +4,9 @@ import Garage.GarageModel;
 import MyComponents.Controller;
 import MyComponents.Model;
 
-public class GraphController extends Controller implements Runnable {
+public class GraphController extends Controller {
     private int ticks = 10;
-    private Thread thread = new Thread(this);
-    private boolean running = true;
     private Model garage;
-
 
     public GraphController(Model model) {
         super(model);
@@ -19,23 +16,15 @@ public class GraphController extends Controller implements Runnable {
         this.garage = garage;
     }
 
-    public void toggleFillMode() {
-        ((GraphModel) model).toggleFillMode();
-    }
-
     public void setTicks(int ticks) {
         this.ticks = ticks;
 
     }
 
-    public void init() {
-        thread.start();
-    }
-
     @Override
     public void run() {
 
-        while (running) {
+        while (thread != null) {
             ((GraphModel) model).nextValue("Total", ((GarageModel) garage).getTotalCars());
             ((GraphModel) model).nextValue("Pass", ((GarageModel) garage).getNumberOfPassCars());
             ((GraphModel) model).nextValue("Normal", ((GarageModel) garage).getNumberOfNormalCars());

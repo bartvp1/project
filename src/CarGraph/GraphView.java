@@ -3,7 +3,6 @@ package CarGraph;
 import MyComponents.Model;
 import MyComponents.View;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
@@ -22,8 +21,8 @@ public class GraphView extends View {
 
     public void init() {
         setBackground(new Color(47, 49, 54));
-        setLocation(0, (model.getScreenHeight() / 4) * 3);
-        setSize(model.getScreenWidth(), model.getScreenHeight() / 4);
+//        setLocation(0, (model.getScreenHeight() / 4) * 3);
+//        setSize(model.getScreenWidth(), model.getScreenHeight() / 4);
     }
 
     /**
@@ -61,7 +60,7 @@ public class GraphView extends View {
 
             g.drawLine(x, beginY, x, getHeight() - gridSize - 10);
             g.setColor(Color.WHITE);
-            g.drawString(dagen[i], x + (int) dayWidth / 2, getHeight() - 10);
+            g.drawString(dagen[i], x + (int) dayWidth / 2 - 25, getHeight() - 10);
             i++;
         }
 
@@ -84,19 +83,19 @@ public class GraphView extends View {
      *          Daarna de lijnen en daarna de zwarte lijn vooraan
      */
     private void drawLines(Graphics2D g) {
-        boolean fillMode = model.getFillMode();
+
 
         // All Cars
-        if (fillMode) {
-            g.setColor(model.getColor("Total", true));
-            g.fill(model.getPath("Total"));
 
-            g.setColor(model.getColor("Normal", true));
-            g.fill(model.getPath("Normal"));
+        g.setColor(model.getColor("Total", true));
+        g.fill(model.getPath("Total"));
 
-            g.setColor(model.getColor("Pass", true));
-            g.fill(model.getPath("Pass"));
-        }
+        g.setColor(model.getColor("Normal", true));
+        g.fill(model.getPath("Normal"));
+
+        g.setColor(model.getColor("Pass", true));
+        g.fill(model.getPath("Pass"));
+
 
         ArrayList<Line2D> totalLines = new ArrayList<>(model.getLines("Total"));
         ArrayList<Line2D> normalLines = new ArrayList<>(model.getLines("Normal"));

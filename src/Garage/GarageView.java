@@ -1,35 +1,30 @@
 package Garage;
 
 import Garage.Car.Car;
+import MyComponents.Model;
 import MyComponents.MyLabel;
+import MyComponents.View;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class GarageView extends JPanel {
-    GarageModel garageModel = null;
-    private int lotWidth = 20;
-    private int lotHeight = 10;
-    MyLabel title = new MyLabel("Garage", JLabel.CENTER, "Title");
+public class GarageView extends View {
+    private GarageModel garageModel = null;
+    private MyLabel title = new MyLabel("Garage", JLabel.CENTER, "Title");
 
     public GarageView() {
-
         title.setBounds(0, 0, getWidth(), getHeight());
         add(title);
 
-
         setBackground(new Color(47, 49, 54));
-        LineBorder border = new LineBorder(Color.BLACK);
 
         repaint();
 
     }
 
-
-    public void update(GarageModel garageModel) {
-        this.garageModel = garageModel;
-
+    @Override
+    protected void update(Model model) {
+        this.garageModel = (GarageModel) model;
         repaint();
     }
 
@@ -50,6 +45,8 @@ public class GarageView extends JPanel {
 
                 g2.setColor(color);
 
+                int lotHeight = 10;
+                int lotWidth = 20;
                 g2.fillRect(
                         garageModel.getLocations().get(i).getFloor() * 280 + (1 + (int) Math.floor(garageModel.getLocations().get(i).getRow() * 0.5)) * 75 + (garageModel.getLocations().get(i).getRow() % 2) * 20,
                         title.getHeight() + 10 + garageModel.getLocations().get(i).getPlace() * lotHeight,
