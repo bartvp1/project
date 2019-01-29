@@ -9,9 +9,16 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
+/**
+ * GraphView
+ * Dit is de panel wat de grafiek laat zien
+ * Deze panel laat alleen de buitenkant van de grafiek zien en haalt de variabelen uit het model(GraphModel)
+ *  De grafiek laat de volgende waardes zien: aantal reguliere, pashouders en totaal aantal auto's
+ */
 public class GraphView extends View {
     private GraphModel model;
 
+    //    De dagen van de week om onderin de grafiek te zetten
     private String[] dagen = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"};
 
 
@@ -19,10 +26,9 @@ public class GraphView extends View {
         this.model = model;
     }
 
+    // alleen de achtergrond kleur wordt hier aangepast.
     public void init() {
         setBackground(new Color(47, 49, 54));
-//        setLocation(0, (model.getScreenHeight() / 4) * 3);
-//        setSize(model.getScreenWidth(), model.getScreenHeight() / 4);
     }
 
     /**
@@ -38,7 +44,7 @@ public class GraphView extends View {
 
     /**
      * @param g graphics waarop wordt getekent
-     *          Tekent de verticale en horizontale lijnen van de grafiek.
+     *          Tekent de verticale en horizontale lijnen van de grafiek en de namen van de dagen.
      */
     private void drawGrid(Graphics2D g) {
         //Vertical Lines
@@ -79,14 +85,12 @@ public class GraphView extends View {
 
     /**
      * @param g graphics waarop wordt getekent
-     *          Als fillMode aan staat wordt eerst de vulling getekent
-     *          Daarna de lijnen en daarna de zwarte lijn vooraan
+     *          De vulling, de lijnen en daarna de zwarte lijn vooraan wordt getekend
+     *
      */
     private void drawLines(Graphics2D g) {
-
-
-        // All Cars
-
+        // De vulling wordt getekend
+        // De waardes komen uit model
         g.setColor(model.getColor("Total", true));
         g.fill(model.getPath("Total"));
 
@@ -96,15 +100,19 @@ public class GraphView extends View {
         g.setColor(model.getColor("Pass", true));
         g.fill(model.getPath("Pass"));
 
-
+        // tijdelijke arraylists waar de lijnen in worden gekopieerd
+        // Er wordt een kopie gemaakt omdat er vanuit een andere thread de waardes kunnen worden aangepast
         ArrayList<Line2D> totalLines = new ArrayList<>(model.getLines("Total"));
         ArrayList<Line2D> normalLines = new ArrayList<>(model.getLines("Normal"));
         ArrayList<Line2D> passLines = new ArrayList<>(model.getLines("Pass"));
 
+        // Iterators
         Iterator<Line2D> totalIterator = totalLines.iterator();
         Iterator<Line2D> normalIterator = normalLines.iterator();
         Iterator<Line2D> passIterator = passLines.iterator();
 
+        // Teken de lijnen
+        // Kleuren staan in model
         g.setStroke(new BasicStroke(2));
         try {
             g.setColor(model.getColor("Total", false));
@@ -120,6 +128,7 @@ public class GraphView extends View {
         }
 
 
+        // Teken de lijn vooraan, dit ziet er beter uit dan de uiteindes van de vulling
         g.setColor(Color.BLACK);
         double bottomY = (getHeight() - 25 - 10);
         if (normalLines.size() > 0) {

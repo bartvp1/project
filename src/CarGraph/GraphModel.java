@@ -10,8 +10,18 @@ import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Graph Model
+ * Het model van de Graph Panel
+ * Hier worden de lijnen(Line2D) opgeslagen in een HashMap(linesMap)
+ * De kleuren, vulling en posities worden vanuit hier opgehaald.
+ */
 public class GraphModel extends Model {
+    // De link margin van de grafiek zelf
+    // 40 omdat er dan nog genoeg ruimte is voor de waardes van de y-as
     private int STARTING_X = 40;
+
+
     private boolean nextWeek = false;
     private int currentWeek;
 
@@ -21,6 +31,11 @@ public class GraphModel extends Model {
     private View graphView;
     private Model garageModel;
 
+    /**
+     * @param graphView de view van deze component
+     * @param garage    een referentie naar garage
+     *                  De hashmaps worden hier geinitialiseerd
+     */
     public GraphModel(View graphView, Model garage) {
         this.graphView = graphView;
         ((GraphView) graphView).setModel(this);
@@ -34,6 +49,12 @@ public class GraphModel extends Model {
         this.garageModel = garage;
     }
 
+
+    /**
+     * @param type    String die aangeeft welk type het gaat; Normal(reguliere), Pass(Pashouders) en Total
+     * @param filling boolean of het een vulling betreft of niet, zoja dan wordt de kleur duidelijker
+     * @return De color van de vulling of line
+     */
     Color getColor(String type, boolean filling) {
         int r = 0;
         int g = 0;
@@ -60,6 +81,10 @@ public class GraphModel extends Model {
         return new Color(r, g, b, a);
     }
 
+    /**
+     * Dit wordt aangeroepen als de week opnieuw begint.
+     * De hashmap worden geleegd en opniew aangemaakt.
+     */
     private void reset() {
         linesMap.clear();
         linesMap.put("Total", new ArrayList<>());
@@ -70,15 +95,12 @@ public class GraphModel extends Model {
         update();
     }
 
-    int getScreenWidth() {
-        return Toolkit.getDefaultToolkit().getScreenSize().width;
-    }
-
-
-    int getScreenHeight() {
-        return Toolkit.getDefaultToolkit().getScreenSize().height;
-    }
-
+    /**
+     * @param str   String die aangeeft welk type het gaat; Normal(reguliere), Pass(Pashouders) en Total
+     * @param value de waarde, de hoeveelheid auto's
+     *              Hier wordt berekend wat de x en y posities zijn van de volgende lijn
+     *              Dit wordt elke tick aangeroepen vanuit de controller
+     */
     void nextValue(String str, int value) {
         double prevX;
         double prevY;
@@ -104,6 +126,11 @@ public class GraphModel extends Model {
     }
 
 
+    /**
+     * @param value Integer de hoeveelheid auto's
+     * Hier wordt de de y positie uitgerekend
+     * @return double de y positie
+     */
     private double getY(int value) {
         double _temp = 60.0 / 25.0;
         double bottomY = graphView.getHeight() - 25 - 10;
