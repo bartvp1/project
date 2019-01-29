@@ -63,7 +63,6 @@ public class ControlPanel extends JPanel {
         // De verschillende menu's toevoegen aan de settingspanel
         settingsPanel.add(new SimulatorSettings(), "Control");
         settingsPanel.add(new ReservationPanel(), "Reserveren");
-        settingsPanel.add(new FinancesPanel(), "Finances");
         settingsPanel.add(new AboutSettings(), "About");
 
         // De eerste panel die je ziet is de chart settings
@@ -289,19 +288,4 @@ public class ControlPanel extends JPanel {
         }
     }
 
-
-    class FinancesPanel extends JPanel {
-        //todo: Informatie over ons, dat we zo cool zijn enzo.
-        FinancesPanel() {
-            setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-            setBackground(new Color(0x454545));
-            add(new MyLabel("Finances", JLabel.CENTER, "title_small"), BorderLayout.NORTH);
-
-            add(new MyLabel("Price P/H: €" + FC.getPriceNormal(), JLabel.CENTER, "description"));
-            add(new MyLabel("Price Passholders P/H: €" + FC.getPricePassHolders(), JLabel.CENTER, "description"));
-            add(new MyLabel("Price Reservation P/H: €" + FC.getPriceReservation(), JLabel.CENTER, "description"));
-            add(new MyLabel("Total provit €" + FC.getTotalEarned(), JLabel.CENTER, "description"));
-
-        }
-    }
 }

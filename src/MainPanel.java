@@ -2,6 +2,7 @@ import CarGraph.GraphController;
 import CarGraph.GraphModel;
 import CarGraph.GraphView;
 import Control.ControlPanel;
+import Finance.FinanceView;
 import Garage.FinancesController;
 import Garage.GarageController;
 import Garage.GarageModel;
@@ -34,6 +35,8 @@ class MainPanel extends JPanel {
 
     private static final int margin = 25;
 
+    private static final Rectangle graphBounds, controlBounds, simBounds, summaryBounds, queueBounds, financeBounds;
+
     /**
      * De x, y, width en height van de subpanelen als in een Rectangle
      * De simHeight en simWidth zijn vast waardes vandaar dat ze apart zijn
@@ -60,7 +63,8 @@ class MainPanel extends JPanel {
         simBounds = new Rectangle((screenWidth / 2) - (simWidth / 2), margin, simWidth, simHeight);
         controlBounds = new Rectangle(margin, margin, (screenWidth - simBounds.width) / 2 - (margin * 2), screenHeight - graphBounds.height - (margin * 2));
         summaryBounds = new Rectangle(simBounds.x, simBounds.y + simBounds.height + margin, simBounds.width, screenHeight - graphBounds.height - simBounds.height - (margin * 3));
-        queueBounds = new Rectangle(simBounds.x + simBounds.width + margin, margin, screenWidth - controlBounds.width - simBounds.width - (margin * 4), simBounds.height);
+        queueBounds = new Rectangle(simBounds.x + simBounds.width + margin, simBounds.height + (margin*2) , screenWidth - controlBounds.width - simBounds.width - (margin * 4), screenHeight - 770);
+        financeBounds = new Rectangle(simBounds.x + simBounds.width + margin, margin , screenWidth - controlBounds.width - simBounds.width - (margin * 4), screenHeight - 770);
 
     }
 
@@ -77,7 +81,7 @@ class MainPanel extends JPanel {
         // view
         GarageView garageView = new GarageView();
         garageView.setBounds(simBounds);
-        //model
+        // model
         GarageModel garageModel = new GarageModel(garageView);
         //controller
         FinancesController fc = new FinancesController();
@@ -127,6 +131,13 @@ class MainPanel extends JPanel {
 
 //      De summary Panel
         // view
+        FinanceView financeView = new FinanceView();
+        financeView.setBounds(financeBounds);
+
+        add(financeView);
+        //financeView.init();
+
+
         SummaryView summaryView = new SummaryView();
         // model
         SummaryModel summaryModel = new SummaryModel(summaryView);

@@ -1,6 +1,5 @@
 package QueuesSummary;
 
-import Garage.GarageModel;
 import MyComponents.Model;
 import MyComponents.MyLabel;
 import MyComponents.View;
@@ -10,31 +9,41 @@ import java.awt.*;
 
 public class QueueSummaryView extends View {
 
-    private JLabel entranceQueueLabel;
-    private JLabel entrancePassQueueLabel;
-    private JLabel exitQueueLabel;
-    private JLabel paymentQueueLabel;
+    JLabel entranceQueueLabel = new JLabel();
+    JLabel entrancePassQueueLabel = new JLabel();
+    JLabel exitQueueLabel = new JLabel();
+    JLabel paymentQueueLabel = new JLabel();
+
 
     public void init() {
-        setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
         setBackground(new Color(47, 49, 54));
-
-        JPanel panel = new JPanel(new GridLayout(10, 1, 0, 0));
         MyLabel titleLabel = new MyLabel("Car Queues", JLabel.CENTER, "Title");
         titleLabel.setBounds(0, 0, getWidth(), 50);
-        panel.add(titleLabel);
+        add(titleLabel);
 
-        entranceQueueLabel = new MyLabel("xx", JLabel.CENTER,"description");
-        entrancePassQueueLabel = new MyLabel("xx", JLabel.CENTER,"description");
-        exitQueueLabel = new MyLabel("xx", JLabel.CENTER,"description");
-        paymentQueueLabel = new MyLabel("xx", JLabel.CENTER,"description");
+        JPanel panel = new JPanel(new GridLayout(6,1,0,10));
+        panel.setBounds(0, 50, getWidth(), getHeight()-50);
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 5));
+        panel.setOpaque(false);
 
         panel.add(entranceQueueLabel);
         panel.add(entrancePassQueueLabel);
         panel.add(exitQueueLabel);
         panel.add(paymentQueueLabel);
 
-        repaint();
+        entranceQueueLabel.setForeground(Color.WHITE);
+        entrancePassQueueLabel.setForeground(Color.WHITE);
+        exitQueueLabel.setForeground(Color.WHITE);
+        paymentQueueLabel.setForeground(Color.WHITE);
+
+        Font font = new Font("Dubai Light", Font.PLAIN, 18);
+
+        entranceQueueLabel.setFont(font);
+        entrancePassQueueLabel.setFont(font);
+        exitQueueLabel.setFont(font);
+        paymentQueueLabel.setFont(font);
+
+        add(panel);
     }
 
     @Override
@@ -45,7 +54,5 @@ public class QueueSummaryView extends View {
         entrancePassQueueLabel.setText("Car (pass) Queue: " + qModel.getEntrancePassSize() );
         paymentQueueLabel.setText("Payment Queue: " + qModel.getPaymentSize());
         exitQueueLabel.setText("Exit Queue: " + qModel.getExitQueue());
-
-        repaint();
     }
 }
