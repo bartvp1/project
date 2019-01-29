@@ -113,9 +113,7 @@ public class ControlPanel extends JPanel {
             MyButton button = new MyButton(s);
             buttons.add(button);
             if (s.equals("Control")) {
-                button.setBackground(new Color(0x454545));
-            } else {
-                button.setBackground(new Color(0x5D5D5D));
+                button.setSelected(true);
             }
 
             categoryPanel.add(button, BorderLayout.EAST);
@@ -127,10 +125,8 @@ public class ControlPanel extends JPanel {
                 for (JButton clickedButton : buttons) {
                     if (clickedButton.equals(button)) {
                         clickedButton.setSelected(true);
-//                        clickedButton.setBackground(new Color(0x454545));
                     } else {
                         clickedButton.setSelected(false);
-//                        clickedButton.setBackground(new Color(0x5D5D5D));
                     }
                 }
             });
