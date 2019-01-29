@@ -35,13 +35,13 @@ class MainPanel extends JPanel {
 
     private static final int margin = 25;
 
-    private static final Rectangle graphBounds, controlBounds, simBounds, summaryBounds, queueBounds, financeBounds;
+
 
     /**
      * De x, y, width en height van de subpanelen als in een Rectangle
      * De simHeight en simWidth zijn vast waardes vandaar dat ze apart zijn
      */
-    private static final Rectangle graphBounds, controlBounds, simBounds, summaryBounds, queueBounds;
+    private static final Rectangle graphBounds, controlBounds, simBounds, summaryBounds, queueBounds, financeBounds;
     private static final int simHeight, simWidth;
 
     /**
