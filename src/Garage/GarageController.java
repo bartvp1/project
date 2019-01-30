@@ -5,11 +5,14 @@ import Garage.Car.*;
 import MyComponents.Controller;
 import MyComponents.Model;
 
+import java.lang.reflect.Array;
 import java.util.Iterator;
 
 public class GarageController extends Controller {
     private int ticks = 100;
     private FinanceView fv;
+
+    double[] week = new double[7];
 
 
     private int totalCarsPayed = 0;
@@ -21,6 +24,15 @@ public class GarageController extends Controller {
     public GarageController(Model model, FinanceView finance) {
         super(model);
         fv = finance;
+    }
+
+    void AddMoney(double amount)
+    {
+        week[((GarageModel)model).getDay()] += amount;
+    }
+    public double GetMoneyADay(int day)
+    {
+        return week[day];
     }
 
     public int gettotalCarsPayed() {
@@ -93,18 +105,20 @@ public class GarageController extends Controller {
             i++;
 
             totalCarsPayed +=1;
+            double price = 0.0;
 
             if (car instanceof CarNormal) {
                 ((GarageModel) model).decreaseNumberOfNormalCarsByOne();
 
-                double price = ((priceRegular / 60) * car.getMinutesStay());
+                price = ((priceRegular / 60) * car.getMinutesStay());
                 moneyEarned += price;
             }
             if (car instanceof CarReserved) {
                 ((GarageModel) model).decreaseNumberOfReservedCarsByOne();
-                double price = ((priceReservation / 60) * car.getMinutesStay());
+                price = ((priceReservation / 60) * car.getMinutesStay());
                 moneyEarned += price;
             }
+            AddMoney(price);
         }
     }
 

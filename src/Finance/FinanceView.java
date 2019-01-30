@@ -14,6 +14,14 @@ public class FinanceView extends JPanel {
     JLabel moneyCounter = new MyLabel("", JLabel.CENTER, "description");
     JLabel totalCarsCount = new MyLabel("", JLabel.CENTER, "description");
 
+    JLabel monday = new MyLabel("", JLabel.CENTER, "description");
+    JLabel tuesday = new MyLabel("", JLabel.CENTER, "description");
+    JLabel wednesday = new MyLabel("", JLabel.CENTER, "description");
+    JLabel thursday = new MyLabel("", JLabel.CENTER, "description");
+    JLabel friday = new MyLabel("", JLabel.CENTER, "description");
+    JLabel saturdag = new MyLabel("", JLabel.CENTER, "description");
+    JLabel sunday = new MyLabel("", JLabel.CENTER, "description");
+
     public void init() {
         JPanel finance = new JPanel(new BorderLayout());
         finance.setBounds(0, 0, getWidth(), getHeight());
@@ -26,15 +34,20 @@ public class FinanceView extends JPanel {
         titleLabel.setBounds(0, 0, getWidth(), 50);
         finance.add(titleLabel,BorderLayout.NORTH);
 
-        JPanel panel = new JPanel(new GridLayout(3,1,0,20));
+        JPanel panel = new JPanel(new GridLayout(15,1,0,10));
         panel.setBounds(0, 50, getWidth(), getHeight()-100);
         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         panel.setOpaque(false);
 
-        panel.add(regular);
-        panel.add(reserved);
         panel.add(moneyCounter);
         panel.add(totalCarsCount);
+        panel.add(monday);
+        panel.add(tuesday);
+        panel.add(wednesday);
+        panel.add(thursday);
+        panel.add(friday);
+        panel.add(saturdag);
+        panel.add(sunday);
 
         finance.add(panel);
         super.add(finance);
@@ -44,10 +57,17 @@ public class FinanceView extends JPanel {
 
         DecimalFormat df = new DecimalFormat("0.00");
 
-        regular.setText("Price (regular): € " + df.format(garage.getPriceRegular()));
-        reserved.setText("Price (reservation): € " + df.format(garage.getPriceReservation()));
-        moneyCounter.setText("Money earned: € " + df.format(garage.getMoneyEarned()));
+        //regular.setText("Price (regular): € " + df.format(garage.getPriceRegular()));
+        //reserved.setText("Price (reservation): € " + df.format(garage.getPriceReservation()));
+        moneyCounter.setText("TOTAL Money earned: € " + df.format(garage.getMoneyEarned()));
         totalCarsCount.setText("Total cars payed: " + garage.gettotalCarsPayed());
+        monday.setText("Revenue Monday: €" + df.format(garage.GetMoneyADay(0)));
+        tuesday.setText("Revenue Tuesday: €" + df.format(garage.GetMoneyADay(1)));
+        wednesday.setText("Revenue Wednesday: €" + df.format(garage.GetMoneyADay(2)));
+        thursday.setText("Revenue Thursday: €" + df.format(garage.GetMoneyADay(3)));
+        friday.setText("Revenue Friday: €" + df.format(garage.GetMoneyADay(4)));
+        saturdag.setText("Revenue Saturdag: €" + df.format(garage.GetMoneyADay(5)));
+        sunday.setText("Revenue Sunday: €" + df.format(garage.GetMoneyADay(6)));
     }
 
 
