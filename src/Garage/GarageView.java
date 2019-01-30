@@ -13,8 +13,6 @@ public class GarageView extends View {
     private MyLabel title = new MyLabel("Simulator", JLabel.CENTER, "Title");
 
     public GarageView() {
-
-
         setBackground(new Color(47, 49, 54));
         repaint();
     }

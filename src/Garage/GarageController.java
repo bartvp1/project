@@ -78,6 +78,9 @@ public class GarageController extends Controller {
     private void carLeavesSpot(Car car) {
         ((GarageModel) model).removeCarAt(car.getLocation());
         ((GarageModel) model).addToExitCarQueue(car);
+        if(car instanceof CarNormal){
+            ((GarageModel) model).decreaseNumberOfNormalCarsByOne();
+        }
 
     }
 
@@ -91,10 +94,9 @@ public class GarageController extends Controller {
             carLeavesSpot(car);
             i++;
 
-            totalCarsPayed +=1;
+            totalCarsPayed += 1;
 
             if (car instanceof CarNormal) {
-                ((GarageModel) model).decreaseNumberOfNormalCarsByOne();
 
                 double price = ((priceRegular / 60) * car.getMinutesStay());
                 moneyEarned += price;
@@ -114,6 +116,7 @@ public class GarageController extends Controller {
             if (car.getHasToPay()) {
                 car.setIsPaying(true);
                 ((GarageModel) model).addToPaymentCarQueue(car);
+
             } else {
                 ((GarageModel) model).removeCarAt(car.getLocation());
                 ((GarageModel) model).addToExitCarQueue(car);
@@ -168,7 +171,7 @@ public class GarageController extends Controller {
     private void carsEntering(CarQueue queue) {
         int i = 0;
         // Remove car from the front of the queue and assign to a parking space.
-
+        System.out.println();
         while (queue.carsInQueue() > 0 && ((GarageModel) model).getNumberOfOpenSpots() > 0 && i < ((GarageModel) model).getEnterSpeed()) {
             Car car = queue.removeCar();
             Location freeLocation;
@@ -180,11 +183,14 @@ public class GarageController extends Controller {
                 freeLocation = loc;
                 ((GarageModel) model).increaseNumberOfReservedCarsByOne();
             } else {
+
+
                 freeLocation = ((GarageModel) model).getFirstFreeLocation("NORMAL");
+
                 ((GarageModel) model).increaseNumberOfNormalCarsByOne();
 
             }
-            ((GarageModel) model).increaseNumberOfTotalCarsByOne();
+//            ((GarageModel) model).increaseNumberOfTotalCarsByOne();
 
             ((GarageModel) model).setCarAt(freeLocation, car);
             i++;
