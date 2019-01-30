@@ -240,7 +240,26 @@ public class ControlPanel extends JPanel {
                 regularPrice.remove(0);
                 regularPrice.add(new MyLabel("Price regular P/H: €" + regularPriceSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
             });
-            
+
+
+            JSlider reservationPriceSlider = new JSlider(0, 10, (int)garage.getController().getPriceReservation());
+            reservationPriceSlider.setOpaque(false);
+
+            //Panel
+            JPanel reservationPrice = new JPanel(new BorderLayout(10, 0));
+            reservationPrice.setOpaque(false);
+
+            reservationPrice.add(new MyLabel("Price reservation P/H: €" + reservationPriceSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
+            reservationPrice.add(new MyLabel("FREE", JLabel.CENTER, "description"), BorderLayout.WEST);
+            reservationPrice.add(new MyLabel("10", JLabel.CENTER, "description"), BorderLayout.EAST);
+            reservationPrice.add(reservationPriceSlider, BorderLayout.CENTER);
+            add(reservationPrice);
+            reservationPriceSlider.addChangeListener(e -> {
+                double price = reservationPriceSlider.getValue();
+                garage.getController().setPriceReservation(price);
+                reservationPrice.remove(0);
+                reservationPrice.add(new MyLabel("Price reservation P/H: €" + reservationPriceSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
+            });
         }
     }
 
