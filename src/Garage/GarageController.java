@@ -5,11 +5,14 @@ import Garage.Car.*;
 import MyComponents.Controller;
 import MyComponents.Model;
 
+import java.lang.reflect.Array;
 import java.util.Iterator;
 
 public class GarageController extends Controller {
     private int ticks = 100;
     private FinanceView fv;
+
+    double[] week = new double[7];
 
 
     private int totalCarsPayed = 0;
@@ -21,6 +24,23 @@ public class GarageController extends Controller {
     public GarageController(Model model, FinanceView finance) {
         super(model);
         fv = finance;
+    }
+
+    public void resetMoney()
+    {
+        week = new double[7];
+        setMoneyEarned(0.0);
+        settotalCarsPayed(0);
+    }
+
+
+    void addMoney(double amount)
+    {
+        week[((GarageModel)model).getDay()] += amount;
+    }
+    public double getMoneyADay(int day)
+    {
+        return week[day];
     }
 
     public int gettotalCarsPayed() {
@@ -78,9 +98,6 @@ public class GarageController extends Controller {
     private void carLeavesSpot(Car car) {
         ((GarageModel) model).removeCarAt(car.getLocation());
         ((GarageModel) model).addToExitCarQueue(car);
-        if(car instanceof CarNormal){
-            ((GarageModel) model).decreaseNumberOfNormalCarsByOne();
-        }
 
     }
 
@@ -89,23 +106,27 @@ public class GarageController extends Controller {
         int i = 0;
         while (((GarageModel) model).getPaymentCarQueue().carsInQueue() > 0 && i < ((GarageModel) model).getPaymentSpeed()) {
             Car car = ((GarageModel) model).getPaymentCarQueue().removeCar();
+            // TODO Handle payment.
 
 
             carLeavesSpot(car);
             i++;
 
-            totalCarsPayed += 1;
+            totalCarsPayed +=1;
+            double price = 0.0;
 
             if (car instanceof CarNormal) {
+                ((GarageModel) model).decreaseNumberOfNormalCarsByOne();
 
-                double price = ((priceRegular / 60) * car.getMinutesStay());
+                price = ((priceRegular / 60) * car.getMinutesStay());
                 moneyEarned += price;
             }
             if (car instanceof CarReserved) {
                 ((GarageModel) model).decreaseNumberOfReservedCarsByOne();
-                double price = ((priceReservation / 60) * car.getMinutesStay());
+                price = ((priceReservation / 60) * car.getMinutesStay());
                 moneyEarned += price;
             }
+            addMoney(price);
         }
     }
 
@@ -116,7 +137,6 @@ public class GarageController extends Controller {
             if (car.getHasToPay()) {
                 car.setIsPaying(true);
                 ((GarageModel) model).addToPaymentCarQueue(car);
-
             } else {
                 ((GarageModel) model).removeCarAt(car.getLocation());
                 ((GarageModel) model).addToExitCarQueue(car);
@@ -171,7 +191,7 @@ public class GarageController extends Controller {
     private void carsEntering(CarQueue queue) {
         int i = 0;
         // Remove car from the front of the queue and assign to a parking space.
-        System.out.println();
+
         while (queue.carsInQueue() > 0 && ((GarageModel) model).getNumberOfOpenSpots() > 0 && i < ((GarageModel) model).getEnterSpeed()) {
             Car car = queue.removeCar();
             Location freeLocation;
@@ -183,14 +203,11 @@ public class GarageController extends Controller {
                 freeLocation = loc;
                 ((GarageModel) model).increaseNumberOfReservedCarsByOne();
             } else {
-
-
                 freeLocation = ((GarageModel) model).getFirstFreeLocation("NORMAL");
-
                 ((GarageModel) model).increaseNumberOfNormalCarsByOne();
 
             }
-//            ((GarageModel) model).increaseNumberOfTotalCarsByOne();
+            ((GarageModel) model).increaseNumberOfTotalCarsByOne();
 
             ((GarageModel) model).setCarAt(freeLocation, car);
             i++;
