@@ -27,6 +27,10 @@ public class GarageModel extends Model {
     int weekendArrivals = 200; // average number of arriving cars per hour
     int weekDayPassArrivals = 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
+    int lateOpeningArrivals = 250; // average number of arriving cars per hour
+    int lateOpeningPassArrivals = 25; // average number of arriving cars per hour
+
+
     private int numberOfOpenSpots;
 
     private CarQueue entranceCarQueue;
@@ -388,10 +392,19 @@ public class GarageModel extends Model {
     public int getNumberOfCars(String type) {
         int weekDay = (type.equals("PASS")) ? weekDayPassArrivals : weekDayArrivals;
         int weekendDay = (type.equals("PASS")) ? weekendPassArrivals : weekendArrivals;
+        int lateOpeningArivals = (type.equals("PASS")) ? lateOpeningPassArrivals : lateOpeningArrivals;
+
+
+
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
         int averageNumberOfCarsPerHour = day < 5 ? weekDay : weekendDay;
+
+        //If it's a buying night
+        if(day == 3)
+            averageNumberOfCarsPerHour = lateOpeningArivals;
+
 
         // Calculate the number of cars that arrive this minute.
         double standardDeviation = averageNumberOfCarsPerHour * 0.3;
