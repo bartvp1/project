@@ -26,11 +26,11 @@ public class GarageModel extends Model {
     private int exitSpeed = 5; // number of cars that can leave per minute
 
     int weekDayArrivals = 100; // average number of arriving cars per hour
-    int weekendArrivals = 200; // average number of arriving cars per hour
+    int weekendArrivals = 225; // average number of arriving cars per hour
     int weekDayPassArrivals = 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
-    int lateOpeningArrivals = 250; // average number of arriving cars per hour
-    int lateOpeningPassArrivals = 25; // average number of arriving cars per hour
+    int lateOpeningArrivals = 300; // average number of arriving cars per hour
+    int lateOpeningPassArrivals = 60; // average number of arriving cars per hour
 
 
     private int numberOfOpenSpots;

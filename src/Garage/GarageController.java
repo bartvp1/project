@@ -26,11 +26,19 @@ public class GarageController extends Controller {
         fv = finance;
     }
 
-    void AddMoney(double amount)
+    public void resetMoney()
+    {
+        week = new double[7];
+        setMoneyEarned(0.0);
+        settotalCarsPayed(0);
+    }
+
+
+    void addMoney(double amount)
     {
         week[((GarageModel)model).getDay()] += amount;
     }
-    public double GetMoneyADay(int day)
+    public double getMoneyADay(int day)
     {
         return week[day];
     }
@@ -118,7 +126,7 @@ public class GarageController extends Controller {
                 price = ((priceReservation / 60) * car.getMinutesStay());
                 moneyEarned += price;
             }
-            AddMoney(price);
+            addMoney(price);
         }
     }
 
