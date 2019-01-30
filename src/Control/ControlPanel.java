@@ -1,7 +1,6 @@
 package Control;
 
 import CarGraph.GraphController;
-import Garage.FinancesController;
 import Garage.GarageModel;
 import MyComponents.MyButton;
 import MyComponents.MyLabel;
@@ -15,13 +14,11 @@ public class ControlPanel extends JPanel {
 
     private GraphController graphController;
     private GarageModel garage;
-    private FinancesController FC;
     private ArrayList<MyButton> buttons = new ArrayList<>();
 
-    public ControlPanel(GarageModel garage, FinancesController FC, GraphController graph) {
+    public ControlPanel(GarageModel garage, GraphController graph) {
         super(null);
         this.garage = garage;
-        this.FC = FC;
         this.graphController = graph;
     }
 
@@ -48,14 +45,6 @@ public class ControlPanel extends JPanel {
         settingsPanel.setBounds(settingsX, titleLabel.getHeight() + 10, getWidth() - settingsX - 10, getHeight() - titleLabel.getHeight() - 30);
         settingsPanel.setOpaque(false);
         add(settingsPanel);
-
-
-        //Panel met de finan
-        JPanel settingsPanel1 = new JPanel(new CardLayout());
-        int settingsX1 = categoryPanel.getWidth() + categoryPanel.getX() + 10;
-        settingsPanel1.setBounds(settingsX1, titleLabel.getHeight() + 10, getWidth() - settingsX1 - 10, getHeight() - titleLabel.getHeight() - 30);
-        settingsPanel1.setOpaque(false);
-        super.add(settingsPanel1);
 
 
         createCategoryButtons(categoryPanel, settingsPanel);

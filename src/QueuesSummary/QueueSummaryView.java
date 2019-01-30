@@ -9,10 +9,10 @@ import java.awt.*;
 
 public class QueueSummaryView extends View {
 
-    JLabel entranceQueueLabel = new JLabel();
-    JLabel entrancePassQueueLabel = new JLabel();
-    JLabel exitQueueLabel = new JLabel();
-    JLabel paymentQueueLabel = new JLabel();
+    JLabel entranceQueueLabel = new MyLabel("", JLabel.CENTER, "description");
+    JLabel entrancePassQueueLabel = new MyLabel("", JLabel.CENTER, "description");
+    JLabel exitQueueLabel = new MyLabel("", JLabel.CENTER, "description");
+    JLabel paymentQueueLabel = new MyLabel("", JLabel.CENTER, "description");
 
 
     public void init() {
@@ -23,7 +23,6 @@ public class QueueSummaryView extends View {
 
         JPanel panel = new JPanel(new GridLayout(6,1,0,10));
         panel.setBounds(0, 50, getWidth(), getHeight()-50);
-        panel.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 5));
         panel.setOpaque(false);
 
         panel.add(entranceQueueLabel);
@@ -31,17 +30,7 @@ public class QueueSummaryView extends View {
         panel.add(exitQueueLabel);
         panel.add(paymentQueueLabel);
 
-        entranceQueueLabel.setForeground(Color.WHITE);
-        entrancePassQueueLabel.setForeground(Color.WHITE);
-        exitQueueLabel.setForeground(Color.WHITE);
-        paymentQueueLabel.setForeground(Color.WHITE);
 
-        Font font = new Font("Dubai Light", Font.PLAIN, 18);
-
-        entranceQueueLabel.setFont(font);
-        entrancePassQueueLabel.setFont(font);
-        exitQueueLabel.setFont(font);
-        paymentQueueLabel.setFont(font);
 
         add(panel);
     }
@@ -50,9 +39,9 @@ public class QueueSummaryView extends View {
     protected void update(Model model) {
         QueueSummaryModel qModel = (QueueSummaryModel) model;
 
-        entranceQueueLabel.setText("Car Queue: " + qModel.getEntranceSize());
-        entrancePassQueueLabel.setText("Car (pass) Queue: " + qModel.getEntrancePassSize() );
-        paymentQueueLabel.setText("Payment Queue: " + qModel.getPaymentSize());
-        exitQueueLabel.setText("Exit Queue: " + qModel.getExitQueue());
+        entranceQueueLabel.setText("Car Queue: " + qModel.getEntranceSize() + " car(s)");
+        entrancePassQueueLabel.setText("Car (pass) Queue: " + qModel.getEntrancePassSize() + " car(s)");
+        paymentQueueLabel.setText("Payment Queue: " + qModel.getPaymentSize() + " car(s)");
+        exitQueueLabel.setText("Exit Queue: " + qModel.getExitQueue() + " car(s)");
     }
 }

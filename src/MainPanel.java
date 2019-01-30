@@ -3,7 +3,6 @@ import CarGraph.GraphModel;
 import CarGraph.GraphView;
 import Control.ControlPanel;
 import Finance.FinanceView;
-import Garage.FinancesController;
 import Garage.GarageController;
 import Garage.GarageModel;
 import Garage.GarageView;
@@ -39,7 +38,7 @@ class MainPanel extends JPanel {
         controlBounds = new Rectangle(margin, margin, (screenWidth - simBounds.width) / 2 - (margin * 2), screenHeight - graphBounds.height - (margin * 2));
         summaryBounds = new Rectangle(simBounds.x, simBounds.y + simBounds.height + margin, simBounds.width, screenHeight - graphBounds.height - simBounds.height - (margin * 3));
         queueBounds = new Rectangle(simBounds.x + simBounds.width + margin, simBounds.height + (margin*2) , screenWidth - controlBounds.width - simBounds.width - (margin * 4), screenHeight - 770);
-        financeBounds = new Rectangle(simBounds.x + simBounds.width + margin, margin , screenWidth - controlBounds.width - simBounds.width - (margin * 4), screenHeight - 770);
+        financeBounds = new Rectangle(simBounds.x + simBounds.width + margin, margin , screenWidth - controlBounds.width - simBounds.width - (margin * 4), screenHeight - 655);
 
     }
 
@@ -47,13 +46,15 @@ class MainPanel extends JPanel {
         setLayout(null);
         setBackground(new Color(55, 57, 63));
 
+        FinanceView financeView = new FinanceView();
+        financeView.setBounds(financeBounds);
+        financeView.init();
+        add(financeView);
 
         GarageView garageView = new GarageView();
         garageView.setBounds(simBounds);
         GarageModel garageModel = new GarageModel(garageView);
-        FinancesController fc = new FinancesController();
-        GarageController garageController = new GarageController(garageModel);
-        garageController.setFinanceController(fc);
+        GarageController garageController = new GarageController(garageModel,financeView);
 
 
         garageModel.setController(garageController);
@@ -61,7 +62,6 @@ class MainPanel extends JPanel {
         garageModel.init();
         add(garageView);
 
-        FinancesController financeController = new FinancesController();
 
         GraphView graphView = new GraphView();
         graphView.setBounds(graphBounds);
@@ -73,7 +73,7 @@ class MainPanel extends JPanel {
         add(graphView);
 
 
-        ControlPanel controlPanel = new ControlPanel(garageModel, financeController, graphController);
+        ControlPanel controlPanel = new ControlPanel(garageModel, graphController);
         controlPanel.setBounds(controlBounds);
         controlPanel.init();
         add(controlPanel);
@@ -85,13 +85,6 @@ class MainPanel extends JPanel {
 
         add(queueSummaryView);
         queueSummaryView.init();
-
-        FinanceView financeView = new FinanceView();
-        financeView.setBounds(financeBounds);
-
-        add(financeView);
-        //financeView.init();
-
 
         SummaryView summaryView = new SummaryView();
         SummaryModel summaryModel = new SummaryModel(summaryView);
