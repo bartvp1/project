@@ -110,13 +110,13 @@ public class SummaryView extends View {
         SummaryModel sModel = (SummaryModel) model;
 
         this.model = model;
-
+        int totalCars = sModel.getPassCars() + sModel.getNormalCars();
         normalCarLabel.setText(Integer.toString(sModel.getNormalCars()));
         reservedCarLabel.setText(Integer.toString(sModel.getReservedCars()));
-        totalCarsLabel.setText(Integer.toString(sModel.getTotalCars()));
+        totalCarsLabel.setText(Integer.toString(totalCars));
         passCarLabel.setText(Integer.toString(sModel.getPassCars()));
 
-        totalCarBar.setValue(sModel.getTotalCars());
+        totalCarBar.setValue(totalCars);
         passCarBar.setValue(sModel.getPassCars());
         normalCarBar.setValue(sModel.getNormalCars());
 

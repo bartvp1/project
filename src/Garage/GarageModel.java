@@ -72,8 +72,6 @@ public class GarageModel extends Model {
     }
 
 
-
-
     public int getNumberOfReservedLocations() {
         return reservedLocations.size();
     }
@@ -148,7 +146,9 @@ public class GarageModel extends Model {
     }
 
     public void addToExitCarQueue(Car car) {
-        exitCarQueue.addCar(car);
+        if (exitCarQueue.carsInQueue() < getMaxExitQueue()) {
+            exitCarQueue.addCar(car);
+        }
     }
 
     private void addLocations() {
@@ -400,7 +400,6 @@ public class GarageModel extends Model {
         int lateOpeningArivals = (type.equals("PASS")) ? lateOpeningPassArrivals : lateOpeningArrivals;
 
 
-
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
@@ -408,12 +407,12 @@ public class GarageModel extends Model {
 
 
         //If the shops / offices are open
-        if(getHour() >= 18  || getHour() <= 7 )
+        if (getHour() >= 18 || getHour() <= 7)
             averageNumberOfCarsPerHour = averageNumberOfCarsPerHour / 2;
 
 
         //If it's a buying night
-        if(day == 3 && getHour() >= 18)
+        if (day == 3 && getHour() >= 18)
             averageNumberOfCarsPerHour = lateOpeningArivals;
 
 
@@ -499,7 +498,7 @@ public class GarageModel extends Model {
         return maxEntranceQueue;
     }
 
-    public int getMaxExitQueue(){
+    public int getMaxExitQueue() {
         return maxExitQueue;
     }
 
