@@ -5,7 +5,6 @@ import Garage.Car.*;
 import MyComponents.Controller;
 import MyComponents.Model;
 
-import java.lang.invoke.MethodHandles;
 import java.util.Iterator;
 
 public class GarageController extends Controller {
@@ -15,7 +14,7 @@ public class GarageController extends Controller {
     private double priceRegular = 1.45;
     private double priceReservation = 1.20;
 
-    public GarageController(Model model,FinanceView finance) {
+    public GarageController(Model model, FinanceView finance) {
         super(model);
         fv = finance;
     }
@@ -59,13 +58,15 @@ public class GarageController extends Controller {
         while (((GarageModel) model).getExitCarQueue().carsInQueue() > 0 && i < ((GarageModel) model).getExitSpeed()) {
             ((GarageModel) model).getExitCarQueue().removeCar();
             i++;
-            ((GarageModel) model).decreaseNumberOfTotalCarsByOne();
         }
+
+
     }
 
     private void carLeavesSpot(Car car) {
         ((GarageModel) model).removeCarAt(car.getLocation());
         ((GarageModel) model).addToExitCarQueue(car);
+
     }
 
     private void carsPaying() {
@@ -172,14 +173,16 @@ public class GarageController extends Controller {
             i++;
         }
     }
-    public double getPriceRegular(){
+
+    public double getPriceRegular() {
         return priceRegular;
     }
 
-    public double getPriceReservation(){
+    public double getPriceReservation() {
         return priceReservation;
     }
-    public double getMoneyEarned(){
+
+    public double getMoneyEarned() {
         return moneyEarned;
     }
 
