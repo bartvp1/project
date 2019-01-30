@@ -12,6 +12,7 @@ public class FinanceView extends JPanel {
     JLabel regular = new MyLabel("", JLabel.CENTER, "description");
     JLabel reserved = new MyLabel("", JLabel.CENTER, "description");
     JLabel moneyCounter = new MyLabel("", JLabel.CENTER, "description");
+    JLabel totalCarsCount = new MyLabel("", JLabel.CENTER, "description");
 
     public void init() {
         JPanel finance = new JPanel(new BorderLayout());
@@ -33,6 +34,7 @@ public class FinanceView extends JPanel {
         panel.add(regular);
         panel.add(reserved);
         panel.add(moneyCounter);
+        panel.add(totalCarsCount);
 
         finance.add(panel);
         super.add(finance);
@@ -45,6 +47,7 @@ public class FinanceView extends JPanel {
         regular.setText("Price (regular): € " + df.format(garage.getPriceRegular()));
         reserved.setText("Price (reservation): € " + df.format(garage.getPriceReservation()));
         moneyCounter.setText("Money earned: € " + df.format(garage.getMoneyEarned()));
+        totalCarsCount.setText("Total cars payed: " + garage.gettotalCarsPayed());
     }
 
 

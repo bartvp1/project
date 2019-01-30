@@ -10,13 +10,25 @@ import java.util.Iterator;
 public class GarageController extends Controller {
     private int ticks = 100;
     private FinanceView fv;
+
+
+    private int totalCarsPayed = 0;
+
     private double moneyEarned = 0;
-    private double priceRegular = 1.45;
-    private double priceReservation = 1.20;
+    private double priceRegular = 2;
+    private double priceReservation = 1;
 
     public GarageController(Model model, FinanceView finance) {
         super(model);
         fv = finance;
+    }
+
+    public int gettotalCarsPayed() {
+        return totalCarsPayed;
+    }
+
+    public void settotalCarsPayed(int totalCarsPayed) {
+        this.totalCarsPayed = totalCarsPayed;
     }
 
     public void setMoneyEarned(double moneyEarned) {
@@ -78,13 +90,19 @@ public class GarageController extends Controller {
 
             carLeavesSpot(car);
             i++;
+
+            totalCarsPayed +=1;
+
             if (car instanceof CarNormal) {
                 ((GarageModel) model).decreaseNumberOfNormalCarsByOne();
-                moneyEarned += priceRegular;
+
+                double price = ((priceRegular / 60) * car.getMinutesStay());
+                moneyEarned += price;
             }
             if (car instanceof CarReserved) {
                 ((GarageModel) model).decreaseNumberOfReservedCarsByOne();
-                moneyEarned += priceReservation;
+                double price = ((priceReservation / 60) * car.getMinutesStay());
+                moneyEarned += price;
             }
         }
     }

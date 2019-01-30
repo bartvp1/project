@@ -232,7 +232,7 @@ public class ControlPanel extends JPanel {
 
             regularPrice.add(new MyLabel("Price regular P/H: €" + regularPriceSlider.getDoubleValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
             regularPrice.add(new MyLabel("FREE", JLabel.CENTER, "description"), BorderLayout.WEST);
-            regularPrice.add(new MyLabel("10", JLabel.CENTER, "description"), BorderLayout.EAST);
+            regularPrice.add(new MyLabel("5", JLabel.CENTER, "description"), BorderLayout.EAST);
             regularPrice.add(regularPriceSlider, BorderLayout.CENTER);
             add(regularPrice);
             regularPriceSlider.addChangeListener(e -> {
@@ -250,9 +250,9 @@ public class ControlPanel extends JPanel {
             JPanel reservationPrice = new JPanel(new BorderLayout(10, 0));
             reservationPrice.setOpaque(false);
 
-            reservationPrice.add(new MyLabel("Price reservation P/H: €" + reservationPriceSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
+            reservationPrice.add(new MyLabel("Price reservation P/H: €" + reservationPriceSlider.getDoubleValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
             reservationPrice.add(new MyLabel("FREE", JLabel.CENTER, "description"), BorderLayout.WEST);
-            reservationPrice.add(new MyLabel("10", JLabel.CENTER, "description"), BorderLayout.EAST);
+            reservationPrice.add(new MyLabel("5", JLabel.CENTER, "description"), BorderLayout.EAST);
             reservationPrice.add(reservationPriceSlider, BorderLayout.CENTER);
             add(reservationPrice);
             reservationPriceSlider.addChangeListener(e -> {
