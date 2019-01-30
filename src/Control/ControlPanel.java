@@ -129,6 +129,12 @@ public class ControlPanel extends JPanel {
             setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
             setBackground(new Color(0x454545));
 
+
+            JPanel entrancesPanel = new JPanel(new BorderLayout(10, 0));
+            entrancesPanel.setOpaque(false);
+            entrancesPanel.add(new MyLabel("In-exits car park", JLabel.CENTER, "title"), BorderLayout.NORTH);
+            add(entrancesPanel);
+
             JSlider speedSlider = new JSlider(0, 3, 0);
 
             speedSlider.setMinorTickSpacing(1);
@@ -211,9 +217,12 @@ public class ControlPanel extends JPanel {
 
 
 
+            JPanel pricingPanel = new JPanel(new BorderLayout(10, 0));
+            pricingPanel.setOpaque(false);
+            pricingPanel.add(new MyLabel("Finances", JLabel.CENTER, "title"), BorderLayout.NORTH);
+            add(pricingPanel);
 
-
-            JSlider regularPriceSlider = new JSlider(0, 10);
+            JSlider regularPriceSlider = new JSlider(0, 10, (int)garage.getController().getPriceRegular());
             regularPriceSlider.setOpaque(false);
 
             //Panel
