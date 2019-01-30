@@ -1,21 +1,23 @@
 package Garage;
 
+import Finance.FinanceView;
 import Garage.Car.*;
 import MyComponents.Controller;
 import MyComponents.Model;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Iterator;
 
 public class GarageController extends Controller {
     private int ticks = 100;
-    private FinancesController FC;
+    private FinanceView fv;
+    private double moneyEarned = 0;
+    private double priceRegular = 3.00;
+    private double priceReservation = 4.50;
 
-    public GarageController(Model model) {
+    public GarageController(Model model,FinanceView finance) {
         super(model);
-    }
-
-    public void setFinanceController(FinancesController FC) {
-        this.FC = FC;
+        fv = finance;
     }
 
     private void reserveLocations() {
@@ -60,19 +62,17 @@ public class GarageController extends Controller {
         while (((GarageModel) model).getPaymentCarQueue().carsInQueue() > 0 && i < ((GarageModel) model).getPaymentSpeed()) {
             Car car = ((GarageModel) model).getPaymentCarQueue().removeCar();
             // TODO Handle payment.
-            int timeStay = 0;
-            timeStay = (car.getMinutesStay() / 60);
 
-
-            FC.setTotalEarned(FC.getTotalEarned() + timeStay);
 
             carLeavesSpot(car);
             i++;
             if (car instanceof CarNormal) {
                 ((GarageModel) model).decreaseNumberOfNormalCarsByOne();
+                moneyEarned += priceRegular;
             }
             if (car instanceof CarReserved) {
                 ((GarageModel) model).decreaseNumberOfReservedCarsByOne();
+                moneyEarned += priceReservation;
             }
         }
     }
@@ -160,6 +160,17 @@ public class GarageController extends Controller {
             i++;
         }
     }
+    public double getPriceRegular(){
+        return priceRegular;
+    }
+
+    public double getPriceReservation(){
+        return priceReservation;
+    }
+    public double getMoneyEarned(){
+        return moneyEarned;
+    }
+
 
     @Override
     public void run() {
@@ -169,6 +180,7 @@ public class GarageController extends Controller {
             handleExit();
             carTick();
             ((GarageModel) model).updateView();
+            fv.update(this);
             handleEntrance();
             try {
                 Thread.sleep(ticks);
