@@ -41,10 +41,9 @@ public class SummaryView extends View {
         }
 
         JPanel panel = new JPanel(new GridLayout(0, 3, 25, 5));
-        panel.setBounds(25, 100, 750, 125);
+        panel.setBounds(25, 125, 750, 125);
         panel.setOpaque(false);
 
-        totalCarBar = new JProgressBar(0, 540);
         totalCarBar.setBounds(100, 75, 100, 25);
         totalCarBar.setValue(500);
         totalCarBar.setForeground(Color.GREEN);
@@ -53,7 +52,7 @@ public class SummaryView extends View {
         panel.add(totalCarBar);
         panel.add(totalCarsLabel);
 
-        passCarBar = new JProgressBar(0, 120);
+
         passCarBar.setBounds(100, 75, 100, 25);
         passCarBar.setValue(500);
         passCarBar.setForeground(Color.BLUE);
@@ -62,7 +61,7 @@ public class SummaryView extends View {
         panel.add(passCarBar);
         panel.add(passCarLabel);
 
-        normalCarBar = new JProgressBar(0, 420);
+
         normalCarBar.setBounds(100, 75, 100, 25);
         normalCarBar.setValue(500);
         normalCarBar.setForeground(Color.RED);
@@ -71,7 +70,7 @@ public class SummaryView extends View {
         panel.add(normalCarBar);
         panel.add(normalCarLabel);
 
-        reservedCarBar = new JProgressBar(0, 540);
+
         reservedCarBar.setBounds(100, 75, 100, 25);
         reservedCarBar.setValue(500);
         reservedCarBar.setForeground(Color.YELLOW);
@@ -102,7 +101,7 @@ public class SummaryView extends View {
         if (model != null) {
             g2.setFont(new Font("Arial", Font.PLAIN, 75));
             g2.setColor(Color.WHITE);
-            g2.drawString(timeString, 600, getHeight() / 2 + 50);
+            g2.drawString(timeString, 625, getHeight() / 2 + 60);
         }
     }
 
