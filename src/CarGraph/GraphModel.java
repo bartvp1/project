@@ -1,6 +1,7 @@
 package CarGraph;
 
 import Garage.GarageModel;
+import Garage.Location;
 import MyComponents.Model;
 import MyComponents.View;
 
@@ -17,7 +18,7 @@ import java.util.HashMap;
  * De kleuren, vulling en posities worden vanuit hier opgehaald.
  */
 public class GraphModel extends Model {
-    // De link margin van de grafiek zelf
+    // De linker margin van de grafiek zelf
     // 40 omdat er dan nog genoeg ruimte is voor de waardes van de y-as
     private int STARTING_X = 40;
 
@@ -56,6 +57,7 @@ public class GraphModel extends Model {
      * @return De color van de vulling of line
      */
     Color getColor(String type, boolean filling) {
+
         int r = 0;
         int g = 0;
         int b = 0;
@@ -128,15 +130,23 @@ public class GraphModel extends Model {
 
     /**
      * @param value Integer de hoeveelheid auto's
-     * Hier wordt de de y positie uitgerekend
+     *              Hier wordt de de y positie uitgerekend
      * @return double de y positie
      */
     private double getY(int value) {
         double _temp = 60.0 / 25.0;
         double bottomY = graphView.getHeight() - 25 - 10;
+        double returnValue = (bottomY - (value / _temp));
+        if (returnValue < 10) {
+            return getY(540);
+        }
         return (bottomY - (value / _temp));
     }
 
+    /**
+     * getX verkrijgt de x positie van de lijn ten opzichte van de tijd van de simulator(garage)
+     * @return double, x positie van de volgende punten
+     */
     private double getX() {
         double sum = 40;
         double dayWidth = (graphView.getSize().getWidth() - STARTING_X) / 7;
@@ -149,6 +159,14 @@ public class GraphModel extends Model {
         return sum;
     }
 
+
+    /**
+     * @param str type lijn
+     * @param pX
+     * @param pY
+     * @param x
+     * @param y
+     */
     private void addLine(String str, double pX, double pY, double x, double y) {
         Line2D line = new Line2D.Double(pX, pY, x, y);
         ArrayList<Line2D> lines = linesMap.get(str);

@@ -24,7 +24,6 @@ public class ControlPanel extends JPanel {
 
     public void init() {
         setBackground(new Color(47, 49, 54));
-//        setBounds(25, 25, 450, 700);
 
         JLabel titleLabel = new JLabel("Configuration", JLabel.CENTER);
         titleLabel.setBounds(0, 0, getWidth(), 50);
@@ -123,7 +122,7 @@ public class ControlPanel extends JPanel {
     }
 
     class SimulatorSettings extends JPanel {
-        //todo: snelheid van de de simulatie, aanpassingen aan het aantal ingangen, uitgangen etc.
+
 
         SimulatorSettings() {
             super(new GridLayout(10, 1));
@@ -213,7 +212,7 @@ public class ControlPanel extends JPanel {
     }
 
     class ReservationPanel extends JPanel {
-        //todo: Reserveringen kunnen toegevoegd worden met dit menu
+
         ReservationPanel() {
             super(new GridLayout(10, 1));
             setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
@@ -264,7 +263,7 @@ public class ControlPanel extends JPanel {
     }
 
     class AboutSettings extends JPanel {
-        //todo: Informatie over ons, dat we zo cool zijn enzo.
+      
         AboutSettings() {
             setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
             setBackground(new Color(0x454545));

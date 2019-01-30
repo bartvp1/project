@@ -88,10 +88,7 @@ class MainPanel extends JPanel {
         // model
         GarageModel garageModel = new GarageModel(garageView);
         //controller
-        FinancesController fc = new FinancesController();
-        GarageController garageController = new GarageController(garageModel);
-        garageController.setFinanceController(fc);
-        GarageController garageController = new GarageController(garageModel,financeView);
+        GarageController garageController = new GarageController(garageModel, financeView);
 
 
         garageModel.setController(garageController);
@@ -118,14 +115,13 @@ class MainPanel extends JPanel {
         add(graphView);
 
         // De control Panel
-        ControlPanel controlPanel = new ControlPanel(garageModel, financeController, graphController);
+
 
         ControlPanel controlPanel = new ControlPanel(garageModel, graphController);
         controlPanel.setBounds(controlBounds);
         controlPanel.init();
         add(controlPanel);
 
-//      De queue panel - maakt gebruik van de summary controller
         // view
         QueueSummaryView queueSummaryView = new QueueSummaryView();
         queueSummaryView.setBounds(queueBounds);
@@ -135,13 +131,7 @@ class MainPanel extends JPanel {
         add(queueSummaryView);
         queueSummaryView.init();
 
-//      De summary Panel
-        // view
-        FinanceView financeView = new FinanceView();
-        financeView.setBounds(financeBounds);
 
-        add(financeView);
-        //financeView.init();
 
 
         SummaryView summaryView = new SummaryView();
