@@ -25,7 +25,9 @@ public class GraphController extends Controller {
     public void run() {
 
         while (thread != null) {
-            ((GraphModel) model).nextValue("Total", ((GarageModel) garage).getTotalCars());
+            int totalCars = ((GarageModel) garage).getNumberOfPassCars() + ((GarageModel) garage).getNumberOfNormalCars();
+            ((GraphModel) model).nextValue("Total", totalCars);
+//            ((GraphModel) model).nextValue("Total", ((GarageModel) garage).getTotalCars());
             ((GraphModel) model).nextValue("Pass", ((GarageModel) garage).getNumberOfPassCars());
             ((GraphModel) model).nextValue("Normal", ((GarageModel) garage).getNumberOfNormalCars());
             ((GraphModel) model).setCurrentWeek(((GarageModel) garage).getWeek());

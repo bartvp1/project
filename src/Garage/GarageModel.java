@@ -20,6 +20,8 @@ public class GarageModel extends Model {
     private int numberOfReservedCars = 0;
     private int enterSpeed = 3; // number of cars that can enter per minute
     private int maxEntranceQueue = 10;
+    private int maxExitQueue = 10;
+
     private int paymentSpeed = 7; // number of cars that can pay per minute
     private int exitSpeed = 5; // number of cars that can leave per minute
 
@@ -486,6 +488,10 @@ public class GarageModel extends Model {
 
     public int getMaxEntranceQueue() {
         return maxEntranceQueue;
+    }
+
+    public int getMaxExitQueue(){
+        return maxExitQueue;
     }
 
     public void setMaxEntranceQueue(int maxEntranceQueue) {
