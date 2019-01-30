@@ -10,14 +10,18 @@ import java.awt.*;
 
 public class GarageView extends View {
     private GarageModel garageModel = null;
-    private MyLabel title = new MyLabel("Garage", JLabel.CENTER, "Title");
+    private MyLabel title = new MyLabel("Simulator", JLabel.CENTER, "Title");
 
     public GarageView() {
-        title.setBounds(0, 0, getWidth(), getHeight());
-        add(title);
+
 
         setBackground(new Color(47, 49, 54));
         repaint();
+    }
+
+    public void init() {
+        title.setBounds(0, 0, getWidth(), 50);
+        add(title);
     }
 
     @Override
