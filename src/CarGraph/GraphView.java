@@ -19,8 +19,7 @@ public class GraphView extends View {
     private GraphModel model;
 
     //    De dagen van de week om onderin de grafiek te zetten
-    private String[] dagen = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"};
-
+    private String[] dagen = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     void setModel(GraphModel model) {
         this.model = model;

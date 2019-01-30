@@ -33,7 +33,7 @@ public class MyButton extends JButton {
     private void init() {
         if (text.equals("Control")) {
             pathName += "control_icon.png";
-        } else if (text.equals("Reserveren")) {
+        } else if (text.equals("Reserve")) {
             pathName += "reserve_icon.png";
         } else if (text.equals("About")) {
             pathName += "about_icon.png";

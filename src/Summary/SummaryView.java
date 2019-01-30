@@ -15,7 +15,7 @@ public class SummaryView extends View {
     private MyLabel passCarLabel = new MyLabel("", JLabel.LEFT, "Title_small");
     private MyLabel normalCarLabel = new MyLabel("", JLabel.LEFT, "Title_small");
     private MyLabel reservedCarLabel = new MyLabel("", JLabel.LEFT, "Title_small");
-    private String[] days = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"};
+    private String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     private HashMap<String, MyLabel> dayLabels = new HashMap<>();
 
@@ -48,7 +48,7 @@ public class SummaryView extends View {
         totalCarBar.setValue(500);
         totalCarBar.setForeground(Color.GREEN);
 
-        panel.add(new MyLabel("Totaal aantal auto's", JLabel.LEFT, "Title_small"));
+        panel.add(new MyLabel("Total cars", JLabel.LEFT, "Title_small"));
         panel.add(totalCarBar);
         panel.add(totalCarsLabel);
 
@@ -57,7 +57,7 @@ public class SummaryView extends View {
         passCarBar.setValue(500);
         passCarBar.setForeground(Color.BLUE);
 
-        panel.add(new MyLabel("Totaal pashouders", JLabel.LEFT, "Title_small"));
+        panel.add(new MyLabel("Member cars", JLabel.LEFT, "Title_small"));
         panel.add(passCarBar);
         panel.add(passCarLabel);
 
@@ -66,7 +66,7 @@ public class SummaryView extends View {
         normalCarBar.setValue(500);
         normalCarBar.setForeground(Color.RED);
 
-        panel.add(new MyLabel("Reguliere klanten", JLabel.LEFT, "Title_small"));
+        panel.add(new MyLabel("Regular cars", JLabel.LEFT, "Title_small"));
         panel.add(normalCarBar);
         panel.add(normalCarLabel);
 
@@ -75,7 +75,7 @@ public class SummaryView extends View {
         reservedCarBar.setValue(500);
         reservedCarBar.setForeground(Color.YELLOW);
 
-        panel.add(new MyLabel("Totaal gereserveerde plekken", JLabel.LEFT, "Title_small"));
+        panel.add(new MyLabel("Reserved spots", JLabel.LEFT, "Title_small"));
         panel.add(reservedCarBar);
         panel.add(reservedCarLabel);
 

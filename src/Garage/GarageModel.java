@@ -380,7 +380,7 @@ public class GarageModel extends Model {
     }
 
     public String getDayName() {
-        String[] days = {"Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"};
+        String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
 
         return days[day];

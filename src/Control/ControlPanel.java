@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class ControlPanel extends JPanel {
-    private String[] categories = {"Control", "Reserveren", "About"};
+    private String[] categories = {"Control", "Reserve", "About"};
 
     private GraphController graphController;
     private GarageModel garage;
