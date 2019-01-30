@@ -12,8 +12,8 @@ public class GarageController extends Controller {
     private int ticks = 100;
     private FinanceView fv;
     private double moneyEarned = 0;
-    private double priceRegular = 3.00;
-    private double priceReservation = 4.50;
+    private double priceRegular = 1.45;
+    private double priceReservation = 1.20;
 
     public GarageController(Model model,FinanceView finance) {
         super(model);

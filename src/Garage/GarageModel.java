@@ -405,8 +405,8 @@ public class GarageModel extends Model {
         int averageNumberOfCarsPerHour = day < 5 ? weekDay : weekendDay;
 
 
-
-        if(getHour() >= 18  || getHour() <= 8 )
+        //If the shops / offices are open
+        if(getHour() >= 18  || getHour() <= 7 )
             averageNumberOfCarsPerHour = averageNumberOfCarsPerHour / 2;
 
 
