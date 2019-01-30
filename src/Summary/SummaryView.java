@@ -41,14 +41,14 @@ public class SummaryView extends View {
         }
 
         JPanel panel = new JPanel(new GridLayout(0, 3, 25, 5));
-        panel.setBounds(25, 125, 750, 125);
+        panel.setBounds(0, 125, getWidth()/2 + 25, 125);
         panel.setOpaque(false);
 
         totalCarBar.setBounds(100, 75, 100, 25);
         totalCarBar.setValue(500);
         totalCarBar.setForeground(Color.GREEN);
 
-        panel.add(new MyLabel("Total cars", JLabel.LEFT, "Title_small"));
+        panel.add(new MyLabel("Total cars", JLabel.RIGHT, "Title_small"));
         panel.add(totalCarBar);
         panel.add(totalCarsLabel);
 
@@ -57,7 +57,7 @@ public class SummaryView extends View {
         passCarBar.setValue(500);
         passCarBar.setForeground(Color.BLUE);
 
-        panel.add(new MyLabel("Member cars", JLabel.LEFT, "Title_small"));
+        panel.add(new MyLabel("Passholder", JLabel.RIGHT, "Title_small"));
         panel.add(passCarBar);
         panel.add(passCarLabel);
 
@@ -66,7 +66,7 @@ public class SummaryView extends View {
         normalCarBar.setValue(500);
         normalCarBar.setForeground(Color.RED);
 
-        panel.add(new MyLabel("Regular cars", JLabel.LEFT, "Title_small"));
+        panel.add(new MyLabel("Regular cars", JLabel.RIGHT, "Title_small"));
         panel.add(normalCarBar);
         panel.add(normalCarLabel);
 
@@ -75,7 +75,7 @@ public class SummaryView extends View {
         reservedCarBar.setValue(500);
         reservedCarBar.setForeground(Color.YELLOW);
 
-        panel.add(new MyLabel("Reserved spots", JLabel.LEFT, "Title_small"));
+        panel.add(new MyLabel("Reserved spots", JLabel.RIGHT, "Title_small"));
         panel.add(reservedCarBar);
         panel.add(reservedCarLabel);
 
@@ -101,7 +101,7 @@ public class SummaryView extends View {
         if (model != null) {
             g2.setFont(new Font("Arial", Font.PLAIN, 75));
             g2.setColor(Color.WHITE);
-            g2.drawString(timeString, 625, getHeight() / 2 + 60);
+            g2.drawString(timeString, 550, getHeight() / 2 + 60);
         }
     }
 
