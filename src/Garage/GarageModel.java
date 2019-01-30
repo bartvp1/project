@@ -71,6 +71,9 @@ public class GarageModel extends Model {
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
     }
 
+
+
+
     public int getNumberOfReservedLocations() {
         return reservedLocations.size();
     }
@@ -403,8 +406,14 @@ public class GarageModel extends Model {
         // Get the average number of cars that arrive per hour.
         int averageNumberOfCarsPerHour = day < 5 ? weekDay : weekendDay;
 
+
+        //If the shops / offices are open
+        if(getHour() >= 18  || getHour() <= 7 )
+            averageNumberOfCarsPerHour = averageNumberOfCarsPerHour / 2;
+
+
         //If it's a buying night
-        if(day == 3)
+        if(day == 3 && getHour() >= 18)
             averageNumberOfCarsPerHour = lateOpeningArivals;
 
 

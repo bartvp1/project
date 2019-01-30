@@ -2,6 +2,7 @@ package Control;
 
 import CarGraph.GraphController;
 import Garage.GarageModel;
+import MyComponents.DoubleJSlider;
 import MyComponents.MyButton;
 import MyComponents.MyLabel;
 
@@ -129,6 +130,12 @@ public class ControlPanel extends JPanel {
             setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
             setBackground(new Color(0x454545));
 
+
+            JPanel entrancesPanel = new JPanel(new BorderLayout(10, 0));
+            entrancesPanel.setOpaque(false);
+            entrancesPanel.add(new MyLabel("In-exits car park", JLabel.CENTER, "title"), BorderLayout.NORTH);
+            add(entrancesPanel);
+
             JSlider speedSlider = new JSlider(0, 3, 0);
 
             speedSlider.setMinorTickSpacing(1);
@@ -207,6 +214,52 @@ public class ControlPanel extends JPanel {
                 garage.setExitSpeed(speed);
                 exitSpeed.remove(0);
                 exitSpeed.add(new MyLabel("Leaving (cars/minute): " + totalExitsSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
+            });
+
+
+
+            JPanel pricingPanel = new JPanel(new BorderLayout(10, 0));
+            pricingPanel.setOpaque(false);
+            pricingPanel.add(new MyLabel("Finances", JLabel.CENTER, "title"), BorderLayout.NORTH);
+            add(pricingPanel);
+
+            DoubleJSlider regularPriceSlider = new DoubleJSlider(0, 5, (int)garage.getController().getPriceRegular());
+            regularPriceSlider.setOpaque(false);
+
+            //Panel
+            JPanel regularPrice = new JPanel(new BorderLayout(10, 0));
+            regularPrice.setOpaque(false);
+
+            regularPrice.add(new MyLabel("Price regular P/H: €" + regularPriceSlider.getDoubleValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
+            regularPrice.add(new MyLabel("FREE", JLabel.CENTER, "description"), BorderLayout.WEST);
+            regularPrice.add(new MyLabel("10", JLabel.CENTER, "description"), BorderLayout.EAST);
+            regularPrice.add(regularPriceSlider, BorderLayout.CENTER);
+            add(regularPrice);
+            regularPriceSlider.addChangeListener(e -> {
+                double price = regularPriceSlider.getDoubleValue();
+                garage.getController().setPriceRegular(price);
+                regularPrice.remove(0);
+                regularPrice.add(new MyLabel("Price regular P/H: €" + regularPriceSlider.getDoubleValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
+            });
+
+
+            DoubleJSlider reservationPriceSlider = new DoubleJSlider(0, 5, (int)garage.getController().getPriceReservation());
+            reservationPriceSlider.setOpaque(false);
+
+            //Panel
+            JPanel reservationPrice = new JPanel(new BorderLayout(10, 0));
+            reservationPrice.setOpaque(false);
+
+            reservationPrice.add(new MyLabel("Price reservation P/H: €" + reservationPriceSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
+            reservationPrice.add(new MyLabel("FREE", JLabel.CENTER, "description"), BorderLayout.WEST);
+            reservationPrice.add(new MyLabel("10", JLabel.CENTER, "description"), BorderLayout.EAST);
+            reservationPrice.add(reservationPriceSlider, BorderLayout.CENTER);
+            add(reservationPrice);
+            reservationPriceSlider.addChangeListener(e -> {
+                double price = reservationPriceSlider.getDoubleValue();
+                garage.getController().setPriceReservation(price);
+                reservationPrice.remove(0);
+                reservationPrice.add(new MyLabel("Price reservation P/H: €" + reservationPriceSlider.getDoubleValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
             });
         }
     }
