@@ -20,6 +20,18 @@ public class GarageController extends Controller {
         fv = finance;
     }
 
+    public void setMoneyEarned(double moneyEarned) {
+        this.moneyEarned = moneyEarned;
+    }
+
+    public void setPriceRegular(double priceRegular) {
+        this.priceRegular = priceRegular;
+    }
+
+    public void setPriceReservation(double priceReservation) {
+        this.priceReservation = priceReservation;
+    }
+
     private void reserveLocations() {
         Iterator it = ((GarageModel) model).getReservations().iterator();
         while (it.hasNext()) {

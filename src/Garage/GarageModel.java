@@ -69,6 +69,9 @@ public class GarageModel extends Model {
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
     }
 
+
+
+
     public int getNumberOfReservedLocations() {
         return reservedLocations.size();
     }

@@ -208,6 +208,30 @@ public class ControlPanel extends JPanel {
                 exitSpeed.remove(0);
                 exitSpeed.add(new MyLabel("Leaving (cars/minute): " + totalExitsSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
             });
+
+
+
+
+
+            JSlider regularPriceSlider = new JSlider(0, 10);
+            regularPriceSlider.setOpaque(false);
+
+            //Panel
+            JPanel regularPrice = new JPanel(new BorderLayout(10, 0));
+            regularPrice.setOpaque(false);
+
+            regularPrice.add(new MyLabel("Price regular P/H: €" + regularPriceSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
+            regularPrice.add(new MyLabel("FREE", JLabel.CENTER, "description"), BorderLayout.WEST);
+            regularPrice.add(new MyLabel("10", JLabel.CENTER, "description"), BorderLayout.EAST);
+            regularPrice.add(regularPriceSlider, BorderLayout.CENTER);
+            add(regularPrice);
+            regularPriceSlider.addChangeListener(e -> {
+                double price = regularPriceSlider.getValue();
+                garage.getController().setPriceRegular(price);
+                regularPrice.remove(0);
+                regularPrice.add(new MyLabel("Price regular P/H: €" + regularPriceSlider.getValue(), JLabel.CENTER, "title_small"), BorderLayout.NORTH, 0);
+            });
+            
         }
     }
 
