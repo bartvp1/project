@@ -74,7 +74,6 @@ public class GarageController extends Controller {
         int i = 0;
         while (((GarageModel) model).getPaymentCarQueue().carsInQueue() > 0 && i < ((GarageModel) model).getPaymentSpeed()) {
             Car car = ((GarageModel) model).getPaymentCarQueue().removeCar();
-            // TODO Handle payment.
 
 
             carLeavesSpot(car);
