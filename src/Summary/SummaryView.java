@@ -103,7 +103,7 @@ public class SummaryView extends View {
             g2.setFont(new Font("Arial", Font.PLAIN, 75));
             g2.setColor(Color.WHITE);
             g2.drawString(timeString, 550, getHeight() / 2 + 75);
-            g2.drawRect(panel.getWidth() + panel.getX() , getHeight()/2-20 , getWidth()-panel.getWidth()-75, 100);
+//            g2.drawRect(panel.getWidth() + panel.getX() , getHeight()/2 , getWidth()-panel.getWidth()-75, 100);
         }
     }
 

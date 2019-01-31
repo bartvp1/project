@@ -181,9 +181,7 @@ public class GarageModel extends Model {
      * @param car de auto die in de rij moet aansluiten
      */
     public void addToExitCarQueue(Car car) {
-        if (exitCarQueue.carsInQueue() < getMaxExitQueue()) {
             exitCarQueue.addCar(car);
-        }
     }
 
     /**
