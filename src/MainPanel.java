@@ -58,7 +58,7 @@ class MainPanel extends JPanel {
         simHeight = 425;
 
         graphBounds = new Rectangle(0, screenHeight - (screenHeight / 4), screenWidth, screenHeight / 4);
-        simBounds = new Rectangle((screenWidth / 2) - (simWidth / 2), margin, simWidth, simHeight);
+        simBounds = new Rectangle((screenWidth / 2) - (simWidth / 2), margin, simWidth , simHeight);
         controlBounds = new Rectangle(margin, margin, (screenWidth - simBounds.width) / 2 - (margin * 2), screenHeight - graphBounds.height - (margin * 2));
         summaryBounds = new Rectangle(simBounds.x, simBounds.y + simBounds.height + margin, simBounds.width, screenHeight - graphBounds.height - simBounds.height - (margin * 3));
         queueBounds = new Rectangle(simBounds.x + simBounds.width + margin, simBounds.height + (margin * 2), screenWidth - controlBounds.width - simBounds.width - (margin * 4), screenHeight - 770);
@@ -84,6 +84,7 @@ class MainPanel extends JPanel {
 
         GarageView garageView = new GarageView();
         garageView.setBounds(simBounds);
+        add(garageView);
         garageView.init();
         // model
         GarageModel garageModel = new GarageModel(garageView);
@@ -93,8 +94,7 @@ class MainPanel extends JPanel {
 
         garageModel.setController(garageController);
         garageController.start();
-        garageModel.init();
-        add(garageView);
+
 
 
         // De grafiek panel

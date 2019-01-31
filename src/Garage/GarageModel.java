@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class GarageModel extends Model {
+    private int accelerator = 1;
     private int numberOfRows;
     private int numberOfFloors;
     private int numberOfPlaces;
@@ -14,10 +15,6 @@ public class GarageModel extends Model {
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
-    private int numberOfCars = 0;
-    private int numberOfPassCars = 0;
-    private int numberOfNormalCars = 0;
-    private int numberOfReservedCars = 0;
     private int enterSpeed = 3; // number of cars that can enter per minute
     private int maxEntranceQueue = 10;
     private int maxExitQueue = 10;
@@ -41,6 +38,7 @@ public class GarageModel extends Model {
     private CarQueue exitCarQueue;
 
     private Car[][][] cars;
+
 
     private ArrayList<Location> locations;
     private ArrayList<Reservation> reservations;
@@ -69,88 +67,128 @@ public class GarageModel extends Model {
 
         this.numberOfOpenSpots = numberOfFloors * numberOfRows * numberOfPlaces;
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+        addLocations();
     }
 
 
+    /**
+     * @param c de klasse waarmee die vergelijkt
+     * @return het aantal auto's op basis van hoeveel locaties gevuld zijn met die auto's
+     */
+    public int getCarCount(Class c) {
+        int count = 0;
+        for (Location _loc : locations) {
+            if (getCarAt(_loc) != null) {
+                Car car = getCarAt(_loc);
+                if (c != null) {
+                    if (c.isInstance(car)) {
+                        count++;
+                    }
+                } else {
+                    count++;
+                }
+
+            }
+        }
+        return count;
+    }
+
+
+    /**
+     * @return hoeveel locations gereserveerd zijn
+     */
     public int getNumberOfReservedLocations() {
         return reservedLocations.size();
     }
+    public void setAccelerator(int accelerator) {
+        this.accelerator = accelerator;
+    }
 
+    /**
+     * @param controller de Controller die bij deze model hoort
+     */
     public void setController(GarageController controller) {
         this.controller = controller;
     }
 
+    /**
+     * @return de contoller wordt gereturned
+     */
     public GarageController getController() {
         return controller;
     }
 
+    /**
+     * @return de locations in een ArrayList
+     */
     public ArrayList<Location> getLocations() {
         return locations;
     }
 
-    public void setLocations(ArrayList<Location> locations) {
-        this.locations = locations;
-    }
-
-    public void init() {
-        addLocations();
-
-    }
-
+    /**
+     * @return de locaties die zijn gereserveerd in een ArrayList
+     */
     public ArrayList<Location> getReservedLocations() {
         return reservedLocations;
     }
 
-    public void setReservedLocations(ArrayList<Location> reservedLocations) {
-        this.reservedLocations = reservedLocations;
-    }
 
+    /**
+     * @return get aantal plekken voor pashouders
+     */
     public int getReservedLocationsPass() {
         return reservedPassLocations;
     }
 
-    public void setReservedLocationsPass(int reservedLocationsPass) {
-        this.reservedPassLocations = reservedLocationsPass;
-    }
 
-    public int getTotalCars() {
-        return this.numberOfCars;
-    }
-
+    /**
+     * Returns <code>nowTime</code>
+     *
+     * @return de huidige tijd van de simulator als int
+     */
     public int getNowTime() {
         return nowTime;
     }
 
-    public void setNowTime(int nowTime) {
-        this.nowTime = nowTime;
-    }
-
+    /**
+     * @return alle reservaties in een Arraylist
+     */
     public ArrayList<Reservation> getReservations() {
         return reservations;
     }
 
-    public void setReservations(ArrayList<Reservation> reservations) {
-        this.reservations = reservations;
-    }
-
+    /**
+     * Voegt een auto toe aan de rij om te betalen
+     *
+     * @param car de <code>car</code> die in <code>paymentCarQueue</code> moet worden toegevoegd
+     * @see Car
+     */
     public void addToPaymentCarQueue(Car car) {
         paymentCarQueue.addCar(car);
     }
+//
+//    public void addToEntranceCarQueue(Car car) {
+//        entranceCarQueue.addCar(car);
+//    }
+//
+//    public void addToEntrancePassCarQueue(Car car) {
+//        entrancePassQueue.addCar(car);
+//    }
 
-    public void addToEntranceCarQueue(Car car) {
-        entranceCarQueue.addCar(car);
-    }
-
-    public void addToEntrancePassCarQueue(Car car) {
-        entrancePassQueue.addCar(car);
-    }
-
+    /**
+     * Voegt een auto toe aan de rij om te betalen
+     *
+     * @param car de auto die in de rij moet aansluiten
+     */
     public void addToExitCarQueue(Car car) {
         if (exitCarQueue.carsInQueue() < getMaxExitQueue()) {
             exitCarQueue.addCar(car);
         }
     }
 
+    /**
+     * Voegt alle plekken van de garage toe aan de array <code>locations</code>
+     */
     private void addLocations() {
         int id = 0;
         for (int floor = 0; floor < numberOfFloors; floor++) {
@@ -164,10 +202,17 @@ public class GarageModel extends Model {
         }
     }
 
+    /**
+     * @return de week als een int
+     */
     public int getWeek() {
         return week;
     }
 
+    /**
+     * @param type regulier, pashouder of gereserveerd
+     * @return de eerste Location die vrij is
+     */
     public Location getFirstFreeLocation(String type) {
         int start_at = reservedPassLocations;
         if (type == "PASS") {
@@ -201,9 +246,6 @@ public class GarageModel extends Model {
         if (location == null) {
             return false;
         }
-        int floor = location.getFloor();
-        int row = location.getRow();
-        int place = location.getPlace();
         int id = location.getId();
         return !(0 > id || id > locations.size());
         //return !(floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces);
@@ -216,9 +258,11 @@ public class GarageModel extends Model {
         }
     }
 
+
+
     void advanceTime() {
         // Advance the time by one minute
-        minute++;
+        minute += accelerator;
         reservedForPass();
         while (minute > 59) {
             minute -= 60;
@@ -232,42 +276,9 @@ public class GarageModel extends Model {
             day -= 7;
             week++;
         }
-        String day_string;
-        switch (day) {
-            case 0:
-                day_string = "Monday";
-                break;
-            case 1:
-                day_string = "Tuesday";
-                break;
-            case 2:
-                day_string = "Wednesday";
-                break;
-            case 3:
-                day_string = "Thursday";
-                break;
-            case 4:
-                day_string = "Friday";
-                break;
-            case 5:
-                day_string = "Saturday";
-                break;
-            case 6:
-                day_string = "Sunday";
-                break;
-            default:
-                day_string = "undefined";
-        }
 
 
         nowTime = (day * 60 * 24) + (hour * 60) + minute;
-
-
-//        timeLabel.setText(day_string + " " + hour + ":" + minute);
-//
-//
-//        stats.setText(numberOfPassCars + " - " + numberOfNormalCars + " - " + "R_SPOTS: " + reservedLocations.size() + " - " + "R_CARS: " + numberOfReservedCars);
-
     }
 
 
@@ -282,29 +293,6 @@ public class GarageModel extends Model {
         return null;
     }
 
-    void increaseNumberOfPassCarsByOne() {
-        this.numberOfPassCars++;
-    }
-
-    void decreaseNumberOfPassCarsByOne() {
-        this.numberOfPassCars--;
-    }
-
-    void increaseNumberOfNormalCarsByOne() {
-        this.numberOfNormalCars++;
-    }
-
-    void decreaseNumberOfNormalCarsByOne() {
-        this.numberOfNormalCars--;
-    }
-
-    void increaseNumberOfReservedCarsByOne() {
-        this.numberOfReservedCars++;
-    }
-
-    void decreaseNumberOfReservedCarsByOne() {
-        this.numberOfReservedCars--;
-    }
 
     Car removeCarAt(Location location) {
         Car car = getCarAt(location);
@@ -330,9 +318,6 @@ public class GarageModel extends Model {
     public CarQueue getExitCarQueue() {
         return exitCarQueue;
     }
-//    public CarQueue getReservedCarQueue() {
-//        return paymentCarQueue;
-//    }
 
     public void addReservation(int day, int hour, int minute) {
         Reservation reservation = new Reservation(day, hour, minute);
@@ -446,17 +431,6 @@ public class GarageModel extends Model {
 
     }
 
-    public void decreaseNumberOfTotalCarsByOne() {
-        this.numberOfCars--;
-    }
-
-    public void increaseNumberOfTotalCarsByOne() {
-        this.numberOfCars++;
-    }
-
-    public int getNumberOfNormalCars() {
-        return numberOfNormalCars;
-    }
 
     public int getDay() {
         return day;
@@ -470,17 +444,6 @@ public class GarageModel extends Model {
         return minute;
     }
 
-    public int getNumberOfCars() {
-        return numberOfCars;
-    }
-
-    public int getNumberOfPassCars() {
-        return numberOfPassCars;
-    }
-
-    public int getNumberOfReservedCars() {
-        return numberOfReservedCars;
-    }
 
     public int getTickPause() {
         return controller.getTickPause();

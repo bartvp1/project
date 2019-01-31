@@ -24,6 +24,7 @@ public class SummaryView extends View {
     private JProgressBar normalCarBar = new JProgressBar(0, 540);
     private JProgressBar reservedCarBar = new JProgressBar(0, 540);
 
+    JPanel panel;
 
     public void init() {
         setBackground(new Color(47, 49, 54));
@@ -40,8 +41,8 @@ public class SummaryView extends View {
             add(label);
         }
 
-        JPanel panel = new JPanel(new GridLayout(0, 3, 25, 5));
-        panel.setBounds(0, 125, getWidth()/2 + 25, 125);
+        panel = new JPanel(new GridLayout(0, 3, 25, 5));
+        panel.setBounds(0, getHeight() / 3 + 25, getWidth() / 2 + 25, (getHeight() / 3) + 25);
         panel.setOpaque(false);
 
         totalCarBar.setBounds(100, 75, 100, 25);
@@ -101,7 +102,8 @@ public class SummaryView extends View {
         if (model != null) {
             g2.setFont(new Font("Arial", Font.PLAIN, 75));
             g2.setColor(Color.WHITE);
-            g2.drawString(timeString, 550, getHeight() / 2 + 60);
+            g2.drawString(timeString, 550, getHeight() / 2 + 75);
+            g2.drawRect(panel.getWidth() + panel.getX() , getHeight()/2-20 , getWidth()-panel.getWidth()-75, 100);
         }
     }
 
@@ -116,7 +118,7 @@ public class SummaryView extends View {
         totalCarsLabel.setText(Integer.toString(totalCars));
         passCarLabel.setText(Integer.toString(sModel.getPassCars()));
 
-        totalCarBar.setValue(totalCars);
+        totalCarBar.setValue(sModel.getTotalCars());
         passCarBar.setValue(sModel.getPassCars());
         normalCarBar.setValue(sModel.getNormalCars());
 

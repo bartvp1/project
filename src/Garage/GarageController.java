@@ -5,7 +5,6 @@ import Garage.Car.*;
 import MyComponents.Controller;
 import MyComponents.Model;
 
-import java.lang.reflect.Array;
 import java.util.Iterator;
 
 public class GarageController extends Controller {
@@ -26,20 +25,18 @@ public class GarageController extends Controller {
         fv = finance;
     }
 
-    public void resetMoney()
-    {
+    public void resetMoney() {
         week = new double[7];
         setMoneyEarned(0.0);
         settotalCarsPayed(0);
     }
 
 
-    void addMoney(double amount)
-    {
-        week[((GarageModel)model).getDay()] += amount;
+    void addMoney(double amount) {
+        week[((GarageModel) model).getDay()] += amount;
     }
-    public double getMoneyADay(int day)
-    {
+
+    public double getMoneyADay(int day) {
         return week[day];
     }
 
@@ -112,17 +109,15 @@ public class GarageController extends Controller {
             carLeavesSpot(car);
             i++;
 
-            totalCarsPayed +=1;
+            totalCarsPayed += 1;
             double price = 0.0;
 
             if (car instanceof CarNormal) {
-                ((GarageModel) model).decreaseNumberOfNormalCarsByOne();
 
                 price = ((priceRegular / 60) * car.getMinutesStay());
                 moneyEarned += price;
             }
             if (car instanceof CarReserved) {
-                ((GarageModel) model).decreaseNumberOfReservedCarsByOne();
                 price = ((priceReservation / 60) * car.getMinutesStay());
                 moneyEarned += price;
             }
@@ -140,7 +135,6 @@ public class GarageController extends Controller {
             } else {
                 ((GarageModel) model).removeCarAt(car.getLocation());
                 ((GarageModel) model).addToExitCarQueue(car);
-                ((GarageModel) model).decreaseNumberOfPassCarsByOne();
             }
             car = ((GarageModel) model).getFirstLeavingCar();
         }
@@ -197,17 +191,13 @@ public class GarageController extends Controller {
             Location freeLocation;
             if (car instanceof CarPass) {
                 freeLocation = ((GarageModel) model).getFirstFreeLocation("PASS");
-                ((GarageModel) model).increaseNumberOfPassCarsByOne();
             } else if (car instanceof CarReserved) {
                 Location loc = ((GarageModel) model).getFirstFreeLocation("RESERVED");
                 freeLocation = loc;
-                ((GarageModel) model).increaseNumberOfReservedCarsByOne();
             } else {
                 freeLocation = ((GarageModel) model).getFirstFreeLocation("NORMAL");
-                ((GarageModel) model).increaseNumberOfNormalCarsByOne();
 
             }
-            ((GarageModel) model).increaseNumberOfTotalCarsByOne();
 
             ((GarageModel) model).setCarAt(freeLocation, car);
             i++;

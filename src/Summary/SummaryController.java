@@ -1,5 +1,8 @@
 package Summary;
 
+import Garage.Car.CarNormal;
+import Garage.Car.CarPass;
+import Garage.Car.CarReserved;
 import Garage.GarageModel;
 import MyComponents.Controller;
 import MyComponents.Model;
@@ -27,10 +30,10 @@ public class SummaryController extends Controller {
             SummaryModel sModel = (SummaryModel) model;
             if (sModel != null) {
                 GarageModel gModel = (GarageModel) garageModel;
-                sModel.setNormalCars(gModel.getNumberOfNormalCars());
-                sModel.setPassCars(gModel.getNumberOfPassCars());
-                sModel.setTotalCars(gModel.getTotalCars());
-                sModel.setReservedCars(gModel.getNumberOfReservedCars());
+                sModel.setNormalCars(gModel.getCarCount(CarNormal.class));
+                sModel.setPassCars(gModel.getCarCount(CarPass.class));
+                sModel.setTotalCars(gModel.getCarCount(null));
+                sModel.setReservedCars(gModel.getCarCount(CarReserved.class));
                 sModel.setReservedLocation(gModel.getNumberOfReservedLocations());
                 sModel.setDayName(gModel.getDayName());
                 sModel.setHours(gModel.getHour());

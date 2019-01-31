@@ -43,7 +43,7 @@ public class ControlPanel extends JPanel {
         JPanel settingsPanel = new JPanel(new CardLayout());
         int settingsX = categoryPanel.getWidth() + categoryPanel.getX() + 10;
         settingsPanel.setBounds(settingsX, titleLabel.getHeight() + 10, getWidth() - settingsX - 10, getHeight() - titleLabel.getHeight() - 30);
-        settingsPanel.setOpaque(false);
+//        settingsPanel.setOpaque(false);
         add(settingsPanel);
 
 
@@ -51,7 +51,7 @@ public class ControlPanel extends JPanel {
 
         // De verschillende menu's toevoegen aan de settingspanel
         settingsPanel.add(new SimulatorSettings(), "Control");
-        settingsPanel.add(new ReservationPanel(), "Reserveren");
+        settingsPanel.add(new ReservationPanel(), "Reserve");
         settingsPanel.add(new AboutSettings(), "About");
 
         // De eerste panel die je ziet is de chart settings
@@ -88,6 +88,12 @@ public class ControlPanel extends JPanel {
         g2.setStroke(new BasicStroke(.4f));
         g.drawLine(0, 0, getWidth() - 1, 0);
         g.drawLine(0, 0, 0, getHeight());
+
+//        g2.setStroke(new BasicStroke(4f));
+        g2.setColor(new Color(0, 0, 0, 50));
+        g2.fillRect(135, 58, getWidth() - 140, getHeight() - 75);
+        g2.setColor(new Color(0, 0, 0, 150));
+        g2.fillRect(137, 59, getWidth() - 144, getHeight() - 76);
     }
 
     /**
@@ -217,13 +223,12 @@ public class ControlPanel extends JPanel {
             });
 
 
-
             JPanel pricingPanel = new JPanel(new BorderLayout(10, 0));
             pricingPanel.setOpaque(false);
             pricingPanel.add(new MyLabel("Finances", JLabel.CENTER, "title"), BorderLayout.NORTH);
             add(pricingPanel);
 
-            DoubleJSlider regularPriceSlider = new DoubleJSlider(0, 5, (int)garage.getController().getPriceRegular());
+            DoubleJSlider regularPriceSlider = new DoubleJSlider(0, 5, (int) garage.getController().getPriceRegular());
             regularPriceSlider.setOpaque(false);
 
             //Panel
@@ -243,7 +248,7 @@ public class ControlPanel extends JPanel {
             });
 
 
-            DoubleJSlider reservationPriceSlider = new DoubleJSlider(0, 5, (int)garage.getController().getPriceReservation());
+            DoubleJSlider reservationPriceSlider = new DoubleJSlider(0, 5, (int) garage.getController().getPriceReservation());
             reservationPriceSlider.setOpaque(false);
 
             //Panel
@@ -270,7 +275,6 @@ public class ControlPanel extends JPanel {
             super(new GridLayout(10, 1));
             setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
             setBackground(new Color(0x454545));
-
             String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
             Integer[] hours = new Integer[24];
             Integer[] minutes = new Integer[60];
@@ -316,7 +320,7 @@ public class ControlPanel extends JPanel {
     }
 
     class AboutSettings extends JPanel {
-      
+
         AboutSettings() {
             setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
             setBackground(new Color(0x454545));
